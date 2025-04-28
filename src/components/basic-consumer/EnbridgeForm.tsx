@@ -4,8 +4,7 @@ interface EnbridgeForm {
   nextStep: () => void;
   step: number;
 }
-const EnbridgeForm: React.FC<EnbridgeForm> = ({ nextStep, step }) => {
-  console.log("step", step);
+const EnbridgeForm: React.FC<EnbridgeForm> = ({ nextStep }) => {
   return (
     <>
       <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center overflow-scroll ">

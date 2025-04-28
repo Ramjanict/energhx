@@ -32,8 +32,6 @@ const Utility: React.FC<TconsumerButton> = ({ prevStep, nextStep }) => {
     user,
   } = basicConsumerStore();
 
-  console.log("user", user);
-
   const countryId = user?.country.id;
   const statesId = user?.country?.states[0]?.id;
   const onSubmit = async () => {

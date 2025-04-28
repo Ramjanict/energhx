@@ -3,7 +3,6 @@ import Rechart from "@/components/basic-consumer/chart/Rechart";
 import OverviewTable from "@/components/basic-consumer/OverviewTable";
 import TwoTitle from "@/components/basic-consumer/TwoTitle";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useEffect } from "react";
 import EnergyConvertChart from "@/components/basic-consumer/chart/EnergyConvertChart";
 import CoolingTable from "@/components/basic-consumer/chart/CoolingTable";
 import SummaryTable from "@/components/basic-consumer/chart/SummaryTable";
@@ -31,7 +30,7 @@ const tableList2 = [
   " .",
 ];
 const RoomOverView = () => {
-  const { energyAudit, getEnergyAudit } = basicConsumerStore();
+  const { energyAudit } = basicConsumerStore();
 
   //Building cooling and energy
   const totalBuildingInfo = energyAudit[0]["Cooling Load Calculation"]; // BuildingInfo obj
@@ -44,13 +43,6 @@ const RoomOverView = () => {
   //Room under Building cooling and energy
   const totalRoomsInfo =
     energyAudit[0]["Energy Audit, Characterization, Optimization"].rooms; //its an array
-
-  console.log("energyAudit", energyAudit);
-  console.log("totalRoomsInfo", totalRoomsInfo);
-
-  useEffect(() => {
-    getEnergyAudit();
-  }, []);
 
   return (
     <div className="flex flex-col gap-10">

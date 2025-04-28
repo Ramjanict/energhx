@@ -2,29 +2,25 @@ import BlackHeader from "@/common/BlackHeader";
 import lightGreen from "../../assets/Profile/lightGreen.svg";
 import { basicConsumerStore } from "@/store/ConsumerStore";
 import { useEffect } from "react";
+import Loading from "./Loading";
 interface HydroForm {
   nextStep: () => void;
 }
 const HydroForm: React.FC<HydroForm> = ({ nextStep }) => {
   const { token, getEnergyAudit, energyAudit } = basicConsumerStore();
-  console.log("energyAudit", energyAudit);
-  console.log("token", token);
 
   useEffect(() => {
     if (token) {
       getEnergyAudit();
     }
-  }, [token]);
+  }, [token, getEnergyAudit]);
 
   const handleClose = () => {
-    if (!energyAudit) {
-      getEnergyAudit();
+    if (energyAudit) {
+      nextStep();
     }
-    nextStep();
   };
-
-  console.log("energyAudit", energyAudit);
-  return (
+  return energyAudit.length > 0 ? (
     <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center overflow-scroll">
       <div className=" bg-white rounded-xl p-8 max-w-2xl max-h-screen shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)]  mx-4   flex flex-col gap-4 text-[#394A3F] ">
         <BlackHeader>Products for " Hydro Ottawa Limited" Utility</BlackHeader>
@@ -60,6 +56,8 @@ const HydroForm: React.FC<HydroForm> = ({ nextStep }) => {
         </button>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 
