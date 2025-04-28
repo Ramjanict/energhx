@@ -1,0 +1,28 @@
+@import url("https://fonts.cdnfonts.com/css/poppins");
+@import url("https://fonts.cdnfonts.com/css/akira-expanded");
+@import "tailwindcss";
+
+@theme {
+  --color-primary-green: #2dad00;
+  --color-light-green: #eaf7e6;
+  --color-primary-gray: #758179;
+  --color-secondary-gray: #394A3F;
+  --color-website-color-black: #212a31;
+  --color-website-color-lightGray: #5f5f5f;
+  --color-website-color-gray: #758179;
+  --color-website-color-green: #2dad00;
+  --color-website-color-lightGreen: #eaf7e6;
+
+  /* Primary Color */
+  --color-primary: var(--color-website-color-green);
+  --color-secondary: var(--color-website-color-lightGreen);
+  --color-accent: var(--color-website-color-gray);
+
+  /* Font Families */
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Akira Expanded", sans-serif;
+}
+
+body {
+  font-family: var(--font-primary);
+ }
