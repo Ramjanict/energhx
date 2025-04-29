@@ -9,10 +9,14 @@ import BuildingInformation6 from "@/components/standard-consumer/step-form/Build
 import BuildingInformation7 from "@/components/standard-consumer/step-form/BuildingInformation7";
 import BuildingInformation8 from "@/components/standard-consumer/step-form/BuildingInformation8";
 import Room from "@/components/standard-consumer/step-form/Room";
+import { BuildingType } from "@/types/buildingType";
 import Building from "@/components/standard-consumer/step-form/Building";
 
 const StandardConsumerBuildingInfo = () => {
   const [step, setStep] = useState(1);
+  const [selectedBuilding, setSelectedBuilding] = useState<BuildingType | null>(
+    null
+  );
 
   const nextStep = () => {
     setStep((pre) => pre + 1);
@@ -38,12 +42,25 @@ const StandardConsumerBuildingInfo = () => {
       {step === 7 && (
         <BuildingInformation4 nextStep={nextStep} prevStep={prevStep} />
       )}
-      {step === 8 && <BuildingInformation5 setStep={setStep} />}
-      {step === 9 && (
-        <BuildingInformation6 nextStep={nextStep} prevStep={prevStep} />
+      {step === 8 && (
+        <BuildingInformation5
+          setStep={setStep}
+          setSelectedBuilding={setSelectedBuilding}
+        />
       )}
-      {step === 10 && (
-        <BuildingInformation7 nextStep={nextStep} prevStep={prevStep} />
+      {step === 9 && selectedBuilding && (
+        <BuildingInformation6
+          nextStep={nextStep}
+          prevStep={prevStep}
+          selectedBuilding={selectedBuilding}
+        />
+      )}
+      {step === 10 && selectedBuilding && (
+        <BuildingInformation7
+          nextStep={nextStep}
+          prevStep={prevStep}
+          selectedBuilding={selectedBuilding}
+        />
       )}
       {step === 11 && (
         <BuildingInformation8 nextStep={nextStep} prevStep={prevStep} />

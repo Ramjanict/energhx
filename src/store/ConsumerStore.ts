@@ -92,6 +92,25 @@ export const basicConsumerStore = create<ConsumerStore>()(
       },
 
       //microservices
+      postEnergyAudit: async (energyAudit) => {
+        try {
+          const token = get().token;
+          const { data } = await axiosSecure.post(
+            "/analysis/v2/energy/audit",
+            energyAudit,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          if (data) {
+            toast.success(data.message);
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
+        }
+      },
       getEnergyAudit: async () => {
         try {
           const token = get().token;
@@ -125,8 +144,9 @@ export const basicConsumerStore = create<ConsumerStore>()(
             set({ solarMicroservice: data.data });
           } else if (data.error) {
             console.log(data.message);
+            toast.error(data.message);
           }
-        } catch (error: any) {
+        } catch (error) {
           console.error("Problem during post service", error);
         }
       },
@@ -142,10 +162,12 @@ export const basicConsumerStore = create<ConsumerStore>()(
 
           if (data) {
             set({ biomassMicroservice: data.data });
+            toast.success(data.message);
           } else if (data.error) {
             console.log(data.message);
+            toast.error(data.message);
           }
-        } catch (error: any) {
+        } catch (error) {
           console.error("Problem during post service", error);
         }
       },

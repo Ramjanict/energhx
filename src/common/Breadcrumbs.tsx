@@ -31,7 +31,7 @@ const breadcrumbs = [
 ];
 const Breadcrumbs = () => {
   return (
-    <div className=" hidden  sm:flex justify-between  items-center gap-2 bg-[#EAF7E6] rounded-xl px-10 py-6 font-primary  overflow-hidden">
+    <div className="-z-500 hidden  sm:flex justify-between  items-center gap-2 bg-[#EAF7E6] rounded-xl px-10 py-6 font-primary  overflow-hidden">
       {breadcrumbs.map((item, i) => (
         <div className=" flex gap-2   items-center " key={i}>
           {item.arrow === null ? (

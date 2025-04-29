@@ -65,9 +65,10 @@ import StandardServerCertifiedSetting from "@/pages/standard-developer-certified
 import StandardServerHistory from "@/pages/standard-server/StandardServerHistory";
 import StandardServerSetting from "@/pages/standard-server/StandardServerSetting";
 import BasicConsumerForm from "@/pages/basic-consumer/BasicConsumerForm";
-import Biomass from "@/components/basic-consumer/Microservice/Biomass";
-import Solar from "@/components/basic-consumer/Microservice/Solar";
-import TotalOverview from "@/components/basic-consumer/TotalOverview";
+// import TotalOverview from "@/components/basic-consumer/TotalOverview";
+// import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/SolarMicroserviceForm";
+// import BiomassMicroServiceForm from "@/components/basic-consumer/Microservice/BiomassMicroServiceForm";
+// import EnergyAuditMicroServiceForm from "@/components/basic-consumer/Microservice/EnergyAuditMicroServiceForm";
 
 const routes = createBrowserRouter([
   {
@@ -86,18 +87,19 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: <Signup />,
       },
-      {
-        path: "/solar",
-        element: <Solar />,
-      },
-      {
-        path: "/biomass",
-        element: <Biomass />,
-      },
-      {
-        path: "/overview",
-        element: <TotalOverview />,
-      },
+      // {
+      //   path: "/solar",
+      //   element: <SolarMicroserviceForm />,
+      // },
+      // {
+      //   path: "/biomass",
+      //   element: <BiomassMicroServiceForm />,
+      // },
+      // {
+      //   path: "/energy",
+      //   element: <EnergyAuditMicroServiceForm />,
+      // },
+
       {
         path: "/admin",
         element: <AdminRoute />,

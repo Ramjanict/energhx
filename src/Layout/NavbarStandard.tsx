@@ -59,34 +59,36 @@ const NavbarStandard = () => {
             ))}
           </ul>
 
-          <div
-            onClick={() => {
-              setIsDropdownOpen((pre) => !pre);
-            }}
-            className="flex gap-2 relative"
-          >
-            <div className="  ">
-              <img
-                src={userImg}
-                alt="User"
-                className="w-12 h-12 ring-2 ring-primary rounded-full cursor-pointer"
-              />
+          <div className="flex items-center gap-4">
+            <div
+              onClick={() => {
+                setIsDropdownOpen((pre) => !pre);
+              }}
+              className="flex gap-2 relative"
+            >
+              <div className="  ">
+                <img
+                  src={userImg}
+                  alt="User"
+                  className="w-12 h-12 ring-2 ring-primary rounded-full cursor-pointer"
+                />
 
-              {isDropdownOpen && (
-                <div id="dropdown" className=" absolute  right-0 mt-2">
-                  <DropDown />
-                </div>
-              )}
+                {isDropdownOpen && (
+                  <div id="dropdown" className=" absolute  right-0 mt-2">
+                    <DropDown />
+                  </div>
+                )}
+              </div>
             </div>
+            <button
+              onClick={toggleMenu}
+              className="md:hidden text-primary-gray text-2xl cursor-pointer"
+            >
+              {!isOpen && <FiMenu />}
+            </button>
           </div>
         </div>
 
-        <button
-          onClick={toggleMenu}
-          className="md:hidden text-primary-gray text-2xl cursor-pointer"
-        >
-          {!isOpen && <FiMenu />}
-        </button>
         {isOpen && <MobileMenu setIsOpen={setIsOpen} />}
       </nav>
       <hr className="w-full text-[#E7E9E8]" />

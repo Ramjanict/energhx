@@ -150,6 +150,9 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
           : "Failed to create building"
       );
     }
+    if (nextStep) nextStep();
+
+    console.log("formdata", formData);
   };
   return (
     <div>

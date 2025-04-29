@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import Loading from "./Loading";
 interface HydroForm {
   nextStep: () => void;
+  step: number;
 }
-const HydroForm: React.FC<HydroForm> = ({ nextStep }) => {
+const HydroForm: React.FC<HydroForm> = ({ nextStep, step }) => {
   const { token, getEnergyAudit, energyAudit } = basicConsumerStore();
 
+  console.log("step", step);
   useEffect(() => {
     if (token) {
       getEnergyAudit();
@@ -18,6 +20,7 @@ const HydroForm: React.FC<HydroForm> = ({ nextStep }) => {
   const handleClose = () => {
     if (energyAudit) {
       nextStep();
+      getEnergyAudit();
     }
   };
   return energyAudit.length > 0 ? (

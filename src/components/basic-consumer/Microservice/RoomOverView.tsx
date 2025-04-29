@@ -8,6 +8,7 @@ import CoolingTable from "@/components/basic-consumer/chart/CoolingTable";
 import SummaryTable from "@/components/basic-consumer/chart/SummaryTable";
 import EnergyTable from "@/components/basic-consumer/chart/EnergyTable";
 import ConvertToMapData from "../chart/ConvertToMapData";
+import { useEffect } from "react";
 
 const tableList1 = [
   "Gross Floor Area",
@@ -30,7 +31,7 @@ const tableList2 = [
   " .",
 ];
 const RoomOverView = () => {
-  const { energyAudit } = basicConsumerStore();
+  const { energyAudit, getEnergyAudit } = basicConsumerStore();
 
   //Building cooling and energy
   const totalBuildingInfo = energyAudit[0]["Cooling Load Calculation"]; // BuildingInfo obj
@@ -44,6 +45,9 @@ const RoomOverView = () => {
   const totalRoomsInfo =
     energyAudit[0]["Energy Audit, Characterization, Optimization"].rooms; //its an array
 
+  useEffect(() => {
+    getEnergyAudit();
+  }, []);
   return (
     <div className="flex flex-col gap-10">
       <TwoTitle

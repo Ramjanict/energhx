@@ -18,7 +18,7 @@ const NavbarAdmin = ({ user }: NavbarAdminProps) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setSticky(window.scrollY > 20);
+      setSticky(window.scrollY > 5);
     };
     window.addEventListener("scroll", handleScroll);
 

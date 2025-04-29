@@ -13,6 +13,7 @@ interface item {
   type: string;
   placeholder: string;
   options?: { label: string; value: string }[];
+  defaultValue?: string | number;
 }
 
 interface CommonFormProps {
@@ -24,7 +25,11 @@ interface CommonFormProps {
   ) => void;
   formData: { [key: string]: string };
 }
-const CommonForm: React.FC<CommonFormProps> = ({ formList, onChange }) => {
+const CommonForm: React.FC<CommonFormProps> = ({
+  formList,
+  onChange,
+  formData,
+}) => {
   return (
     <>
       <form className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
@@ -65,6 +70,7 @@ const CommonForm: React.FC<CommonFormProps> = ({ formList, onChange }) => {
                 placeholder={item.placeholder}
                 id={item.id}
                 onChange={onChange}
+                defaultValue={item.defaultValue || formData[item.name]}
               />
             )}
           </div>

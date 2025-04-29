@@ -12,9 +12,8 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const Login = () => {
-  const { loginUser, token } = basicConsumerStore();
+  const { loginUser } = basicConsumerStore();
   const navigate = useNavigate();
-  console.log("toiken", token);
   const {
     register,
     handleSubmit,

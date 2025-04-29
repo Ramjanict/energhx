@@ -28,37 +28,39 @@ type User = {
 };
 export type PostSolarMicroServices = {
   wavelength: number;
-  sam_ri: number;
-  sam_k: number;
+  sam_type: string;
+  custom_sam_ri?: number;
+  custom_sam_k?: number;
   sam_thickness: number;
-  substrate_ri: number;
+  substrate_type: string;
+  custom_substrate_ri?: number;
+  custom_substrate_k?: number;
   substrate_thickness: number;
-  electrode_ri: number;
-  electrode_k: number;
+  electrode_type: string;
+  custom_electrode_ri?: number;
+  custom_electrode_k?: number;
   electrode_thickness: number;
-  photoanode_ri: number;
-  photoanode_k: number;
   photoanode_thickness: number;
-  dye_ri: number;
-  dye_k: number;
+  custom_photoanode_ri?: number;
+  custom_photoanode_k?: number;
   dye_thickness: number;
+  custom_dye_ri?: number;
+  custom_dye_k?: number;
   solar_irradiance: number;
   area: number;
   num_hours: number;
   total_plug_load: number;
-  sam_type: string;
-  custom_sam_ri: number;
-  custom_sam_k: number;
-  substrate_type: string;
-  custom_substrate_ri: number;
-  custom_substrate_k: number;
-  electrode_type: string;
-  custom_electrode_ri: number;
-  custom_electrode_k: number;
-  custom_photoanode_ri: number;
-  custom_photoanode_k: number;
-  custom_dye_ri: number;
-  custom_dye_k: number;
+
+  sam_ri?: number;
+  sam_k?: number;
+  substrate_ri?: number;
+  substrate_k?: number;
+  electrode_ri?: number;
+  electrode_k?: number;
+  photoanode_ri?: number;
+  photoanode_k?: number;
+  dye_ri?: number;
+  dye_k?: number;
 };
 type SolarPlot = {
   absorbance_vs_transmittance_plot: string;
@@ -277,6 +279,77 @@ interface EnergyFullData {
 // Define the array of buildings data
 type EneryAuditArrayData = EnergyFullData[];
 
+// post energy audi
+type EnergyBuildingData = {
+  buildings: {
+    title: string;
+    rooms: {
+      title: string;
+      construction: string;
+      "construction-subtype": string;
+      "percentage-glass": string;
+      "wall-type": string;
+      city: string;
+      month: string;
+      "percentage-MDDB": string;
+      LSM: number;
+      "north-wall-area": number;
+      "east-wall-area": number;
+      "south-wall-area": number;
+      "west-wall-area": number;
+      "roof-type": string;
+      "roof-area": number;
+      "north-fenestration-area-shaded": number;
+      "north-fenestration-area-sunlit": number;
+      "east-fenestration-area-shaded": number;
+      "east-fenestration-area-sunlit": number;
+      "south-fenestration-area-shaded": number;
+      "south-fenestration-area-sunlit": number;
+      "west-fenestration-area-shaded": number;
+      "west-fenestration-area-sunlit": number;
+      "indoor-shading": "True" | "False";
+      "u-value-window": number;
+      "beam-solar-heat-gain-coefficient": number;
+      "diffuse-solar-heat-gain-coefficient": number;
+      "beam-indoor-solar-attenuation-coefficient": number;
+      "diffuse-indoor-solar-attenuation-coefficient": number;
+      "lighting-type": string;
+      "number-lighting": number;
+      "lighting-rating": number;
+      "activity-type": string;
+      "activity-location": string;
+      "velocity-type": string;
+      "occupant-capacity": number;
+      "start-hour": string;
+      "end-hour": string;
+      "percentage-MDHR": string;
+      "infiltration-rate": number;
+      "fenestration-area": number;
+      "floor-area": number;
+      appliances?: any[];
+      "air-conditioners"?: any[];
+    }[];
+    batteries?: {
+      title: string;
+      "battery-manufacturer": string;
+      "battery-class": string;
+      "battery-model": string;
+      "battery-length": number;
+      "battery-diameter": number;
+      "battery-height"?: number;
+      "battery-width"?: number;
+      "battery-thickness"?: number;
+      "battery-mass": number;
+      "battery-capacity": number;
+      "battery-voltage": number;
+      "battery-peak-C-rate": number;
+      "battery-continous-C-rate": number;
+      "average-energy-consumption": number;
+      "vehicle-range": number;
+      "nominal-voltage": number;
+    }[];
+  }[];
+};
 export type ConsumerStore = {
   user: UserData | null;
   token: string;
@@ -302,6 +375,7 @@ export type ConsumerStore = {
   ) => Promise<void>;
 
   getEnergyAudit: () => Promise<void>;
+  postEnergyAudit: (energyAudit: EnergyBuildingData) => Promise<void>;
 
   postSolarMicroServices: (service: PostSolarMicroServices) => Promise<void>;
   postBiomassMicroServices: (

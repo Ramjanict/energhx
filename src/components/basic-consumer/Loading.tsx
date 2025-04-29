@@ -5,9 +5,7 @@ const Loading = () => {
         <div className="flex items-center justify-center">
           <div className="animate-spin rounded-full border-t-2 border-primary w-20 h-20 border-solid"></div>
         </div>
-        <p className="text-center text-primary">
-          Overview is processing, please wait...
-        </p>
+        <p className="text-center text-primary">please wait...</p>
       </div>
     </div>
   );

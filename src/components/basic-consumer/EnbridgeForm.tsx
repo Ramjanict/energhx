@@ -4,13 +4,14 @@ interface EnbridgeForm {
   nextStep: () => void;
   step: number;
 }
-const EnbridgeForm: React.FC<EnbridgeForm> = ({ nextStep }) => {
+const EnbridgeForm: React.FC<EnbridgeForm> = ({ nextStep, step }) => {
+  console.log("step", step);
   return (
     <>
       <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center overflow-scroll ">
         <section className=" max-w-2xl  max-h-screen   mx-4 ">
           <div className="flex flex-col gap-4 text-[#394A3F] min-h-[650px]   bg-white rounded-xl p-8  shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] ">
-            <BlackHeader>Products for "Enbridge" Utility ramjan</BlackHeader>
+            <BlackHeader>Products for "Enbridge" Utility</BlackHeader>
             <div className="flex items-start gap-1">
               <img className="pt-1" src={lightGreen} alt="light" />
               <p>

@@ -8,6 +8,13 @@ import { useState } from "react";
 import { useFormStore } from "@/store/FormStore";
 // import { basicConsumerStore } from "@/store/ConsumerStore";
 
+export interface Building {
+  building_name: string;
+  building_type?: { building_type_id: string; name?: string };
+  building_sub_type?: { name: string };
+  user_building_utility: { utility_name: string; utility_type: string }[];
+}
+
 const Building: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
   const { updateFormData } = useFormStore();
   const [localData, setLocalData] = useState({

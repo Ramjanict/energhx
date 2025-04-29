@@ -1,7 +1,6 @@
 import BioRechart from "@/components/basic-consumer/chart/BioRechart";
 import TwoTitle from "@/components/basic-consumer/TwoTitle";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useEffect } from "react";
 import {
   Bar,
   CartesianGrid,
@@ -14,43 +13,7 @@ import {
   Rectangle,
 } from "recharts";
 const Biomass = () => {
-  const { postBiomassMicroServices, biomassMicroservice } =
-    basicConsumerStore();
-
-  const biomassCellData = {
-    feedstock: "animal_dung",
-    t: 30,
-    TS: 0.3,
-    VS: 0.8,
-    FADin: 120,
-    VADCH4: 236,
-    THTC: 1073,
-    QAD: 86400,
-    SADin: 4,
-    XADin: 2,
-    SHTC0: 0,
-    ZAD0: 0,
-    CO20: 0,
-    H20: 0,
-    NH30: 0,
-    μADmax: 0.35,
-    D: 0.029,
-    Kd: 0.02,
-    Ks: 150,
-    KI: 0.5,
-    Yx: 0.82,
-    Ksx: 0.983,
-    Kmx: 0.4,
-    Ys: 4.35,
-    YCH4: 0.27,
-    YCO2: 0.4,
-    YH2: 0.03,
-    YNH3: 0.01,
-    Ta: 473,
-    A: 1,
-    αs: 1,
-    ρCH4: 0.75,
-  };
+  const { biomassMicroservice } = basicConsumerStore();
 
   const ranges = biomassMicroservice?.ranges ?? [];
   const results = biomassMicroservice?.results || {};
@@ -71,9 +34,6 @@ const Biomass = () => {
     })
   );
 
-  useEffect(() => {
-    postBiomassMicroServices(biomassCellData);
-  }, []);
   return (
     <div className="flex flex-col gap-10">
       <TwoTitle
