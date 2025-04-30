@@ -40,7 +40,6 @@ const UpgradeFacilitiesTwo: React.FC<upgradeFacilitiesProps> = ({
       updateFormData(field, value);
     });
 
-    console.log("Form Data in UpgradeFacilitiesTwo (Before Timeout):", data);
     handleSubmitParent();
     nextStep();
     toast.success("Form submitted successfully!");

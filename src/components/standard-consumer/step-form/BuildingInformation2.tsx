@@ -27,8 +27,6 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
     getAllServices(countryId, stateId, commodityId);
   }, [getAllServices, commodityId, countryId, stateId]);
 
-  console.log(allServices, "******************");
-
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -42,7 +40,6 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
   };
 
   const handleSubmit = () => {
-    // console.log("formdata maaahimmmmmmmm", formData);
     const updatedCommodities = formData.commodities.map((commodity) => ({
       ...commodity,
       utilityCompany: {
@@ -55,8 +52,6 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
       ...formData,
       commodities: updatedCommodities,
     });
-    // toast.success("Building Created Successfully");
-    // console.log("FormData till now 444444444444", formData);
 
     if (nextStep) nextStep();
   };
@@ -132,7 +127,6 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
         </div>
 
         <div className="pt-20">
-          {/* <ContinueButton nextStep={nextStep} prevStep={prevStep} /> */}
           <Button
             onClick={prevStep}
             className="bg-light-green border-primary-green text-primary-green py-5 rounded-md me-5  cursor-pointer hover:bg-green-100 "

@@ -28,7 +28,7 @@ function Subscription() {
 
   const handleOrderSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Order Submitted:", formData);
+
     setIsOrderModalOpen(false);
   };
   const handleNextOrder = () => {

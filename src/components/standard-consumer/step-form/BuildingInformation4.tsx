@@ -143,7 +143,6 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
         console.error("Unexpected Error:", error);
         toast.error("An unexpected error occurred");
       }
-      console.error(" API Error:", error);
       toast.error(
         axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
@@ -151,8 +150,6 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
       );
     }
     if (nextStep) nextStep();
-
-    console.log("formdata", formData);
   };
   return (
     <div>

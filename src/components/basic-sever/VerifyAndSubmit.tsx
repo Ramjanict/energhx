@@ -40,7 +40,6 @@ const VerifyAndSubmit: React.FC<verifyAndSubmitProps> = ({
     });
     nextStep();
     toast.success("Form Submitted successfully");
-    console.log(data, "data in work experience two");
   };
 
   const handlePrevious = () => {

@@ -22,12 +22,8 @@ const BuildingInformation7: React.FC<BuildingInformation7Props> = ({
   prevStep,
 }) => {
   const [mobility, setMobility] = useState(false);
-  const { updateRoomFormData, roomFormData } = useRoomFormStore();
+  const { updateRoomFormData } = useRoomFormStore();
 
-  // console.log(
-  //   selectedBuilding.building_type?.building_type_id,
-  //   "building_type_id"
-  // );
   const [localData, setLocalData] = useState<Partial<RoomFormDataType>>({
     "indoor-shading": "True",
     "u-value-window": 3.13,
@@ -51,7 +47,6 @@ const BuildingInformation7: React.FC<BuildingInformation7Props> = ({
   });
   const handleSubmit = () => {
     updateRoomFormData(localData);
-    console.log("All form data MAHIM ", roomFormData);
     if (nextStep) nextStep();
   };
 

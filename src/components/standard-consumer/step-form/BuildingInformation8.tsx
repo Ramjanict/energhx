@@ -27,8 +27,6 @@ const BuildingInformation8: React.FC<ContinueButtonType> = ({
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    // if (nextStep) nextStep();
-    console.log("All form full and finalllllllllll", roomFormData);
     try {
       if (token) {
         const response = await axios.post(

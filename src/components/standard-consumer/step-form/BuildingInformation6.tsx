@@ -26,14 +26,6 @@ const BuildingInformation6: React.FC<BuildingInformation6Props> = ({
   const { updateRoomFormData } = useRoomFormStore();
   const buildingId = selectedBuilding?.building_type?.building_type_id || "";
 
-  console.log(
-    "selectedBuilding...........5555555",
-    selectedBuilding.building_name
-  );
-  // console.log(
-  //   selectedBuilding.building_type?.building_type_id,
-  //   "building_type_id"
-  // );
   const [localData, setLocalData] = useState<Partial<RoomFormDataType>>({
     buildingId: buildingId || "",
     title: "Sazzad Mahim's Room",
@@ -62,7 +54,6 @@ const BuildingInformation6: React.FC<BuildingInformation6Props> = ({
   });
   const handleSubmit = () => {
     updateRoomFormData(localData);
-    console.log("Form submitted with these data: ", localData);
     if (nextStep) nextStep();
   };
 
@@ -304,7 +295,6 @@ const BuildingInformation6: React.FC<BuildingInformation6Props> = ({
         </div>
 
         <div className="pt-20">
-          {/* <ContinueButton nextStep={nextStep} prevStep={prevStep} /> */}
           <Button
             className="bg-light-green border-primary-green text-primary-green py-5 rounded-md me-5  cursor-pointer hover:bg-green-100 "
             onClick={handlePrev}

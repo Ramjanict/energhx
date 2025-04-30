@@ -20,11 +20,11 @@ const NavbarStandard = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const [stricky, setStricky] = useState(false);
+  const [sticky, setSticky] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setStricky(window.scrollY > 20);
+      setSticky(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -33,9 +33,9 @@ const NavbarStandard = () => {
   return (
     <>
       <nav
-        className={`${
-          stricky && "fixed w-full transition-all duration-300"
-        } bg-white  flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8]  z-50 `}
+        className={`bg-white flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8] z-50 transition-all duration-300 ${
+          sticky ? "fixed top-0 left-0 w-full shadow-md" : "relative"
+        }`}
       >
         <Link to="/">
           <img src={Logo} alt="Logo" className="h-8" />

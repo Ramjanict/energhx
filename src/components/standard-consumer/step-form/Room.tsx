@@ -15,13 +15,6 @@ const Room: React.FC<ContinueButtonType> = ({ step, nextStep, prevStep }) => {
     longLat: "",
   });
 
-  // console.log(selectedSubBuilding?.id, "7777777777777777777777777");
-
-  // console.log(selectedBuilding, "selectedBuilding.......");
-
-  // console.log(localData, "local dataaaaaaaa");
-
-
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -36,7 +29,6 @@ const Room: React.FC<ContinueButtonType> = ({ step, nextStep, prevStep }) => {
   };
 
   const handleSubmit = () => {
-    // console.log("Form submitted with these data: ", formData);
     updateFormData(localData);
     if (nextStep) nextStep();
   };
@@ -125,7 +117,6 @@ const Room: React.FC<ContinueButtonType> = ({ step, nextStep, prevStep }) => {
               </span>
             </label>
           </form>
-          {/* <ContinueButton nextStep={nextStep} prevStep={prevStep} step={step} /> */}
 
           <Button
             type="submit"

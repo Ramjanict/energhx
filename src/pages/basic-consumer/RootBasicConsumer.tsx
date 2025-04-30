@@ -11,6 +11,7 @@ import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import { IoMdTime } from "react-icons/io";
 import NavbarStandard from "@/Layout/NavbarStandard";
+import { TfiWorld } from "react-icons/tfi";
 
 const consumerMenu = [
   { path: "/basic-consumer/dashboard", label: "Dashboard", icon: FaHome },
@@ -25,6 +26,7 @@ const consumerMenu = [
     icon: IoPeople,
   },
   { path: "/basic-consumer/history", label: "History", icon: IoMdTime },
+  { path: "/api-testing", label: "Test API", icon: TfiWorld },
   { path: "/basic-consumer/settings", label: "Settings", icon: MdSettings },
   { path: "/logout", label: "Logout", icon: MdLogout },
 ];
@@ -62,7 +64,11 @@ const RootBasicConsumer = () => {
           <div className={`${pathname === "/basic-consumer/form" && "hidden"}`}>
             <Sidebar menuItems={consumerMenu} />
           </div>
-          <div className="flex-1 border-t border-t-[#E7E9E8] p-6 relative">
+          <div
+            className={`flex-1 border-t border-t-[#E7E9E8] p-6 relative ${
+              pathname === "/basic-consumer/form" && " border-t-0"
+            }`}
+          >
             <Outlet />
           </div>
         </div>

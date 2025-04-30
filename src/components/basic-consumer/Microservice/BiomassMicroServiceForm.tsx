@@ -5,6 +5,7 @@ import { basicConsumerStore } from "@/store/ConsumerStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Loading from "../Loading";
 
 // Define the schema with Zod
 const FeedstockSchema = z.object({
@@ -68,7 +69,7 @@ export interface BiomassMicroServiceForm {
 const BiomassMicroServiceForm: React.FC<BiomassMicroServiceForm> = ({
   nextStep,
 }) => {
-  const { postBiomassMicroServices } = basicConsumerStore();
+  const { postBiomassMicroServices, isLoading } = basicConsumerStore();
   const {
     register,
     handleSubmit,
@@ -111,12 +112,14 @@ const BiomassMicroServiceForm: React.FC<BiomassMicroServiceForm> = ({
     },
   });
 
-  const onSubmit = (data: FeedstockFormData) => {
-    console.log(data);
-    postBiomassMicroServices(data);
-    nextStep();
+  const onSubmit = async (data: FeedstockFormData) => {
+    try {
+      await postBiomassMicroServices(data);
+      nextStep();
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
   };
-
   return (
     <CommonWrapper>
       <DashBoardHeader className="py-6">BioProduct Flow sizing</DashBoardHeader>
@@ -425,6 +428,7 @@ const BiomassMicroServiceForm: React.FC<BiomassMicroServiceForm> = ({
           </button>
         </div>
       </form>
+      {isLoading && <Loading />}
     </CommonWrapper>
   );
 };

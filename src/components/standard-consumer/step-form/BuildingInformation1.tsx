@@ -29,8 +29,6 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     getAllCommodities();
   }, [getAllBuildings, token, getAllCommodities]);
 
-  console.log("Commodities.....9999999999", allCommodities);
-
   const [localData, setLocalData] = useState({
     type: "",
     subBuilding: "",
@@ -87,8 +85,6 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     if (nextStep) nextStep();
   };
 
-  // console.log(allCountries);
-
   const countryOptions = allCountries?.map((country) => ({
     label: country?.name,
     value: country?.id,
@@ -107,8 +103,6 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
       label: subBuilding?.name,
       value: subBuilding?.id,
     })) || [];
-
-  // console.log("country options ......", countryOptions);
 
   const handleCommodityChange = (commodityId: string) => {
     setLocalData((prev) => {

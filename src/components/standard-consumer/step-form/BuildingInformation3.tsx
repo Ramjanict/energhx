@@ -35,7 +35,6 @@ const BuildingInformation3: React.FC<ContinueButtonType> = ({
   };
 
   const handleSubmit = () => {
-    // console.log("Console the from data from 444444", formData);
     updateFormData(localData);
     if (nextStep) nextStep();
   };

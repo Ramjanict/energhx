@@ -61,7 +61,6 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
     });
     nextStep();
     toast.success("Form Submitted successfully");
-    console.log(data, "data in work experience one");
   };
   const handlePrevious = () => {
     prevStep();

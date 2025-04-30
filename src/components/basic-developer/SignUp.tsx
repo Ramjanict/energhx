@@ -24,9 +24,7 @@ const SignUp: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
       nextStep?.();
 
       console.log("data", data);
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
   };
 
   return (

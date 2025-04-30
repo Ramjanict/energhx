@@ -41,8 +41,6 @@ const WorkExperienceTwo: React.FC<WorkExperienceTwoProps> = ({
     useState<String | null>(null);
 
   const onSubmit = (data: workExperienceTwoType) => {
-    console.log(data, "data in work experience two");
-
     Object.entries(data).forEach(([field, value]) => {
       updateFormData(field, value);
     });

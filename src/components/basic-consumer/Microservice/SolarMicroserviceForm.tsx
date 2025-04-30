@@ -5,6 +5,7 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import FormSubheader from "@/common/FormSubheader";
 import CommonWrapper from "@/common/CommonWrapper";
 import { basicConsumerStore } from "@/store/ConsumerStore";
+import Loading from "../Loading";
 
 // Define the schema with Zod
 const formSchema = z
@@ -93,7 +94,7 @@ export interface SolarMicroserviceForm {
 const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
   nextStep,
 }) => {
-  const { postSolarMicroServices } = basicConsumerStore();
+  const { postSolarMicroServices, isLoading } = basicConsumerStore();
   const {
     register,
     handleSubmit,
@@ -128,12 +129,14 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    postSolarMicroServices(data);
-    nextStep();
+  const onSubmit = async (data: FormData) => {
+    try {
+      await postSolarMicroServices(data);
+      nextStep();
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
   };
-
   // Watch custom selections to conditionally show fields
   const samType = watch("sam_type");
   const substrateType = watch("substrate_type");
@@ -141,6 +144,7 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
 
   return (
     <CommonWrapper>
+      {isLoading && <Loading />}
       <div className="px-4">
         <DashBoardHeader className="pb-2 pt-10">
           Solar Panel Evaluation form
@@ -152,7 +156,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-10 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Wavelength */}
           <div>
             <label className="text-primary-gray block mb-1">
               Wavelength (nm)
@@ -169,7 +172,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* SAM Type */}
           <div>
             <label className="text-primary-gray block mb-1">SAM Type</label>
             <select
@@ -184,7 +186,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </select>
           </div>
 
-          {/* Custom SAM Refractive Index (conditionally shown) */}
           {samType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -204,7 +205,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* Custom SAM Extinction Coefficient (conditionally shown) */}
           {samType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -224,7 +224,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* SAM Thickness */}
           <div>
             <label className="text-primary-gray block mb-1">
               SAM Thickness (mm)
@@ -242,7 +241,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Substrate Type */}
           <div>
             <label className="text-primary-gray block mb-1">
               Substrate Type
@@ -259,7 +257,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </select>
           </div>
 
-          {/* Custom Substrate Refractive Index (conditionally shown) */}
           {substrateType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -279,7 +276,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* Custom Substrate Extinction Coefficient (conditionally shown) */}
           {substrateType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -299,7 +295,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* Substrate Thickness */}
           <div>
             <label className="text-primary-gray block mb-1">
               Substrate Thickness (μm)
@@ -316,7 +311,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Electrode Type */}
           <div>
             <label className="text-primary-gray block mb-1">
               Electrode Type
@@ -334,7 +328,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </select>
           </div>
 
-          {/* Custom Electrode Refractive Index (conditionally shown) */}
           {electrodeType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -354,7 +347,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* Custom Electrode Extinction Coefficient (conditionally shown) */}
           {electrodeType === "custom" && (
             <div>
               <label className="text-primary-gray block mb-1">
@@ -374,7 +366,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             </div>
           )}
 
-          {/* Electrode Thickness */}
           <div>
             <label className="text-primary-gray block mb-1">
               Electrode Thickness (mm)
@@ -392,7 +383,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Photoanode Thickness */}
           <div>
             <label className="text-primary-gray block mb-1">
               Photoanode Thickness (mm)
@@ -409,7 +399,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Custom Photoanode Refractive Index */}
           <div>
             <label className="text-primary-gray block mb-1">
               Custom Photoanode Refractive Index
@@ -427,7 +416,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Custom Photoanode Extinction Coefficient */}
           <div>
             <label className="text-primary-gray block mb-1">
               Custom Photoanode Extinction Coefficient
@@ -445,7 +433,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Dye Thickness */}
           <div>
             <label className="text-primary-gray block mb-1">
               Dye Thickness (mm)
@@ -463,7 +450,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Custom Dye Refractive Index */}
           <div>
             <label className="text-primary-gray block mb-1">
               Custom Dye Refractive Index
@@ -481,7 +467,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Custom Dye Extinction Coefficient */}
           <div>
             <label className="text-primary-gray block mb-1">
               Custom Dye Extinction Coefficient
@@ -499,7 +484,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Solar Irradiance */}
           <div>
             <label className="text-primary-gray block mb-1">
               Solar Irradiance (W/m²)
@@ -516,7 +500,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Area */}
           <div>
             <label className="text-primary-gray block mb-1">Area (m²)</label>
             <input
@@ -530,7 +513,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Number of Hours */}
           <div>
             <label className="text-primary-gray block mb-1">
               Number of Hours of Sunlight
@@ -547,7 +529,6 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
             )}
           </div>
 
-          {/* Total Plug Load */}
           <div>
             <label className="text-primary-gray block mb-1">
               Total Plug Load (W)

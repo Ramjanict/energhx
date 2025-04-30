@@ -33,7 +33,6 @@ const Building: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
   };
 
   const handleSubmit = () => {
-    // console.log("Form submitted with these data: ", formData);
     updateFormData(localData);
     if (nextStep) nextStep();
   };

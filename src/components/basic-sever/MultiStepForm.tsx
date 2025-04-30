@@ -75,9 +75,7 @@ const MultiStepForm = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Form Data Submitted:", formData);
-  };
+  const handleSubmit = () => {};
 
   return (
     <CommonWrapper>

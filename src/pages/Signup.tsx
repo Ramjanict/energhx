@@ -32,8 +32,6 @@ const Signup = () => {
     formData.append("email", data.email);
     formData.append("password", data.password);
     if (selectedFile) formData.append("image", selectedFile);
-
-    console.log("Signup Data:", Object.fromEntries(formData));
   };
 
   // ✅ Handle image selection

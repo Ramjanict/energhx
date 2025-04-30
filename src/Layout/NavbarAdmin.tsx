@@ -18,12 +18,12 @@ const NavbarAdmin = ({ user }: NavbarAdminProps) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setSticky(window.scrollY > 5);
+      setSticky(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []); // added dependency array
+  }, []); //
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,12 +46,14 @@ const NavbarAdmin = ({ user }: NavbarAdminProps) => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
   return (
     <>
       <nav
-        className={`${
-          sticky && "fixed w-full transition-all duration-300"
-        } bg-white  flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8] z-50 `}
+        className={`
+        } bg-white  flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8] z-50 ${
+          sticky ? "fixed top-0 left-0 w-full shadow-md" : "relative"
+        } `}
       >
         <CommonWrapper>
           <div className="w-full flex justify-between items-center">

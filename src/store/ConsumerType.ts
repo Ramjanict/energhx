@@ -361,6 +361,7 @@ export type ConsumerStore = {
   allServices: AllServices[] | null;
   solarMicroservice: SolarMicroservice | null;
   biomassMicroservice: BiomassMicroservice | null;
+  isLoading: boolean;
 
   createConsumer: (newConsumer: CreateConsumer) => Promise<void>;
   getAllCountries: () => Promise<void>;

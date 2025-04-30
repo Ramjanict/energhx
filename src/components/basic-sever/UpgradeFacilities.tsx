@@ -47,7 +47,6 @@ const UpgradeFacilities: React.FC<upgradeFacilitiesProps> = ({
       updateFormData(field, value);
     });
     nextStep();
-    console.log(data, "data in upgrade facilities");
     toast.success("Form submitted successfully!");
   };
 

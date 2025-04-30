@@ -31,8 +31,22 @@ const tableList2 = [
   " .",
 ];
 const RoomOverView = () => {
-  const { energyAudit, getEnergyAudit } = basicConsumerStore();
+  const { energyAudit, getEnergyAudit, isLoading } = basicConsumerStore();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await getEnergyAudit();
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading || !energyAudit || energyAudit.length === 0) {
+    return (
+      <div>
+        <h2>The request analysis/v3/energy/audit did not give any response</h2>
+      </div>
+    ); // you can use a spinner instead
+  }
   //Building cooling and energy
   const totalBuildingInfo = energyAudit[0]["Cooling Load Calculation"]; // BuildingInfo obj
   const buildingCooling = ConvertToMapData(totalBuildingInfo);
@@ -45,9 +59,6 @@ const RoomOverView = () => {
   const totalRoomsInfo =
     energyAudit[0]["Energy Audit, Characterization, Optimization"].rooms; //its an array
 
-  useEffect(() => {
-    getEnergyAudit();
-  }, []);
   return (
     <div className="flex flex-col gap-10">
       <TwoTitle

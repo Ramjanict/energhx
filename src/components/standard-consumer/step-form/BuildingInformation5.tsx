@@ -41,8 +41,6 @@ const BuildingInformation5: React.FC<ContinueButton> = ({
     setStep(9);
   };
 
-  console.log(buildings, "buildings in my state");
-
   return (
     <>
       <div className="pb-6">

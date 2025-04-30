@@ -37,7 +37,6 @@ const StandardConsumerAssociateProfile = () => {
 
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Booking Submitted:", formData);
     setIsBookingModalOpen(false);
     setShowHand(true);
   };
