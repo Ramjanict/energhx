@@ -4,22 +4,24 @@ import BuildingInformation1 from "@/components/standard-consumer/step-form/Build
 import BuildingInformation2 from "@/components/standard-consumer/step-form/BuildingInformation2";
 import BuildingInformation3 from "@/components/standard-consumer/step-form/BuildingInformation3";
 import BuildingInformation4 from "@/components/standard-consumer/step-form/BuildingInformation4";
-import BuildingInformation5 from "@/components/standard-consumer/step-form/BuildingInformation5";
-import BuildingInformation6 from "@/components/standard-consumer/step-form/BuildingInformation6";
-import BuildingInformation7 from "@/components/standard-consumer/step-form/BuildingInformation7";
-import BuildingInformation8 from "@/components/standard-consumer/step-form/BuildingInformation8";
+// import BuildingInformation5 from "@/components/standard-consumer/step-form/BuildingInformation5";
+// import BuildingInformation6 from "@/components/standard-consumer/step-form/BuildingInformation6";
+// import BuildingInformation7 from "@/components/standard-consumer/step-form/BuildingInformation7";
+// import BuildingInformation8 from "@/components/standard-consumer/step-form/BuildingInformation8";
 import Room from "@/components/standard-consumer/step-form/Room";
-import { BuildingType } from "@/types/buildingType";
+// import { BuildingType } from "@/types/buildingType";
 import Building from "@/components/standard-consumer/step-form/Building";
 import { basicConsumerStore } from "@/store/ConsumerStore";
 import TermsAndCondition from "@/components/standard-consumer/step-form/TermsAndCondition";
+// import { useBuildingStore } from "@/store/BuildingStore";
 
 const StandardConsumerBuildingInfo = () => {
   const [step, setStep] = useState(1);
   const { token } = basicConsumerStore();
-  const [selectedBuilding, setSelectedBuilding] = useState<BuildingType | null>(
-    null
-  );
+  // const {buildings} = useBuildingStore()
+  // const [selectedBuilding, setSelectedBuilding] = useState<BuildingType | null>(
+  //   null
+  // );
 
   const nextStep = () => {
     setStep((pre) => pre + 1);
@@ -53,7 +55,7 @@ const StandardConsumerBuildingInfo = () => {
         {step === 7 && (
           <BuildingInformation4 nextStep={nextStep} prevStep={prevStep} />
         )}
-        {step === 8 && (
+        {/* {step === 8 && (
           <BuildingInformation5
             setStep={setStep}
             setSelectedBuilding={setSelectedBuilding}
@@ -75,7 +77,7 @@ const StandardConsumerBuildingInfo = () => {
         )}
         {step === 11 && (
           <BuildingInformation8 nextStep={nextStep} prevStep={prevStep} />
-        )}
+        )} */}
       </>
     )
   );

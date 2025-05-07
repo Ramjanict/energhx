@@ -415,7 +415,7 @@ const BiomassMicroServiceForm = ({}) => {
           </div>
         </div>
 
-        <div className="flex justify-end ">
+        <div className="flex justify-end  py-10">
           <button
             type="submit"
             className="px-4 py-2 bg-primary text-white rounded hover:bg-green-700 cursor-pointer"

@@ -16,7 +16,7 @@ import { IoMdTime } from "react-icons/io";
 const consumerMenu = [
   { path: "/standard-consumer/dashboard", label: "Dashboard", icon: FaHome },
   {
-    path: "/standard-consumer/buildingInformation",
+    path: "/standard-consumer/buildingInformation/allBuildings",
     label: "Building Information",
     icon: RiBuilding2Line,
   },

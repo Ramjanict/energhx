@@ -1,7 +1,6 @@
 import OverView from "@/common/OverView";
 import PaymentModal from "@/components/Appointment/PaymentModal";
 import HandShake from "@/components/basic-consumer/HandShake";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { useServerStore } from "@/store/ServerStore";
 import { useNavigate } from "react-router-dom";
 
@@ -31,9 +30,7 @@ const BasicConsumerDashboard = () => {
     showPayment,
     closePayment,
   } = useServerStore();
-  const { user } = basicConsumerStore();
 
-  console.log("first", user);
   return (
     <>
       <OverView handleOverview={showPayment} object={object} />

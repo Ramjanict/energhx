@@ -86,7 +86,7 @@ const AllUserBuilding = () => {
         <button
           className=" bg-primary text-white px-6 py-2 rounded-md  cursor-pointer"
           onClick={() => {
-            // setStep(2);
+            navigate("/standard-consumer/buildingInformation");
           }}
         >
           Add Building
