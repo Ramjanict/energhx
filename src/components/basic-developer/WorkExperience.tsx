@@ -10,9 +10,11 @@ import CommonDropdown from "@/common/form/CommonDropdown";
 const WorkExperience: React.FC<ContinueButtonType> = ({
   nextStep,
   prevStep,
+  step,
 }) => {
+  console.log("step", step);
   return (
-    <div>
+    <form>
       <div className=" sm:pb-10  ">
         <Breadcrumbs />
       </div>
@@ -94,7 +96,7 @@ const WorkExperience: React.FC<ContinueButtonType> = ({
           className="pt-6 sm:pt-20"
         />
       </div>
-    </div>
+    </form>
   );
 };
 

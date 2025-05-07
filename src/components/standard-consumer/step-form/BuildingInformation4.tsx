@@ -1,7 +1,7 @@
 import MultiTitle from "./MultiTitle";
 import CommonForm from "./CommonForm";
 // import ContinueButton from "@/common/ContinueButton";
-import DirectionButton from "./DirectionButton";
+// import DirectionButton from "./DirectionButton";
 import { useState } from "react";
 import WallModal from "./WallModal";
 import { ContinueButtonType } from "@/types";
@@ -11,6 +11,7 @@ import { useFormStore } from "@/store/FormStore";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useNavigate } from "react-router-dom";
 
 const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -24,6 +25,7 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
   const { token } = basicConsumerStore();
 
   const [wallModal, setWallModal] = useState(false);
+  const navigate = useNavigate();
   const formList = [
     {
       name: "floorLength",
@@ -53,9 +55,10 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
     floorBreath: "",
     floorType: "",
   });
-  const handleWallModal = () => {
-    setWallModal(true);
-  };
+
+  // const handleWallModal = () => {
+  //   setWallModal(true);
+  // };
 
   const handleChange = (
     e:
@@ -115,6 +118,8 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
     })),
   };
 
+  console.log("Token", token);
+
   const handleSubmit = async () => {
     updateFormData(localData);
 
@@ -132,7 +137,8 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
 
       console.log(" API response:", response.data);
       toast.success("Building Created Successfully.");
-      if (nextStep) nextStep();
+      // if (nextStep) nextStep();
+      navigate(`/standard-consumer/buildingInformation/allBuildings`);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error("API Error:", error.response?.data);
@@ -155,17 +161,14 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
     <div>
       <div>
         <div>
-          <MultiTitle
-            heading="Building information"
-            paragraph="Wall Information"
-          />
+          <MultiTitle heading="Building information" />
         </div>
-        <div className="flex flex-col gap-4 pb-10">
+        {/* <div className="flex flex-col gap-4 pb-10">
           <DirectionButton handleWallModal={handleWallModal} title="North" />
           <DirectionButton handleWallModal={handleWallModal} title="East" />
           <DirectionButton handleWallModal={handleWallModal} title="West" />
           <DirectionButton handleWallModal={handleWallModal} title="South" />
-        </div>
+        </div> */}
         <div className="pb-6">
           <p className=" text-[#758179] text-base">Roof information</p>
         </div>

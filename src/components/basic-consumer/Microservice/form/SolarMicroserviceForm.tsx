@@ -5,7 +5,8 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import FormSubheader from "@/common/FormSubheader";
 import CommonWrapper from "@/common/CommonWrapper";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import Loading from "../Loading";
+import Loading from "../../Loading";
+import { useNavigate } from "react-router-dom";
 
 // Define the schema with Zod
 const formSchema = z
@@ -87,13 +88,8 @@ const formSchema = z
   });
 
 type FormData = z.infer<typeof formSchema>;
-
-export interface SolarMicroserviceForm {
-  nextStep: () => void;
-}
-const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
-  nextStep,
-}) => {
+const SolarMicroserviceForm = ({}) => {
+  const navigate = useNavigate();
   const { postSolarMicroServices, isLoading } = basicConsumerStore();
   const {
     register,
@@ -132,7 +128,7 @@ const SolarMicroserviceForm: React.FC<SolarMicroserviceForm> = ({
   const onSubmit = async (data: FormData) => {
     try {
       await postSolarMicroServices(data);
-      nextStep();
+      navigate("/standard-consumer/energy-audit/overview");
     } catch (error) {
       console.error("Submission error:", error);
     }

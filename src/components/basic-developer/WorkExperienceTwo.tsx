@@ -216,7 +216,7 @@ const WorkExperienceTwo: React.FC<ContinueButtonType> = ({
       <ContinueButton
         nextStep={nextStep}
         prevStep={prevStep}
-        className="sm:pt-20 pb-6"
+        className="sm:pt-20 "
       />
     </>
   );

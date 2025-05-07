@@ -50,11 +50,20 @@ const RoomOverView = () => {
   //Building cooling and energy
   const totalBuildingInfo = energyAudit[0]["Cooling Load Calculation"]; // BuildingInfo obj
   const buildingCooling = ConvertToMapData(totalBuildingInfo);
-  const buildingEnergy = EnergyConvertChart(totalBuildingInfo);
+  const EUITable =
+    energyAudit[0]["Energy Audit, Characterization, Optimization"][
+      "Optimal-Parameters"
+    ];
+  const buildingEnergy = EnergyConvertChart(EUITable);
   const BuildingEUI =
     energyAudit[0]["Energy Audit, Characterization, Optimization"][
       "Objective-Function-Value-(EUI)"
     ];
+
+  // EV-Battery Sizing
+  const evBattery = energyAudit[0]["EV-Battery Sizing"]; // its an array;
+  console.log("energyAudit[0]");
+
   //Room under Building cooling and energy
   const totalRoomsInfo =
     energyAudit[0]["Energy Audit, Characterization, Optimization"].rooms; //its an array
@@ -72,7 +81,6 @@ const RoomOverView = () => {
 
         <SummaryTable />
       </div>
-
       <div>
         <DashBoardHeader className="!text-lg !font-normal !text-[#207B00]  tracking-widest pb-3">
           DATA SUMMARY
@@ -102,7 +110,7 @@ const RoomOverView = () => {
         />
       </div>
       <div>
-        <DashBoardHeader className="!text-lg !text-[#207B00] !font-normaltracking-widest pb-3">
+        <DashBoardHeader className="!text-lg !text-[#207B00] !font-normal tracking-widest pb-3">
           Number of Floors Above-Grades
         </DashBoardHeader>
 
@@ -124,7 +132,6 @@ const RoomOverView = () => {
         />
         <h2 className="text-primary-gray text-2xl">WHOLE BUILDING ANALYSIS</h2>
       </div>
-
       {/* Building cooling and Energy Audit  */}
       <div>
         <h2 className="py-2">{`COOLING LOAD ANALYSIS FOR BUILDING ${energyAudit[0].title}`}</h2>
@@ -144,12 +151,22 @@ const RoomOverView = () => {
         building_title={`${energyAudit[0].title}`}
       />
 
+      <div className=" flex flex-col gap-10">
+        {evBattery.map((item) => (
+          <>
+            <EnergyTable
+              data={EnergyConvertChart(item)}
+              title={`EV BATTERY `}
+            />
+          </>
+        ))}
+      </div>
+
       {/* Building's room analysis */}
       <TwoTitle
         blackHeader="ENERGY AUDIT, CHARACTERIZATION, AND OPTIMIZATION"
         greenHeader="Energy Audit, Characterization, and Optimization Values"
       />
-
       <div className="flex flex-col gap-10">
         {totalRoomsInfo.map((room, i) => (
           <div className="flex flex-col gap-10" key={i}>
@@ -171,13 +188,8 @@ const RoomOverView = () => {
               heading2="Cooling Load (kW)"
             />
             <EnergyTable
-              data={ConvertToMapData(
-                room["cooling load"]["total cooling load profile"]
-              )}
+              data={EnergyConvertChart(room["energy audit"])}
               title={`Energy Audit  ${room.title}`}
-              id="#06"
-              EUI={parseFloat(room["energy audit"]["EUI total"].toFixed(2))}
-              building_title={`${energyAudit[0].title}`}
             />
           </div>
         ))}

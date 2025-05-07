@@ -1,10 +1,14 @@
+import { basicConsumerStore } from "@/store/ConsumerStore";
 import BuildingInfo from "../standard-consumer/StandardConsumerBuildingInfo";
 
 const BasicConsumerBuildingInfo = () => {
+  const { token } = basicConsumerStore();
   return (
-    <div>
-      <BuildingInfo />
-    </div>
+    token && (
+      <div>
+        <BuildingInfo />
+      </div>
+    )
   );
 };
 

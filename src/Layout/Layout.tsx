@@ -1,10 +1,15 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import NavbarStandard from "./NavbarStandard";
 
 const Layout: React.FC = () => {
+  const { pathname } = useLocation();
+
+  const hideUI = ["/dashboard"].includes(pathname);
   return (
     <div>
-      <NavbarStandard />
+      <div className={`${hideUI ? "hidden" : ""}`}>
+        <NavbarStandard />
+      </div>
       <main>
         <Outlet />
       </main>

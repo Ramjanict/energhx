@@ -15,49 +15,50 @@ const Home = () => {
           Personal Information
         </DashBoardHeader>
         <div className="w-full flex gap-6 flex-wrap max-sm:justify-center pb-6">
-          {/* Energy Intern */}
-          <motion.div
-            onClick={() => {
-              navigate("/basic-developer/form");
-            }}
-            className="p-6 border border-primary bg-light-green rounded-2xl w-[180px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
-            whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
-          >
-            <div className="bg-[#BEE6B0] p-6 rounded-md flex justify-center items-center w-18 h-18 ">
-              <img src={home1} alt="Energy Intern" className="" />
-            </div>
-            <p className="text-primary font-normal text-[16px]">
-              Energy intern
-            </p>
-          </motion.div>
-
-          {/* Energy User */}
+          {/* Energy Consumer */}
           <motion.div
             onClick={() => {
               navigate("/basic-consumer/form");
             }}
-            className="p-6 border border-primary bg-light-green rounded-2xl  w-[180px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
+            className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
           >
             <div className="bg-[#BEE6B0] p-6 rounded-md flex justify-center items-center w-18 h-18 ">
               <img src={home2} alt="Energy User" />
             </div>
-            <p className="text-primary font-normal text-[16px]">Energy user</p>
+            <p className="text-primary font-normal text-[16px]">
+              Energy Consumer
+            </p>
           </motion.div>
 
-          {/* Energy Installer */}
+          {/* Energy Server */}
           <motion.div
             onClick={() => {
               navigate("/basic-server/form");
             }}
-            className="p-6 border border-primary bg-light-green rounded-2xl  w-[180px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
+            className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
           >
             <div className="bg-[#BEE6B0] p-6 rounded-md flex justify-center items-center w-18 h-18">
               <img src={home3} alt="Energy Installer" />
             </div>
             <p className="text-primary font-normal text-[16px]">
-              Energy installer
+              Energy Server
+            </p>
+          </motion.div>
+          {/* Energy Developer */}
+          <motion.div
+            onClick={() => {
+              navigate("/basic-developer/form");
+            }}
+            className="p-6 border border-primary bg-light-green rounded-2xl w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
+            whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
+          >
+            <div className="bg-[#BEE6B0] p-6 rounded-md flex justify-center items-center w-18 h-18 ">
+              <img src={home1} alt="Energy Intern" className="" />
+            </div>
+            <p className="text-primary font-normal text-[16px]">
+              Energy Developer
             </p>
           </motion.div>
         </div>

@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -11,9 +12,15 @@ const loginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
-const Login = () => {
+interface Login {
+  nextStep?: () => void;
+}
+
+const Login: React.FC<Login> = ({ nextStep }) => {
   const { loginUser } = basicConsumerStore();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { token, user } = basicConsumerStore();
   const {
     register,
     handleSubmit,
@@ -24,9 +31,16 @@ const Login = () => {
 
   const onSubmit = (data: LoginFormInputs) => {
     loginUser(data);
-    navigate("/");
+    nextStep?.();
   };
 
+  useEffect(() => {
+    if (token && pathname === "/login") {
+      navigate("/");
+    }
+  }, [token]);
+
+  console.log("user", user);
   return (
     <div className="flex items-center justify-center h-auto md:min-h-[calc(100vh-70px)] p-4">
       <div className="w-full max-w-md bg-white px-6 py-10 rounded-lg shadow-[0px_0px_2px_2px_rgba(0,0,0,.04)]">

@@ -4,15 +4,16 @@ import t from "../../assets/Profile/t.svg";
 import linkedin from "../../assets/Profile/linkedin.svg";
 import dribble from "../../assets/Profile/dribble.svg";
 import { MdClose } from "react-icons/md";
+
 interface HandShake {
-  setShowHand: (value: boolean) => void;
+  handleClose: () => void;
 }
-const HandShake: React.FC<HandShake> = ({ setShowHand }) => {
+const HandShake: React.FC<HandShake> = ({ handleClose }) => {
   return (
     <div className="w-full h-screen fixed inset-0 backdrop-blur-md  bg-black/30 flex items-center  justify-center z-50">
       <div className="bg-white rounded-xl  max-w-[430px] ">
         <div
-          onClick={() => setShowHand(false)}
+          onClick={handleClose}
           className=" cursor-pointer  w-full  flex justify-end p-2"
         >
           <MdClose />

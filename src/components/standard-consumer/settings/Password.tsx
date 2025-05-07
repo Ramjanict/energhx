@@ -37,7 +37,7 @@ const Password = () => {
               </label>
               <div className="border border-[#9DA6A0] flex items-center">
                 <input
-                  className="w-full outline-none rounded-xs py-2"
+                  className="w-full outline-none rounded-xs p-2"
                   type={showPassword ? "text" : "password"}
                   placeholder={item.placeholder}
                   id={item.id}

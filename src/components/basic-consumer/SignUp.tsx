@@ -36,6 +36,7 @@ const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
     } catch (error) {
       console.log("error", error);
     }
+    console.log("data", data);
   };
 
   useEffect(() => {

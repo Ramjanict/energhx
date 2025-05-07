@@ -68,6 +68,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   type="text"
                   id="firstName"
                   {...register("firstName")}
+                  placeholder="First Name"
                   className="mt-1 w-full p-2 border border-primary-gray"
                 />
                 {errors.firstName && (
@@ -83,9 +84,25 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="lastName"
                   {...register("lastName")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Last Name"
                 />
                 {errors.lastName && (
                   <p className="text-red-500">{errors.lastName.message}</p>
+                )}
+              </div>
+              <div className="flex-1">
+                <label htmlFor="lastName" className="text-primary-gray text-md">
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  {...register("companyName")}
+                  className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Company Name"
+                />
+                {errors.companyName && (
+                  <p className="text-red-500">{errors.companyName.message}</p>
                 )}
               </div>
             </div>
@@ -130,24 +147,10 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="mail"
                   {...register("mail")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Enter Email"
                 />
                 {errors.mail && (
                   <p className="text-red-500">{errors.mail.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="text-primary-gray text-md">
-                  Phone
-                </label>
-                <input
-                  type="number"
-                  id="phone"
-                  {...register("phone")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                />
-                {errors.phone && (
-                  <p className="text-red-500">{errors.phone.message}</p>
                 )}
               </div>
 
@@ -164,6 +167,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="number"
                   {...register("number")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Enter Number"
                 />
                 {errors.number && (
                   <p className="text-red-500">{errors.number.message}</p>
@@ -179,6 +183,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="street"
                   {...register("street")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Street Address"
                 />
                 {errors.street && (
                   <p className="text-red-500">{errors.street.message}</p>
@@ -194,6 +199,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="city"
                   {...register("city")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="City"
                 />
                 {errors.city && (
                   <p className="text-red-500">{errors.city.message}</p>
@@ -212,6 +218,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="postalCode"
                   {...register("postalCode")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Postal Code"
                 />
                 {errors.postalCode && (
                   <p className="text-red-500">{errors.postalCode.message}</p>
@@ -227,6 +234,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="province"
                   {...register("province")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="province"
                 />
                 {errors.province && (
                   <p className="text-red-500">{errors.province.message}</p>
@@ -242,6 +250,7 @@ const SungUp: React.FC<SungUpProps> = ({
                   id="country"
                   {...register("country")}
                   className="mt-1 w-full p-2 border border-primary-gray"
+                  placeholder="Country"
                 />
                 {errors.country && (
                   <p className="text-red-500">{errors.country.message}</p>

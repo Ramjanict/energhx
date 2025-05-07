@@ -2,7 +2,6 @@ import BlackHeader from "@/common/BlackHeader";
 import lightGreen from "../../assets/Profile/lightGreen.svg";
 interface EnbridgeForm {
   nextStep: () => void;
-  step: number;
 }
 const EnbridgeForm: React.FC<EnbridgeForm> = ({ nextStep }) => {
   return (

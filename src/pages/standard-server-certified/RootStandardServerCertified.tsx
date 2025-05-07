@@ -54,11 +54,6 @@ const serverInternMenu = [
   { path: "/logout", label: "Logout", icon: MdLogout },
 ];
 
-const handleUpgrade = () => {
-  alert("Upgrade process initiated!");
-  // You can also navigate to an upgrade page, show a modal, or make an API request
-};
-
 const RootStandardServerCertified = () => {
   const [user] = useState({
     name: "Emmnauel Nonye",
@@ -72,7 +67,6 @@ const RootStandardServerCertified = () => {
         name="Emmnauel Nonye"
         role="Server (Certified)"
         imageUrl={userImg}
-        onUpgrade={handleUpgrade}
       />
       <CommonWrapper>
         <div className="flex w-full">

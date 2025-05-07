@@ -20,7 +20,7 @@ const StandardServerDashboard = () => {
           const IconElement = item.icon;
           return (
             <div
-              className={`max-w-[282px] w-full p-6 rounded-3xl border-[#9ED98A] cursor-pointer transition-all duration-300 
+              className={` w-full p-6 rounded-3xl border-[#9ED98A] cursor-pointer transition-all duration-300 
                 ${
                   item.value === selectedFilter
                     ? "bg-primary"
@@ -83,7 +83,7 @@ const StandardServerDashboard = () => {
           return (
             <div
               key={course.id}
-              className="max-w-[894px] w-full flex flex-col md:flex-row gap-6 shadow-md border border-[#E7E9E8] rounded-lg p-4 sm:p-6"
+              className=" w-full flex flex-col md:flex-row gap-6 shadow-md border border-[#E7E9E8] rounded-lg p-4 sm:p-6"
             >
               {/* Image section */}
               <div className="flex justify-center">

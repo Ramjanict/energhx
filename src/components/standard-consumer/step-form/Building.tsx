@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useState } from "react";
 import { useFormStore } from "@/store/FormStore";
+import { BuildingSchema } from "./BuildingFormValidation";
 // import { basicConsumerStore } from "@/store/ConsumerStore";
 
 export interface Building {
@@ -22,6 +23,7 @@ const Building: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
     indoorRelativeHumidity: "",
     noOfPeople: "",
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleChange = (
     e:
@@ -30,9 +32,22 @@ const Building: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
   ) => {
     const { name, value } = e.target;
     setLocalData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = () => {
+    const result = BuildingSchema.safeParse(localData);
+    if (!result.success) {
+      const fieldErrors: { [key: string]: string } = {};
+      result.error.errors.forEach((err) => {
+        if (err.path[0]) {
+          fieldErrors[err.path[0]] = err.message;
+        }
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     updateFormData(localData);
     if (nextStep) nextStep();
   };
@@ -74,6 +89,7 @@ const Building: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
           formList={formList}
           formData={localData}
           onChange={handleChange}
+          errors={errors}
         />
       </div>
       <div className="pt-20">

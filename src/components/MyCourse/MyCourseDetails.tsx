@@ -2,14 +2,14 @@ import {
   singleCourseModuleList,
   singleCourseClassList,
   singleCourseAssignmentList,
-} from "../../../common/LMS/standardDeveloperData";
+} from "../../common/LMS/standardDeveloperData";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import MyModule from "../module/MyModue";
+import MyModule from "./MyModule";
 import { generateRandomId } from "@/lib/utils";
 import { useState } from "react";
-import MyClassDetails from "../class/MyClass";
-import MyAssignment from "../assignment/MyAssignment";
-import MyCertificate from "../certificate/MyCertificate";
+import MyClassDetails from "./MyClass";
+import MyAssignment from "./MyAssignment";
+import MyCertificate from "./MyCertificate";
 
 const MyCourseDetails = () => {
   const [selectedFilter, setSelectedFilter] = useState("module");

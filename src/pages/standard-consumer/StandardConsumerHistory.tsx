@@ -1,6 +1,6 @@
 import Booking from "@/common/Booking";
 
-const History = () => {
+const StandardConsumerHistory = () => {
   return (
     <>
       <Booking />
@@ -8,4 +8,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default StandardConsumerHistory;

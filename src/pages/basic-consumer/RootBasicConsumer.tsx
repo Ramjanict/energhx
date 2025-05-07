@@ -5,33 +5,19 @@ import CommonWrapper from "@/common/CommonWrapper";
 import { Outlet, useLocation } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { MdSettings, MdLogout } from "react-icons/md";
-import { BsBuilding } from "react-icons/bs";
-import { IoPeople } from "react-icons/io5";
 import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
-import { IoMdTime } from "react-icons/io";
 import NavbarStandard from "@/Layout/NavbarStandard";
-import { TfiWorld } from "react-icons/tfi";
+import { useServerStore } from "@/store/ServerStore";
 
 const consumerMenu = [
   { path: "/basic-consumer/dashboard", label: "Dashboard", icon: FaHome },
-  {
-    path: "/basic-consumer/buildingInformation",
-    label: "Building Information",
-    icon: BsBuilding,
-  },
-  {
-    path: "/basic-consumer/certifiedAssociates",
-    label: "Certified Associates",
-    icon: IoPeople,
-  },
-  { path: "/basic-consumer/history", label: "History", icon: IoMdTime },
-  { path: "/api-testing", label: "Test API", icon: TfiWorld },
   { path: "/basic-consumer/settings", label: "Settings", icon: MdSettings },
   { path: "/logout", label: "Logout", icon: MdLogout },
 ];
 
 const RootBasicConsumer = () => {
+  const { showPayment } = useServerStore();
   const [user] = useState({
     name: "Emmnauel Nonye",
     role: "Consumer",
@@ -39,7 +25,7 @@ const RootBasicConsumer = () => {
   });
   const { pathname } = useLocation();
   const handleUpgrade = () => {
-    alert("Upgrade process initiated!");
+    showPayment();
   };
 
   return (

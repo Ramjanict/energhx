@@ -23,7 +23,7 @@ const MyCourses = () => {
           return (
             <div
               key={course.id}
-              className={`max-w-[894px] w-full flex flex-col justify-center md:flex-row gap-6 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.04)] border-[1px] border-[#E7E9E8] rounded-[8px] `}
+              className={`w-full flex flex-col justify-center md:flex-row gap-6 shadow-[0px_0px_15px_0px_rgba(0,0,0,0.04)] border-[1px] border-[#E7E9E8] rounded-[8px] `}
             >
               <div className="flex justify-center">
                 <img

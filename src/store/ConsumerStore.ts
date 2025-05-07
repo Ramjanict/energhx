@@ -112,7 +112,7 @@ export const basicConsumerStore = create<ConsumerStore>()(
         set({ isLoading: true });
 
         try {
-          const { data } = await axiosSecure.get("/buildings", {
+          const { data } = await axiosSecure.get("/buildings/types", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -145,6 +145,7 @@ export const basicConsumerStore = create<ConsumerStore>()(
 
           if (data) {
             toast.success(data.message);
+            set({ energyAudit: data.data });
           } else if (data.error) {
             toast.error(data.message);
           }
@@ -243,8 +244,8 @@ export const basicConsumerStore = create<ConsumerStore>()(
           const { data } = await axiosSecure.post("/auth/login", newUser);
 
           if (data) {
+            set({ user: data.data, token: data.data.token });
             toast.success(data.message);
-            set({ token: data.data.token, user: data.data });
           } else if (data.error) {
             toast.error(data.message);
           }
@@ -260,6 +261,9 @@ export const basicConsumerStore = create<ConsumerStore>()(
       },
     }),
 
-    { name: "user", partialize: (state) => ({ token: state.token }) }
+    {
+      name: "user",
+      partialize: (state) => ({ token: state.token, user: state.user }),
+    }
   )
 );

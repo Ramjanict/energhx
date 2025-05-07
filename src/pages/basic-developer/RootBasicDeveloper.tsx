@@ -8,6 +8,7 @@ import CommonWrapper from "@/common/CommonWrapper";
 import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
+import { useServerStore } from "@/store/ServerStore";
 
 const developerMenu = [
   { path: "/basic-developer/dashboard", label: "Dashboard", icon: FaHome },
@@ -15,17 +16,18 @@ const developerMenu = [
   { path: "/basic-developer/settings", label: "Settings", icon: MdSettings },
   { path: "/logout", label: "Logout", icon: MdLogout },
 ];
-const handleUpgrade = () => {
-  alert("Upgrade process initiated!");
-};
 
 const RootBasicDeveloper = () => {
+  const { showPayment } = useServerStore();
   const [user] = useState({
     name: "Emmnauel Nonye",
     role: "Developer (Basic)",
     profileImg: userImg,
   });
 
+  const handleUpgrade = () => {
+    showPayment();
+  };
   const { pathname } = useLocation();
   return (
     <div>

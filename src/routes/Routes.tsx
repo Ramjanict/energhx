@@ -5,7 +5,6 @@ import Home from "../pages/Home";
 import AdminRoute from "./AdminRoutes";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
-import ServerForm from "@/components/basic-sever/ServerForm";
 import CertifiedAssociates from "@/pages/standard-consumer/StandardConsumerAssociates";
 import Service from "@/common/Service";
 import CertifiedAssociateLayout from "@/Layout/CertifiedAssociateLayout";
@@ -16,7 +15,7 @@ import RootStandardDeveloper from "@/pages/standard-developer/RootStandardDevelo
 import StandardDeveloperSetting from "@/pages/standard-developer/StandardDeveloperSetting";
 import StandardDeveloperHistory from "@/pages/standard-developer/StandardDeveloperHistory";
 import OverviewDetails from "@/common/LMS/OverviewDetails";
-import MyCourseDetails from "@/components/MyCourse/course-details/MyCourseDetails";
+import MyCourseDetails from "@/components/MyCourse/MyCourseDetails";
 import CourseDetails from "@/common/LMS/CourseDetails";
 import AssociateProfile from "@/pages/standard-consumer/StandardConsumerAssociateProfile";
 import RootBasicDeveloper from "@/pages/basic-developer/RootBasicDeveloper";
@@ -37,7 +36,6 @@ import StandardConsumerBuildingInfo from "@/pages/standard-consumer/StandardCons
 import StandardConsumerAssociates from "@/pages/standard-consumer/StandardConsumerAssociates";
 import StandardConsumerAssociateProfile from "@/pages/standard-consumer/StandardConsumerAssociateProfile";
 import StandardConsumerSettings from "@/pages/standard-consumer/StandardConsumerSettings";
-import StandardConsumerHistory from "@/pages/standard-consumer/RootStandardConsumer";
 import StandardDeveloperDashboard from "@/pages/standard-developer/StandardDeveloperDashboard";
 import RootStandardDeveloperCertified from "@/pages/standard-developer-certified/RootStandardDeveloperCertified";
 import DeveloperCertifiedAppointmentRequest from "@/pages/standard-developer-certified/DeveloperCertifiedAppointmentRequest";
@@ -58,15 +56,24 @@ import ServerCertifiedAppointmentRequest from "@/pages/standard-server-certified
 import RootStandardServerCertified from "@/pages/standard-server-certified/RootStandardServerCertified";
 import StandardServerCertificateDashboard from "@/pages/standard-server-certified/StandardServerCertificateDashboard";
 import StandardServerCertifiedAllCourse from "@/pages/standard-server-certified/StandardServerCertifiedAllCourse";
-import StandardServerCertifiedHistory from "@/pages/standard-server-certified/StandardServerCertifiedHistory";
 import StandardServerCertifiedMyCourse from "@/pages/standard-server-certified/StandardServerCertifiedMyCourse";
 import StandardServerCertifiedSubscription from "@/pages/standard-developer-certified/StandardServerCertifiedSubscription";
 import StandardServerCertifiedSetting from "@/pages/standard-developer-certified/StandardDeveloperCertifiedSetting";
 import StandardServerHistory from "@/pages/standard-server/StandardServerHistory";
 import StandardServerSetting from "@/pages/standard-server/StandardServerSetting";
 import BasicConsumerForm from "@/pages/basic-consumer/BasicConsumerForm";
-import TestingPurpose from "@/Layout/TestingPurpose";
+import StandardConsumerHistory from "@/pages/standard-consumer/StandardConsumerHistory";
+import DevAndServerHistory from "@/common/LMS/DevAndServerHistory";
+import BasicServerForm from "@/pages/basic-server/BasicServerForm";
+import StandardConsumerEnergyAudit from "@/pages/standard-consumer/StandardConsumerEnergyAudit";
 
+import SingleBuilding from "@/components/standard-consumer/step-form/SingleBuilding";
+
+import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/form/SolarMicroserviceForm";
+import BiomassMicroServiceForm from "@/components/basic-consumer/Microservice/form/BiomassMicroServiceForm";
+import TotalOverview from "@/components/basic-consumer/TotalOverview";
+import AllUserBuilding from "@/components/standard-consumer/step-form/AllUserBuilding";
+import Dashboard from "@/dashboard/Dashboard";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -80,15 +87,16 @@ const routes = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
+
       {
         path: "/signup",
         element: <Signup />,
       },
-
       {
-        path: "/api-testing",
-        element: <TestingPurpose />,
+        path: "/dashboard",
+        element: <Dashboard />,
       },
+
       {
         path: "/admin",
         element: <AdminRoute />,
@@ -133,6 +141,31 @@ const routes = createBrowserRouter([
         element: <StandardConsumerBuildingInfo />,
       },
       {
+        path: "buildingInformation/allBuildings",
+        element: <AllUserBuilding />,
+      },
+      {
+        path: "buildingInformation/allBuildings/:buildingId",
+        element: <SingleBuilding />,
+      },
+      {
+        path: "energy-audit",
+        element: <StandardConsumerEnergyAudit />,
+        children: [
+          { index: true, path: "solar", element: <SolarMicroserviceForm /> },
+          {
+            index: true,
+            path: "biomass",
+            element: <BiomassMicroServiceForm />,
+          },
+          {
+            index: true,
+            path: "overview",
+            element: <TotalOverview />,
+          },
+        ],
+      },
+      {
         path: "certifiedAssociates",
         element: <CertifiedAssociateLayout />,
         children: [
@@ -166,7 +199,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "form",
-        element: <ServerForm />,
+        element: <BasicServerForm />,
       },
     ],
   },
@@ -204,7 +237,7 @@ const routes = createBrowserRouter([
       },
       { path: "my-courses", element: <StandardServerCertifiedMyCourse /> },
       { path: "all-courses", element: <StandardServerCertifiedAllCourse /> },
-      { path: "history", element: <StandardServerCertifiedHistory /> },
+      { path: "history", element: <DevAndServerHistory /> },
       {
         path: "subscription",
         element: <StandardServerCertifiedSubscription />,

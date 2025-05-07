@@ -1,16 +1,6 @@
-import { useState } from "react";
-import HandShake from "@/components/basic-consumer/HandShake";
-import PaymentModal from "@/components/Appointment/PaymentModal";
 import CommonButton from "@/common/CommonButton";
 
 const Billing = () => {
-  const [showHand, setShowHand] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
-
-  const handleSave = () => {
-    setShowPayment(true);
-  };
-
   const formList = [
     {
       label: "First Name",
@@ -89,21 +79,9 @@ const Billing = () => {
         ))}
       </div>
 
-      <div onClick={handleSave} className="pt-10">
+      <div className="pt-10">
         <CommonButton>Save Billing</CommonButton>
       </div>
-
-      {showPayment && (
-        <PaymentModal
-          isOpen={showPayment}
-          onClose={() => {
-            setShowPayment(false);
-            setShowHand(true);
-          }}
-        />
-      )}
-
-      {showHand && <HandShake setShowHand={setShowHand} />}
     </div>
   );
 };

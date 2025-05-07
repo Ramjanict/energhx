@@ -71,7 +71,7 @@ export interface OverViewProps {
     button?: string;
     price?: number;
   };
-  handleNext?: () => void;
+  handleOverview?: () => void;
 }
 
 export interface NavbarUserProps {

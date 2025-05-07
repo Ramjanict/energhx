@@ -40,7 +40,7 @@ const Overview = () => {
             <p className="hidden sm:block place-self-start">No</p>
             <p className=" ">Service Name</p>
             <p className=" ">Service Type</p>
-            <th className=" place-self-end">Action</th>
+            <p className=" place-self-end">Action</p>
           </div>
 
           <div className=" flex flex-col gap-3 mt-3">

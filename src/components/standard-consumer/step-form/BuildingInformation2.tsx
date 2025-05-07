@@ -7,6 +7,8 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useFormStore } from "@/store/FormStore";
 import { basicConsumerStore } from "@/store/ConsumerStore";
+import { buildingInformation2Schema } from "./BuildingFormValidation";
+import { z } from "zod";
 const BuildingInformation2: React.FC<ContinueButtonType> = ({
   nextStep,
   prevStep,
@@ -23,6 +25,8 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
     acceptTermsAndConditions: false,
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
   useEffect(() => {
     getAllServices(countryId, stateId, commodityId);
   }, [getAllServices, commodityId, countryId, stateId]);
@@ -37,23 +41,56 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = () => {
-    const updatedCommodities = formData.commodities.map((commodity) => ({
-      ...commodity,
-      utilityCompany: {
-        ...commodity.utilityCompany,
-        ...localData,
-        acceptTermsAndConditions: localData.acceptTermsAndConditions,
-      },
-    }));
-    updateFormData({
-      ...formData,
-      commodities: updatedCommodities,
-    });
+    try {
+      const parsed = buildingInformation2Schema.safeParse(localData);
 
-    if (nextStep) nextStep();
+      if (!parsed.success) {
+        // Extract validation errors and update the errors state
+        const fieldErrors = parsed.error.flatten().fieldErrors;
+        console.error("Validation Errors:", fieldErrors);
+
+        setErrors(
+          Object.fromEntries(
+            Object.entries(fieldErrors).map(([key, value]) => [
+              key,
+              value?.[0] || "",
+            ])
+          )
+        );
+        return;
+      }
+      const updatedCommodities = formData.commodities.map((commodity) => ({
+        ...commodity,
+        utilityCompany: {
+          ...commodity.utilityCompany,
+          ...localData,
+          acceptTermsAndConditions: localData.acceptTermsAndConditions,
+        },
+      }));
+      updateFormData({
+        ...formData,
+        commodities: updatedCommodities,
+      });
+
+      if (nextStep) nextStep();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error("Validation Error:", error.flatten().fieldErrors);
+        setErrors(
+          Object.fromEntries(
+            Object.entries(error.flatten().fieldErrors).map(([key, value]) => [
+              key,
+              value?.[0] || "",
+            ])
+          )
+        );
+      }
+    }
   };
 
   const formList = [
@@ -123,6 +160,7 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
                 localData.acceptTermsAndConditions.toString(),
             }}
             onChange={handleChange}
+            errors={errors}
           />
         </div>
 

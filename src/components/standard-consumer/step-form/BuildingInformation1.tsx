@@ -7,6 +7,9 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useFormStore } from "@/store/FormStore";
 import { basicConsumerStore } from "@/store/ConsumerStore";
+import { z } from "zod";
+import { buildingInformation1Schema } from "./BuildingFormValidation";
+import { toast } from "react-toastify";
 
 const BuildingInformation1: React.FC<ContinueButtonType> = ({
   nextStep,
@@ -21,13 +24,15 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     allCommodities,
     getAllBuildings,
     getAllCommodities,
+    getAllCountries,
     token,
   } = basicConsumerStore();
 
   useEffect(() => {
     getAllBuildings(token);
     getAllCommodities();
-  }, [getAllBuildings, token, getAllCommodities]);
+    getAllCountries();
+  }, [getAllBuildings, getAllCountries, token, getAllCommodities]);
 
   const [localData, setLocalData] = useState({
     type: "",
@@ -46,12 +51,14 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
         state: string;
         accountNumber: string;
         accountName: string;
-        acceptTermsAndConditions: string;
+        acceptTermsAndConditions: boolean;
         phoneNumber: string;
         units: string;
       };
     }[],
   });
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const selectedBuilding = allBuildings?.find(
     (building) => building.id === localData.type
@@ -68,21 +75,47 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     }
 
     setLocalData((prev) => ({ ...prev, [name]: value }));
+
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = () => {
-    updateFormData({
-      ...localData,
-      commodities: localData.commodities.map((commodity) => ({
-        ...commodity,
-        utilityCompany: {
-          ...commodity.utilityCompany,
-          acceptTermsAndConditions:
-            commodity.utilityCompany.acceptTermsAndConditions === "true",
-        },
-      })),
-    });
-    if (nextStep) nextStep();
+    try {
+      if (localData.commodities.length === 0) {
+        setErrors((prev) => ({
+          ...prev,
+          commodities: "Please select at least one commodity.",
+        }));
+        toast.warning("Please select at least one commodity.");
+        return;
+      }
+      const validated = buildingInformation1Schema.parse(localData);
+      console.log("Validated Data:", validated);
+      updateFormData({
+        ...localData,
+        commodities: localData.commodities.map((commodity) => ({
+          ...commodity,
+          utilityCompany: {
+            ...commodity.utilityCompany,
+            acceptTermsAndConditions:
+              !!commodity.utilityCompany.acceptTermsAndConditions,
+          },
+        })),
+      });
+      if (nextStep) nextStep();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error("Validation Error:", error.flatten().fieldErrors);
+        setErrors(
+          Object.fromEntries(
+            Object.entries(error.flatten().fieldErrors).map(([key, value]) => [
+              key,
+              value?.[0] || "",
+            ])
+          )
+        );
+      }
+    }
   };
 
   const countryOptions = allCountries?.map((country) => ({
@@ -124,7 +157,7 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
               state: "",
               accountNumber: "",
               accountName: "",
-              acceptTermsAndConditions: "",
+              acceptTermsAndConditions: false,
               phoneNumber: "",
               units: "",
             },
@@ -212,6 +245,7 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
               commodities: localData.commodities.join(","),
             }}
             onChange={handleChange}
+            errors={errors}
           />
         </div>
         <div className="pt-6">

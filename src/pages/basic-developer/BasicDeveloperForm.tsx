@@ -1,40 +1,21 @@
-import CommonWrapper from "@/common/CommonWrapper";
-import ThanksForm from "@/common/ThanksForm";
-import SignUp from "@/components/basic-developer/SignUp";
-import VerifyAndSubmit from "@/components/basic-developer/VerifyAndSubmit";
-import WorkExperience from "@/components/basic-developer/WorkExperience";
-import WorkExperienceTwo from "@/components/basic-developer/WorkExperienceTwo";
-import { useState } from "react";
+import MultiStepForm from "@/components/basic-sever/MultiStepForm";
+import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BasicDeveloperForm = () => {
-  const [step, setStep] = useState(1);
+  const { token } = basicConsumerStore();
+  const navigate = useNavigate();
 
-  const nextStep = () => {
-    setStep((pre) => pre + 1);
-  };
-  const prevStep = () => {
-    setStep((pre) => pre - 1);
-  };
+  useEffect(() => {
+    if (token) {
+      navigate("/basic-developer/dashboard");
+    }
+  }, [token]);
   return (
-    <div className="  lg:pt-20">
-      <div>
-        <CommonWrapper>
-          {step === 1 && <SignUp nextStep={nextStep} prevStep={prevStep} />}
-          {step === 2 && (
-            <WorkExperience nextStep={nextStep} prevStep={prevStep} />
-          )}
-          {step === 3 && (
-            <WorkExperienceTwo nextStep={nextStep} prevStep={prevStep} />
-          )}
-          {step === 4 && (
-            <VerifyAndSubmit nextStep={nextStep} prevStep={prevStep} />
-          )}
-          {step === 5 && (
-            <ThanksForm title="Thank You" path="/basic-developer" />
-          )}
-        </CommonWrapper>
-      </div>
-    </div>
+    <>
+      <MultiStepForm link="/basic-developer" />
+    </>
   );
 };
 

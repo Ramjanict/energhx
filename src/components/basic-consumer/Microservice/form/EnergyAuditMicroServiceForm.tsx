@@ -4,7 +4,7 @@ import * as z from "zod";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import CommonWrapper from "@/common/CommonWrapper";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import Loading from "../Loading";
+import Loading from "../../Loading";
 // Define Zod schemas
 const applianceSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -101,13 +101,16 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export interface EnergyAuditMicroServiceForm {
+interface EnergyAuditMicroServiceForm {
   nextStep: () => void;
 }
+
 const EnergyAuditMicroServiceForm: React.FC<EnergyAuditMicroServiceForm> = ({
   nextStep,
 }) => {
-  const { postEnergyAudit, isLoading } = basicConsumerStore();
+  const { postEnergyAudit, isLoading, energyAudit } = basicConsumerStore();
+
+  console.log("energyAudit", energyAudit);
 
   const {
     register,
@@ -200,6 +203,7 @@ const EnergyAuditMicroServiceForm: React.FC<EnergyAuditMicroServiceForm> = ({
     try {
       await postEnergyAudit(data);
       nextStep();
+      console.log("data", data);
     } catch (error) {
       console.error("Submission error:", error);
     }
@@ -489,6 +493,18 @@ const EnergyAuditMicroServiceForm: React.FC<EnergyAuditMicroServiceForm> = ({
                         <div key={batIndex}>
                           <h4 className="font-medium">{battery.title}</h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div>
+                              <label className="text-primary-gray block mb-1">
+                                Battery Title
+                              </label>
+                              <input
+                                type="text"
+                                className="w-full border border-primary-gray p-2 outline-none"
+                                {...register(
+                                  `buildings.${0}.batteries.${batIndex}.title`
+                                )}
+                              />
+                            </div>
                             <div>
                               <label className="text-primary-gray block mb-1">
                                 Battery Manufacturer

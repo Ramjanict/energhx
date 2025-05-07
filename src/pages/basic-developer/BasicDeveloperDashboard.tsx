@@ -1,7 +1,8 @@
 import OverView from "@/common/OverView";
-import OrderModal from "@/components/Appointment/OrderModal";
+import PaymentModal from "@/components/Appointment/PaymentModal";
 import HandShake from "@/components/basic-consumer/HandShake";
-import { useState } from "react";
+import { useServerStore } from "@/store/ServerStore";
+import { useNavigate } from "react-router-dom";
 
 const object = {
   title: "OverView",
@@ -22,49 +23,31 @@ const object = {
 };
 
 const BasicDeveloperDashboard = () => {
-  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    country: "",
-    state: "",
-    city: "",
-    postcode: "",
-    phone: "",
-  });
-  const [showHand, setShowHand] = useState(false);
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleOrderSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsOrderModalOpen(false);
-  };
-  const handleNext = () => {
-    setIsOrderModalOpen(true);
-  };
-  const handleNextOrder = () => {
-    setShowHand(true);
-  };
+  const navigate = useNavigate();
+  const {
+    isHandShakeOpen,
+    handleHandShake,
+    isPaymentModalOpen,
+    showPayment,
+    closePayment,
+  } = useServerStore();
 
   return (
     <div>
-      <OverView handleNext={handleNext} object={object} />
-      {isOrderModalOpen && (
-        <OrderModal
-          isOpen={isOrderModalOpen}
-          onClose={() => setIsOrderModalOpen(false)}
-          formData={formData}
-          handleChange={handleChange}
-          handleOrderSubmit={handleOrderSubmit}
-          handleNextOrder={handleNextOrder}
+      <OverView handleOverview={showPayment} object={object} />
+
+      {isPaymentModalOpen && (
+        <PaymentModal isOpen={isPaymentModalOpen} onClose={closePayment} />
+      )}
+
+      {isHandShakeOpen && (
+        <HandShake
+          handleClose={() => {
+            handleHandShake(false);
+            navigate("/standard-developer");
+          }}
         />
       )}
-      {showHand && <HandShake setShowHand={setShowHand} />}
     </div>
   );
 };

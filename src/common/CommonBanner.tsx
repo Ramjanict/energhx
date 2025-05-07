@@ -35,7 +35,7 @@ const CommonBanner = ({
         {onUpgrade && (
           <button
             onClick={onUpgrade}
-            className="px-2 sm:px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary transition duration-300"
+            className="px-2 sm:px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary transition duration-300 cursor-pointer"
           >
             <div className="flex items-center gap-1 text-xs sm:text-lg">
               <span>

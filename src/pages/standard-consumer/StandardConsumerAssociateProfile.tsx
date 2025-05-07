@@ -181,7 +181,13 @@ const StandardConsumerAssociateProfile = () => {
         />
       )}
 
-      {showHand && <HandShake setShowHand={setShowHand} />}
+      {showHand && (
+        <HandShake
+          handleClose={() => {
+            setShowHand(false);
+          }}
+        />
+      )}
     </div>
   );
 };

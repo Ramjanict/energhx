@@ -9,6 +9,7 @@ import CommonWrapper from "@/common/CommonWrapper";
 import userpic from "../../assets/user.png";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { IoMdTime } from "react-icons/io";
+import { useServerStore } from "@/store/ServerStore";
 
 const serverMenu = [
   { path: "/basic-server/dashboard", label: "Dashboard", icon: FaHome },
@@ -16,18 +17,19 @@ const serverMenu = [
   { path: "/logout", label: "Logout", icon: MdLogout },
 ];
 
-const handleUpgrade = () => {
-  alert("Upgrade process initiated!");
-};
-
 const RootBasicServer = () => {
+  const { pathname } = useLocation();
+  const { showPayment } = useServerStore();
+
   const [user] = useState({
     name: "Emmnauel Nonye",
     role: "Server (Basic)",
     profileImg: userpic,
   });
-  const { pathname } = useLocation();
 
+  const handleUpgrade = () => {
+    showPayment();
+  };
   return (
     <div>
       {pathname === "/basic-server/form" ? (

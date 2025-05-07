@@ -5,7 +5,8 @@ import { basicConsumerStore } from "@/store/ConsumerStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Loading from "../Loading";
+import Loading from "../../Loading";
+import { useNavigate } from "react-router-dom";
 
 // Define the schema with Zod
 const FeedstockSchema = z.object({
@@ -62,13 +63,8 @@ const feedstockOptions = [
   { value: "custom", label: "Custom" },
 ];
 
-export interface BiomassMicroServiceForm {
-  nextStep: () => void;
-}
-
-const BiomassMicroServiceForm: React.FC<BiomassMicroServiceForm> = ({
-  nextStep,
-}) => {
+const BiomassMicroServiceForm = ({}) => {
+  const navigate = useNavigate();
   const { postBiomassMicroServices, isLoading } = basicConsumerStore();
   const {
     register,
@@ -115,7 +111,7 @@ const BiomassMicroServiceForm: React.FC<BiomassMicroServiceForm> = ({
   const onSubmit = async (data: FeedstockFormData) => {
     try {
       await postBiomassMicroServices(data);
-      nextStep();
+      navigate("/standard-consumer/energy-audit/overview");
     } catch (error) {
       console.error("Submission error:", error);
     }

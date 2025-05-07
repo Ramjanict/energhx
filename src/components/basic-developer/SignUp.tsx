@@ -19,6 +19,7 @@ const SignUp: React.FC<ContinueButtonType> = ({ nextStep, prevStep }) => {
   } = useForm<TbasicConsumer>({
     resolver: zodResolver(basicConsumer),
   });
+
   const onSubmit = async (data: TbasicConsumer) => {
     try {
       nextStep?.();

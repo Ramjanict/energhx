@@ -31,7 +31,7 @@ const MySingleModuleCard: React.FC<CourseCardProps> = ({ course }) => {
     course.totalClass + parseInt(course.totalModules)
   );
   return (
-    <div className=" p-4 rounded-lg shadow-md max-w-76 relative">
+    <div className=" p-4 rounded-lg shadow-md relative">
       {/* Image Wrapper with Absolute Badge */}
       <div className="relative">
         <img

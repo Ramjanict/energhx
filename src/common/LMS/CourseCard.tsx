@@ -41,7 +41,7 @@ const renderStars = (rating: number) => {
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, pathname }) => {
   return (
-    <div className=" rounded-lg shadow-md w-76 relative p-4">
+    <div className=" rounded-lg shadow-md  relative p-4">
       <div className="relative">
         <img
           src={course.image}

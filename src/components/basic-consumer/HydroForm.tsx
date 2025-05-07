@@ -1,26 +1,10 @@
 import BlackHeader from "@/common/BlackHeader";
 import lightGreen from "../../assets/Profile/lightGreen.svg";
-import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useEffect } from "react";
+
 interface HydroForm {
   nextStep: () => void;
-  step: number;
 }
-const HydroForm: React.FC<HydroForm> = ({ nextStep, }) => {
-  const { token, getEnergyAudit, energyAudit } = basicConsumerStore();
-
-  useEffect(() => {
-    if (token) {
-      getEnergyAudit();
-    }
-  }, [token, getEnergyAudit]);
-
-  const handleClose = () => {
-    if (energyAudit) {
-      nextStep();
-      getEnergyAudit();
-    }
-  };
+const HydroForm: React.FC<HydroForm> = ({ nextStep }) => {
   return (
     <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center overflow-scroll">
       <div className=" bg-white rounded-xl p-8 max-w-2xl max-h-screen shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)]  mx-4   flex flex-col gap-4 text-[#394A3F] ">
@@ -50,7 +34,7 @@ const HydroForm: React.FC<HydroForm> = ({ nextStep, }) => {
           </p>
         </div>
         <button
-          onClick={handleClose}
+          onClick={nextStep}
           className="bg-primary text-white rounded-md w-fit px-4 py-2 cursor-pointer mx-auto mt-40 "
         >
           Close

@@ -98,6 +98,26 @@ const CommonPersonalInfo: React.FC<CommonPersonalInfoProps> = ({
                 </p>
               )}
             </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="text-primary-gray block mb-1"
+              >
+                Company Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                placeholder="Company name"
+                className=" w-full border border-primary-gray p-2"
+                {...register("companyName")}
+              />
+              {errors.companyName && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.companyName.message}
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="grid  grid-cols-1 sm:grid-cols-3 gap-6 items-center pt-6">
@@ -148,23 +168,6 @@ const CommonPersonalInfo: React.FC<CommonPersonalInfoProps> = ({
             {errors.email && (
               <p className="text-red-500 text-xs sm:text-sm">
                 {errors.email.message}
-              </p>
-            )}
-          </div>
-          <div className="">
-            <label htmlFor="phone" className="text-primary-gray text-md">
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              placeholder="Enter Phone"
-              className=" w-full  border border-primary-gray p-2"
-              {...register("phoneNumber")}
-            />
-            {errors.phoneNumber && (
-              <p className="text-red-500 text-xs sm:text-sm">
-                {errors.phoneNumber.message}
               </p>
             )}
           </div>

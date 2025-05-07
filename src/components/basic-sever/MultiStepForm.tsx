@@ -3,19 +3,19 @@ import CommonWrapper from "@/common/CommonWrapper";
 import SungUp from "../../components/basic-sever/SungUp";
 import WorkExperience from "../../components/basic-sever/WorkExperience";
 import WorkExperienceTwo from "../../components/basic-sever/WorkExperienceTwo";
-import VerifyAndSubmit from "../../components/basic-sever/VerifyAndSubmit";
-import UpgradeFacilities from "../../components/basic-sever/UpgradeFacilities";
-import UpgradeFacilitiesTwo from "../../components/basic-sever/UpgradeFacilitiesTwo";
 import ThanksForm from "@/common/ThanksForm";
 
-const MultiStepForm = () => {
+interface MultiStepForm {
+  link: string;
+}
+
+const MultiStepForm: React.FC<MultiStepForm> = ({ link }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     sex: "",
     mail: "",
-    phone: "",
     number: "",
     street: "",
     city: "",
@@ -75,13 +75,9 @@ const MultiStepForm = () => {
     }));
   };
 
-  const handleSubmit = () => {};
-
   return (
     <CommonWrapper>
       <div className="">
-        {/* <h1 className="text-primary-green font-bold text-xl">Sign Up</h1> */}
-
         {step === 1 && (
           <SungUp
             formData={formData}
@@ -105,32 +101,7 @@ const MultiStepForm = () => {
             prevStep={prevStep}
           />
         )}
-        {step === 4 && (
-          <VerifyAndSubmit
-            formData={formData}
-            updateFormData={updateFormData}
-            nextStep={nextStep}
-            prevStep={prevStep}
-          />
-        )}
-        {step === 5 && (
-          <UpgradeFacilities
-            formData={formData}
-            updateFormData={updateFormData}
-            nextStep={nextStep}
-            prevStep={prevStep}
-          />
-        )}
-        {step === 6 && (
-          <UpgradeFacilitiesTwo
-            formData={formData}
-            updateFormData={updateFormData}
-            nextStep={nextStep}
-            prevStep={prevStep}
-            handleSubmitParent={handleSubmit}
-          />
-        )}
-        {step === 7 && <ThanksForm title=" Thank You" path="/basic-server" />}
+        {step === 4 && <ThanksForm title=" Thank You" path={`${link}`} />}
       </div>
     </CommonWrapper>
   );

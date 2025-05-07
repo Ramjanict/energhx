@@ -1,7 +1,7 @@
 import { IoEyeOutline } from "react-icons/io5";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
-import pdf from "../../../assets/pdf.svg";
-import file from "../../../assets/files.svg";
+import pdf from "../../assets/pdf.svg";
+import file from "../../assets/files.svg";
 interface MyClass {
   id: string;
   title: string;

@@ -1,7 +1,11 @@
 import OverView from "@/common/OverView";
+import PaymentModal from "@/components/Appointment/PaymentModal";
+import HandShake from "@/components/basic-consumer/HandShake";
+import { useServerStore } from "@/store/ServerStore";
+import { useNavigate } from "react-router-dom";
 
 const object = {
-  title: "OverView",
+  title: "Overview",
   subTitle: "Upgrade Facilities",
   des: "Here is our some lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
@@ -18,7 +22,33 @@ const object = {
   price: 25,
 };
 const BasicServerDashboard = () => {
-  return <OverView object={object} />;
+  const navigate = useNavigate();
+  const {
+    isHandShakeOpen,
+    handleHandShake,
+    isPaymentModalOpen,
+    showPayment,
+    closePayment,
+  } = useServerStore();
+
+  return (
+    <>
+      <OverView handleOverview={showPayment} object={object} />
+
+      {isPaymentModalOpen && (
+        <PaymentModal isOpen={isPaymentModalOpen} onClose={closePayment} />
+      )}
+
+      {isHandShakeOpen && (
+        <HandShake
+          handleClose={() => {
+            handleHandShake(false);
+            navigate("/standard-server");
+          }}
+        />
+      )}
+    </>
+  );
 };
 
 export default BasicServerDashboard;

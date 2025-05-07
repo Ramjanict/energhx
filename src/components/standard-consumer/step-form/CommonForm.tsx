@@ -24,11 +24,13 @@ interface CommonFormProps {
       | { target: { name: string; value: string } }
   ) => void;
   formData: { [key: string]: string };
+  errors?: { [key: string]: string };
 }
 const CommonForm: React.FC<CommonFormProps> = ({
   formList,
   onChange,
   formData,
+  errors = {},
 }) => {
   return (
     <>
@@ -65,13 +67,18 @@ const CommonForm: React.FC<CommonFormProps> = ({
             ) : (
               <input
                 name={item.name}
-                className="w-full outline-none rounded-xs border border-[#9DA6A0] p-2"
+                className={`w-full outline-none border p-2 rounded-xs ${
+                  errors[item.name] ? "border-red-500" : "border-[#9DA6A0]"
+                }`}
                 type={item.type}
                 placeholder={item.placeholder}
                 id={item.id}
                 onChange={onChange}
                 defaultValue={item.defaultValue || formData[item.name]}
               />
+            )}
+            {errors[item.name] && (
+              <p className="text-red-500 text-xs pt-1">{errors[item.name]}</p>
             )}
           </div>
         ))}

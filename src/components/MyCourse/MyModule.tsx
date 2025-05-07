@@ -1,14 +1,13 @@
-import MySingleModuleCard from "./MySingleModule";
-import { Course } from "./MySingleModule";
+import MySingleModuleCard, { Course } from "./MySingleModuleCard";
 
 interface modulePops {
   moduleList: Course[];
 }
 
-const MyModue = ({ moduleList }: modulePops) => {
+const MyModule = ({ moduleList }: modulePops) => {
   return (
     <div>
-      <div className="flex gap-8 flex-wrap">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         {moduleList.map((course) => (
           <MySingleModuleCard key={course.id} course={course} />
         ))}
@@ -17,4 +16,4 @@ const MyModue = ({ moduleList }: modulePops) => {
   );
 };
 
-export default MyModue;
+export default MyModule;

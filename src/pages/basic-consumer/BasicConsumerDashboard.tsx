@@ -1,4 +1,9 @@
 import OverView from "@/common/OverView";
+import PaymentModal from "@/components/Appointment/PaymentModal";
+import HandShake from "@/components/basic-consumer/HandShake";
+import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useServerStore } from "@/store/ServerStore";
+import { useNavigate } from "react-router-dom";
 
 const object = {
   title: "OverView",
@@ -18,7 +23,35 @@ const object = {
   price: 25,
 };
 const BasicConsumerDashboard = () => {
-  return <OverView object={object} />;
+  const navigate = useNavigate();
+  const {
+    isHandShakeOpen,
+    handleHandShake,
+    isPaymentModalOpen,
+    showPayment,
+    closePayment,
+  } = useServerStore();
+  const { user } = basicConsumerStore();
+
+  console.log("first", user);
+  return (
+    <>
+      <OverView handleOverview={showPayment} object={object} />
+
+      {isPaymentModalOpen && (
+        <PaymentModal isOpen={isPaymentModalOpen} onClose={closePayment} />
+      )}
+
+      {isHandShakeOpen && (
+        <HandShake
+          handleClose={() => {
+            handleHandShake(false);
+            navigate("/standard-consumer");
+          }}
+        />
+      )}
+    </>
+  );
 };
 
 export default BasicConsumerDashboard;

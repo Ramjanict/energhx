@@ -22,7 +22,7 @@ const BuildingInformation7: React.FC<BuildingInformation7Props> = ({
   prevStep,
 }) => {
   const [mobility, setMobility] = useState(false);
-  const { updateRoomFormData } = useRoomFormStore();
+  const { updateRoomFormData, roomFormData } = useRoomFormStore();
 
   const [localData, setLocalData] = useState<Partial<RoomFormDataType>>({
     "indoor-shading": "True",
@@ -47,6 +47,7 @@ const BuildingInformation7: React.FC<BuildingInformation7Props> = ({
   });
   const handleSubmit = () => {
     updateRoomFormData(localData);
+    console.log("Room form data: ", roomFormData);
     if (nextStep) nextStep();
   };
 

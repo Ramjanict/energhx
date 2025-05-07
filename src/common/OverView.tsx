@@ -3,7 +3,7 @@ import DashBoardHeader from "./DashBoardHeader";
 import twing from "../assets/twing.png";
 import { OverViewProps } from "@/types";
 
-const OverView: React.FC<OverViewProps> = ({ object, handleNext }) => {
+const OverView: React.FC<OverViewProps> = ({ object, handleOverview }) => {
   return (
     <div>
       <div className=" bg-white rounded-lg ">
@@ -31,7 +31,7 @@ const OverView: React.FC<OverViewProps> = ({ object, handleNext }) => {
           </p>
 
           {object.button && (
-            <div onClick={handleNext} className="mt-10 text-center">
+            <div onClick={handleOverview} className="mt-10 text-center">
               <button className="w-full py-3 bg-light-green text-primary  transition-all rounded-lg hover:bg-primary hover:text-white hover:cursor-pointer">
                 {object.price}$ - {object.button}
               </button>

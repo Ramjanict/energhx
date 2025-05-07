@@ -3,9 +3,9 @@ import { z } from "zod";
 export const sungUpSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  companyName: z.string().optional(),
   sex: z.enum(["male", "female"]),
   mail: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 characters"),
   number: z.string().min(2, "Number must be at least 2 characters"),
   street: z.string().min(3, "Street must be at least 3 characters"),
   city: z.string().min(3, "City must be at least 3 characters"),

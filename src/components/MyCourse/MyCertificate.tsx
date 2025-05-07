@@ -1,4 +1,4 @@
-import certificate from "../../../assets/server-intern-assets/certificate.png";
+import certificate from "../../assets/server-intern-assets/certificate.png";
 const MyCertificate = () => {
   return (
     <div className="">
