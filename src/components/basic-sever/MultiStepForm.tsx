@@ -4,6 +4,8 @@ import SungUp from "../../components/basic-sever/SungUp";
 import WorkExperience from "../../components/basic-sever/WorkExperience";
 import WorkExperienceTwo from "../../components/basic-sever/WorkExperienceTwo";
 import ThanksForm from "@/common/ThanksForm";
+import OTP from "../basic-consumer/OTP";
+import VerifyOTP from "../basic-consumer/VerifyOTP";
 
 interface MultiStepForm {
   link: string;
@@ -85,7 +87,9 @@ const MultiStepForm: React.FC<MultiStepForm> = ({ link }) => {
             nextStep={nextStep}
           />
         )}
-        {step === 2 && (
+        {step === 2 && <OTP nextStep={nextStep} />}
+        {step === 3 && <VerifyOTP nextStep={nextStep} />}
+        {step === 4 && (
           <WorkExperience
             formData={formData}
             updateFormData={updateFormData}
@@ -93,7 +97,7 @@ const MultiStepForm: React.FC<MultiStepForm> = ({ link }) => {
             prevStep={prevStep}
           />
         )}
-        {step === 3 && (
+        {step === 5 && (
           <WorkExperienceTwo
             formData={formData}
             updateFormData={updateFormData}
@@ -101,7 +105,7 @@ const MultiStepForm: React.FC<MultiStepForm> = ({ link }) => {
             prevStep={prevStep}
           />
         )}
-        {step === 4 && <ThanksForm title=" Thank You" path={`${link}`} />}
+        {step === 6 && <ThanksForm title=" Thank You" path={`${link}`} />}
       </div>
     </CommonWrapper>
   );

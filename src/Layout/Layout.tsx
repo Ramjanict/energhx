@@ -4,7 +4,15 @@ import NavbarStandard from "./NavbarStandard";
 const Layout: React.FC = () => {
   const { pathname } = useLocation();
 
-  const hideUI = ["/dashboard"].includes(pathname);
+  const hideUI = [
+    "/dashboard",
+    "/home",
+    "/about-us",
+    "/consulting",
+    "/research",
+    "/energhxplus",
+    "/contact-us",
+  ].includes(pathname);
   return (
     <div>
       <div className={`${hideUI ? "hidden" : ""}`}>

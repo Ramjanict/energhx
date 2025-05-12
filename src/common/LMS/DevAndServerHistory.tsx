@@ -1,9 +1,9 @@
 import CommonHeader from "@/common/CommonHeader";
-import image_1 from "../../assets/history/Rectangle 1.png";
-import image_2 from "../../assets/history/Rectangle 2.png";
-import image_3 from "../../assets/history/Rectangle 3.png";
-import image_4 from "../../assets/history/Rectangle 4.png";
-import image_5 from "../../assets/history/Rectangle 5.png";
+import image_1 from "../../assets/Rectangle 1.png";
+import image_2 from "../../assets/Rectangle 2.png";
+import image_3 from "../../assets/Rectangle 3.png";
+import image_4 from "../../assets/Rectangle 4.png";
+import image_5 from "../../assets/Rectangle 5.png";
 
 const historyData = [
   {

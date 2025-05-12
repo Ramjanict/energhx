@@ -20,19 +20,19 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     allCountries,
     getAllStates,
     allStates,
-    allBuildings,
+    allBuildingsTypes,
     allCommodities,
-    getAllBuildings,
+    getAllBuildingsTypes,
     getAllCommodities,
     getAllCountries,
     token,
   } = basicConsumerStore();
 
   useEffect(() => {
-    getAllBuildings(token);
+    getAllBuildingsTypes();
     getAllCommodities();
     getAllCountries();
-  }, [getAllBuildings, getAllCountries, token, getAllCommodities]);
+  }, [getAllBuildingsTypes, getAllCountries, token, getAllCommodities]);
 
   const [localData, setLocalData] = useState({
     type: "",
@@ -60,7 +60,7 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const selectedBuilding = allBuildings?.find(
+  const selectedBuilding = allBuildingsTypes?.find(
     (building) => building.id === localData.type
   );
 
@@ -127,7 +127,7 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     value: state.id,
   }));
 
-  const buildingTypeOptions = allBuildings?.map((building) => ({
+  const buildingTypeOptions = allBuildingsTypes?.map((building) => ({
     label: building?.name,
     value: building?.id,
   }));

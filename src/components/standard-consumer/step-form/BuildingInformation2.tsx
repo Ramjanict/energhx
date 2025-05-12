@@ -76,6 +76,7 @@ const BuildingInformation2: React.FC<ContinueButtonType> = ({
         ...formData,
         commodities: updatedCommodities,
       });
+      console.log("Updated Form Data:", formData);
 
       if (nextStep) nextStep();
     } catch (error) {

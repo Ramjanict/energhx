@@ -33,6 +33,8 @@ export interface ContinueButtonType {
   prevStep: () => void;
   className?: string;
   step?: number;
+  setShowBuilding?: (show: boolean) => void;
+  handleClose?: () => void;
 }
 
 export interface FormList {

@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import ConsumerButton, {
   TconsumerButton,
 } from "@/pages/basic-consumer/ConsumerButton";
-import { CreateConsumer } from "@/store/ConsumerType";
+import { CreateConsumer } from "@/store/consumerStoreType/CreateConsumer";
 
 const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
   const {
@@ -22,15 +22,17 @@ const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
     resolver: zodResolver(basicConsumer),
   });
 
-  const { createConsumer, getAllCountries } = basicConsumerStore();
+  const { createConsumer, getAllCountries, userType } = basicConsumerStore();
 
   const onSubmit = async (data: CreateConsumer) => {
     try {
       const newUser = {
         ...data,
-        userRole: "USER",
-        userType: "Energy Installers",
+        // userRole: "USER",
+        // userType: "Energy Installers",
+        ...userType,
       };
+      console.log("newUser", newUser);
       createConsumer(newUser);
       nextStep();
     } catch (error) {
@@ -47,7 +49,7 @@ const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
     <CommonWrapper>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" flex flex-col gap-8 px-4 pt-10"
+        className=" flex flex-col gap-8 px-4 "
       >
         <DashBoardHeader>Personal Information</DashBoardHeader>
 

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../Login";
 import ThanksForm from "@/common/ThanksForm";
+import OTP from "@/components/basic-consumer/OTP";
+import VerifyOTP from "@/components/basic-consumer/VerifyOTP";
 
 const BasicConsumerForm = () => {
   const { token } = basicConsumerStore();
@@ -28,8 +30,10 @@ const BasicConsumerForm = () => {
       {step === 1 && (
         <SignUp nextStep={nextStep} prevStep={prevStep} step={step} />
       )}
-      {step === 2 && <Login nextStep={nextStep} />}
-      {step === 3 && <ThanksForm title="Thank Yoy" path="/basic-consumer" />}
+      {step === 2 && <OTP nextStep={nextStep} />}
+      {step === 3 && <VerifyOTP nextStep={nextStep} />}
+      {step === 4 && <Login nextStep={nextStep} />}
+      {step === 5 && <ThanksForm title="Thank Yoy" path="/basic-consumer" />}
     </div>
   );
 };

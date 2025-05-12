@@ -5,20 +5,23 @@ import home3 from "@/assets/home3.png";
 import { motion } from "framer-motion";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import { useNavigate } from "react-router-dom";
+import { basicConsumerStore } from "@/store/ConsumerStore";
 const Home = () => {
   const navigate = useNavigate();
+  const { getUserType } = basicConsumerStore();
 
   return (
     <CommonWrapper className="px-4">
       <section className="pt-10">
         <DashBoardHeader className="pb-6  text-xs max-sm:text-center">
-          Personal Information
+          SELECT YOUR PREFERRED USER-TYPE
         </DashBoardHeader>
         <div className="w-full flex gap-6 flex-wrap max-sm:justify-center pb-6">
           {/* Energy Consumer */}
           <motion.div
             onClick={() => {
               navigate("/basic-consumer/form");
+              getUserType("Normal Energy Users");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
@@ -35,6 +38,7 @@ const Home = () => {
           <motion.div
             onClick={() => {
               navigate("/basic-server/form");
+              getUserType("Energy Interns");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
@@ -50,6 +54,7 @@ const Home = () => {
           <motion.div
             onClick={() => {
               navigate("/basic-developer/form");
+              getUserType("Energy Installers");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}

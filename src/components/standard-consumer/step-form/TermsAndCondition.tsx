@@ -5,7 +5,10 @@ import { useState } from "react";
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-const TermsAndCondition: React.FC<ContinueButtonType> = ({ nextStep }) => {
+const TermsAndCondition: React.FC<ContinueButtonType> = ({
+  nextStep,
+  setShowBuilding,
+}) => {
   //   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [electronicSignature, setElectronicSignature] = useState(false);
@@ -56,13 +59,24 @@ const TermsAndCondition: React.FC<ContinueButtonType> = ({ nextStep }) => {
             </span>
           </label>
         </form>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto"
-        >
-          Continue <FaAngleDoubleRight />
-        </Button>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              setShowBuilding?.(false);
+            }}
+            className="bg-light-green text-primary border border-primary px-4 py-2 cursor-pointer rounded-md w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto"
+          >
+            Continue <FaAngleDoubleRight />
+          </Button>
+        </div>
       </div>
     </div>
   );

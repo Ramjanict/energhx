@@ -2,19 +2,21 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { ConsumerStore } from "./ConsumerType";
+import { ConsumerStoreType } from "./ConsumerStoreType";
 // Secure Axios instance
 const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
 
-export const basicConsumerStore = create<ConsumerStore>()(
+export const basicConsumerStore = create<ConsumerStoreType>()(
   persist(
     (set, get) => ({
       user: null,
+      userType: "",
       token: "",
       energyAudit: [],
-      allBuildings: null,
+      allBuildings: [],
+      allBuildingsTypes: null,
       allCountries: null,
       allStates: null,
       allCommodities: null,
@@ -40,6 +42,11 @@ export const basicConsumerStore = create<ConsumerStore>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+      getUserType: async (user) => {
+        set({
+          userType: { userType: user, userRole: "USER" },
+        });
       },
 
       getAllCountries: async () => {
@@ -102,8 +109,39 @@ export const basicConsumerStore = create<ConsumerStore>()(
         }
       },
 
-      //building type
-      getAllBuildings: async (token: string | null) => {
+      //all building
+      getAllBuildings: async () => {
+        const token = get().token;
+        if (!token) {
+          toast.error("Token is required to fetch building types.");
+          return;
+        }
+
+        set({ isLoading: true });
+
+        try {
+          const { data } = await axiosSecure.get("/users/buildings", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          console.log("building data in store", data);
+
+          if (data && data.data) {
+            set({ allBuildings: data.data });
+          }
+        } catch (error: any) {
+          console.error("Problem fetching buildings", error);
+          toast.error("Unable to fetch building types.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      //building types
+      getAllBuildingsTypes: async () => {
+        const token = get().token;
         if (!token) {
           toast.error("Token is required to fetch building types.");
           return;
@@ -121,11 +159,29 @@ export const basicConsumerStore = create<ConsumerStore>()(
           console.log("building data in store", data);
 
           if (data && data.data) {
-            set({ allBuildings: data.data });
+            set({ allBuildingsTypes: data.data });
           }
         } catch (error: any) {
           console.error("Problem fetching buildings", error);
           toast.error("Unable to fetch building types.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      AddRoomWithBuilding: async (room) => {
+        set({ isLoading: true });
+        try {
+          const { data } = await axiosSecure.post("/buildings/room", room);
+
+          if (data) {
+            toast.success(data.message);
+            set({ user: data.data, isLoading: false });
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
         }
@@ -237,6 +293,29 @@ export const basicConsumerStore = create<ConsumerStore>()(
           set({ isLoading: false });
         }
       },
+      //Add Battery
+      AddBattery: async (battery) => {
+        set({ isLoading: true });
+        try {
+          const { data } = await axiosSecure.post(
+            "/analysis/ev/battery/sizing",
+            battery
+          );
+
+          if (data) {
+            toast.success(data.message);
+            set({ isLoading: false });
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
       loginUser: async (newUser) => {
         set({ isLoading: true });
 

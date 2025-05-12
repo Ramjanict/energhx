@@ -11,12 +11,13 @@ import userpic from "../../assets/user.png";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import { RiBuilding2Line } from "react-icons/ri";
 import { MdOutlineQueryStats } from "react-icons/md";
+import { TbReportSearch } from "react-icons/tb";
 
 import { IoMdTime } from "react-icons/io";
 const consumerMenu = [
   { path: "/standard-consumer/dashboard", label: "Dashboard", icon: FaHome },
   {
-    path: "/standard-consumer/buildingInformation/allBuildings",
+    path: "/standard-consumer/buildingInformation",
     label: "Building Information",
     icon: RiBuilding2Line,
   },
@@ -24,6 +25,11 @@ const consumerMenu = [
     path: "/standard-consumer/energy-audit",
     label: "Energy Audit",
     icon: MdOutlineQueryStats,
+  },
+  {
+    path: "/standard-consumer/analysis",
+    label: "Analysis",
+    icon: TbReportSearch,
   },
   {
     path: "/standard-consumer/certifiedAssociates",
