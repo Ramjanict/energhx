@@ -314,7 +314,7 @@ const routes = createBrowserRouter([
       { path: "", element: <BasicDeveloperDashboard /> },
       { path: "dashboard", element: <BasicDeveloperDashboard /> },
       { path: "buildingInformation", element: <BasicDeveloperBuildingInfo /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+
       { path: "settings", element: <BasicDeveloperSetting /> },
       { path: "form", element: <BasicDeveloperForm /> },
     ],
