@@ -81,10 +81,10 @@ import Consulting from "@/pages/wordpress/consulting/Consulting";
 import Research from "@/pages/wordpress/research/Research";
 import AboutUs from "@/pages/wordpress/about/AboutUs";
 import EvBatteryForm from "@/pages/basic-consumer/EvBatteryForm";
-import BasicConsumeranalysis from "@/pages/basic-consumer/BasicConsumerAnalysis";
 import BasicDeveloperBuildingInfo from "@/pages/basic-developer/BasicDeveloperBuildingInfo";
 import BasicServerBuildingInfo from "@/pages/basic-server/BasicServerBuildingInfo";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
+import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -157,7 +157,7 @@ const routes = createBrowserRouter([
       { path: "history", element: <BasicConsumerHistory /> },
       { path: "history/:id", element: <BasicConsumerService /> },
       { path: "settings", element: <BasicConsumerSettings /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+      { path: "analysis", element: <BasicConsumerAnalysis /> },
       {
         path: "form",
         element: <BasicConsumerForm />,
@@ -185,7 +185,7 @@ const routes = createBrowserRouter([
         path: "buildingInformation",
         element: <StandardConsumerBuildingInfo />,
       },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+      { path: "analysis", element: <BasicConsumerAnalysis /> },
       {
         path: "buildingInformation/allBuildings",
         element: <AllUserBuilding />,
@@ -241,7 +241,7 @@ const routes = createBrowserRouter([
         element: <BasicServerDashboard />,
       },
       { path: "buildingInformation", element: <BasicServerBuildingInfo /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+
       {
         path: "settings",
         element: <ServerSettings />,
