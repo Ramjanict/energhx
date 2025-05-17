@@ -23,7 +23,7 @@ const consumerMenu = [
   },
   {
     path: "/standard-consumer/energy-audit",
-    label: "Energy Audit",
+    label: "Add Service",
     icon: MdOutlineQueryStats,
   },
   {

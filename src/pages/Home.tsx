@@ -11,12 +11,12 @@ const Home = () => {
   const { getUserType } = basicConsumerStore();
 
   return (
-    <CommonWrapper className="px-4">
-      <section className="pt-10">
-        <DashBoardHeader className="pb-6  text-xs max-sm:text-center">
+    <CommonWrapper>
+      <section className=" w-full h-[calc(100vh-96px)] flex flex-col  items-center justify-center px-4">
+        <DashBoardHeader className=" py-5 sm:pb-10  text-xs max-sm:text-center">
           SELECT YOUR PREFERRED USER-TYPE
         </DashBoardHeader>
-        <div className="w-full flex gap-6 flex-wrap max-sm:justify-center pb-6">
+        <div className="w-full flex gap-6 flex-wrap justify-center ">
           {/* Energy Consumer */}
           <motion.div
             onClick={() => {

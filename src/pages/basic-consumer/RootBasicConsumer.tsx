@@ -8,7 +8,6 @@ import { MdSettings, MdLogout } from "react-icons/md";
 import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
-import { useServerStore } from "@/store/ServerStore";
 import { TbReportSearch } from "react-icons/tb";
 import { RiBuilding2Line } from "react-icons/ri";
 
@@ -26,16 +25,12 @@ const consumerMenu = [
 ];
 
 const RootBasicConsumer = () => {
-  const { showPayment } = useServerStore();
   const [user] = useState({
     name: "Emmnauel Nonye",
     role: "Consumer",
     profileImg: userImg,
   });
   const { pathname } = useLocation();
-  const handleUpgrade = () => {
-    showPayment();
-  };
 
   return (
     <div>
@@ -50,7 +45,7 @@ const RootBasicConsumer = () => {
           name="Emmnauel Nonye"
           role="Consumer (Basic)"
           imageUrl={userImg}
-          onUpgrade={handleUpgrade} // Pass the function, not a string
+          // Pass the function, not a string
         />
       </div>
 
