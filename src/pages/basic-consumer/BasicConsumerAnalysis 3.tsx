@@ -33,7 +33,9 @@ const BasicConsumeranalysis = () => {
             greenHeader="CONCLUSION AND RECOMMENDATIONS"
           />
           <div onClick={nextStep} className="  py-5">
-            <Button className="text-white cursor-pointer ">Upgrade</Button>
+            <Button className="text-white cursor-pointer ">
+              Upgrade to Standard
+            </Button>
           </div>
         </>
       )}
