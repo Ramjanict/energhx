@@ -44,7 +44,7 @@ const SungUp: React.FC<SungUpProps> = ({
       updateFormData(field, value);
     });
     nextStep();
-    toast.success("Form Submitted successfully");
+    toast.success("A confirmation email has been sent to your account");
   };
 
   return (

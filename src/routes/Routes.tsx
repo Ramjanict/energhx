@@ -84,7 +84,8 @@ import EvBatteryForm from "@/pages/basic-consumer/EvBatteryForm";
 import BasicDeveloperBuildingInfo from "@/pages/basic-developer/BasicDeveloperBuildingInfo";
 import BasicServerBuildingInfo from "@/pages/basic-server/BasicServerBuildingInfo";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
-import BasicConsumeranalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
+import CreatePassword from "@/components/basic-consumer/CreatePassword";
+import BasicConsumeranalysis from "@/pages/basic-consumer/BasicConsumerAnalysis 3";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -93,10 +94,6 @@ const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
       },
 
       {
@@ -141,9 +138,19 @@ const routes = createBrowserRouter([
         path: "/ev-battery",
         element: <EvBatteryForm />,
       },
+
       {
         path: "/add-room/:buildingId",
         element: <AddRoomWithBuilding />,
+      },
+
+      {
+        path: "/create-password",
+        element: <CreatePassword />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },

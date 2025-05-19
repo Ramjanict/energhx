@@ -56,6 +56,7 @@ export type ConsumerStoreType = {
     biomass: PostBiomassMicroServices
   ) => Promise<void>;
 
+  createPassword: (userData: User, token: string) => Promise<void>;
   loginUser: (newUser: User) => Promise<void>;
   logOutUser: () => void;
 };

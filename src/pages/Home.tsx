@@ -6,9 +6,24 @@ import { motion } from "framer-motion";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import { useNavigate } from "react-router-dom";
 import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useEffect } from "react";
 const Home = () => {
   const navigate = useNavigate();
-  const { getUserType } = basicConsumerStore();
+  const { getUserType, user } = basicConsumerStore();
+
+  const userType = [
+    { user: "Normal Energy Users", path: "/basic-consumer/dashboard" },
+    { user: "Energy Interns", path: "/basic-server/dashboard" },
+    { user: "Energy Installers", path: "/basic-developer/dashboard" },
+  ];
+
+  useEffect(() => {
+    const matched = userType.find((u) => u.user === user?.userType);
+
+    if (matched) {
+      navigate(matched.path);
+    }
+  }, [user]);
 
   return (
     <CommonWrapper>

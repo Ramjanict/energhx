@@ -17,10 +17,11 @@ interface Login {
 }
 
 const Login: React.FC<Login> = ({ nextStep }) => {
-  const { loginUser } = basicConsumerStore();
+  const { loginUser, user, token } = basicConsumerStore();
+
+  console.log("userType", user?.userType);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { token, user } = basicConsumerStore();
   const {
     register,
     handleSubmit,

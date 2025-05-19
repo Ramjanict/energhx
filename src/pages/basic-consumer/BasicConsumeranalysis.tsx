@@ -1,55 +1,77 @@
-import ThanksForm from "@/common/ThanksForm";
-import EnbridgeForm from "@/components/basic-consumer/EnbridgeForm";
-import HydroForm from "@/components/basic-consumer/HydroForm";
+import PaymentModal from "@/components/Appointment/PaymentModal";
+import HandShake from "@/components/basic-consumer/HandShake";
 import Biomass from "@/components/basic-consumer/Microservice/Biomass";
 import RoomOverView from "@/components/basic-consumer/Microservice/RoomOverView";
 import Solar from "@/components/basic-consumer/Microservice/Solar";
 import TwoTitle from "@/components/basic-consumer/TwoTitle";
 import { Button } from "@/components/ui/button";
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useState } from "react";
+import { useServerStore } from "@/store/ServerStore";
+import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const BasicConsumeranalysis = () => {
-  const [step, setStep] = useState(1);
-  const { user } = basicConsumerStore();
+const BasicConsumerAnalysis = () => {
+  const { isHandShakeOpen, handleHandShake, isPaymentModalOpen, closePayment } =
+    useServerStore();
+  const navigate = useNavigate();
+  const { allBuildings, getAllBuildings } = basicConsumerStore();
+  const { pathname } = useLocation();
 
-  console.log("user");
-  const nextStep = () => {
-    setStep((pre) => pre + 1);
-  };
-  const prevStep = () => {
-    if (step > 1) {
-      setStep((pre) => pre - 1);
-    }
-  };
-  console.log("step", prevStep);
+  console.log("pathname", pathname);
+
+  const path =
+    pathname === "/standard-consumer/analysis"
+      ? "/standard-consumer/buildingInformation"
+      : "/basic-consumer/buildingInformation";
+
+  if (allBuildings?.length === 0) {
+    return (
+      <div className="flex flex-col gap-2 justify-center items-center h-screen">
+        <h1 className="text-2xl font-bold">No Data Available</h1>
+        <p className="text-gray-500">
+          Please add a building to view the analysis.
+        </p>
+        <Link
+          to={path}
+          className=" bg-primary text-white px-4 py-2 rounded mt-4"
+        >
+          Add Building
+        </Link>
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    getAllBuildings();
+  }, []);
+
   return (
-    <>
-      {step !== 4 && (
-        <>
-          <RoomOverView />
-          <Solar />
-          <Biomass />
-          <TwoTitle
-            blackHeader="BUILDING ENERGY AUDIT & ANALYSIS DATA REPORT"
-            greenHeader="CONCLUSION AND RECOMMENDATIONS"
-          />
-          <div onClick={nextStep} className="  py-5">
-            <Button className="text-white cursor-pointer ">Upgrade</Button>
-          </div>
-        </>
+    <div>
+      <RoomOverView />
+      <Solar />
+      <Biomass />
+      <TwoTitle
+        blackHeader="BUILDING ENERGY AUDIT & ANALYSIS DATA REPORT"
+        greenHeader="CONCLUSION AND RECOMMENDATIONS"
+      />
+      <div>
+        <Button className="text-white cursor-pointer">RECOMMENDATIONS</Button>
+      </div>
+
+      {isPaymentModalOpen && (
+        <PaymentModal isOpen={isPaymentModalOpen} onClose={closePayment} />
       )}
 
-      {step === 2 && <EnbridgeForm nextStep={nextStep} />}
-      {step === 3 && <HydroForm nextStep={nextStep} />}
-      {step === 4 && (
-        <ThanksForm
-          title={`Welcome  ${user?.firstname}`}
-          path="/standard-consumer/dashboard"
+      {isHandShakeOpen && (
+        <HandShake
+          handleClose={() => {
+            handleHandShake(false);
+            navigate("/standard-consumer");
+          }}
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default BasicConsumeranalysis;
+export default BasicConsumerAnalysis;

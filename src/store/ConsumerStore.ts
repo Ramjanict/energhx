@@ -31,8 +31,8 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
           const { data } = await axiosSecure.post("/auth", newConsumer);
 
           if (data) {
-            toast.success(data.message);
             set({ user: data.data, isLoading: false });
+            toast.success("A confirmation email has been sent to your account");
           } else if (data.error) {
             toast.error(data.message);
           }
@@ -310,6 +310,33 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
           }
         } catch (error) {
           console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      createPassword: async (userData, token) => {
+        set({ isLoading: true });
+        try {
+          const { data } = await axiosSecure.post(
+            "/auth/create-password",
+            userData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (data) {
+            set({ isLoading: false });
+            toast.success(data.message);
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during creating password", error);
           toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
