@@ -1,18 +1,20 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import CommonWrapper from "@/common/CommonWrapper";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import CommonPersonalInfo from "@/common/form/CommonPersonalInfo";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { basicConsumer, TbasicConsumer } from "./ValidationSchema";
+import { FaAngleDoubleRight } from "react-icons/fa";
 
 import { basicConsumerStore } from "@/store/ConsumerStore";
-import { useEffect } from "react";
-import ConsumerButton, {
-  TconsumerButton,
-} from "@/pages/basic-consumer/ConsumerButton";
 import { CreateConsumer } from "@/store/consumerStoreType/CreateConsumer";
+import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
-const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
+const SignUp = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,32 +26,28 @@ const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
 
   const { createConsumer, getAllCountries, userType } = basicConsumerStore();
 
-  const onSubmit = async (data: CreateConsumer) => {
-    try {
-      const newUser = {
-        ...data,
-        // userRole: "USER",
-        // userType: "Energy Installers",
-        ...userType,
-      };
-      console.log("newUser", newUser);
-      createConsumer(newUser);
-      nextStep();
-    } catch (error) {
-      console.log("error", error);
-    }
-    console.log("data", data);
-  };
-
   useEffect(() => {
     getAllCountries();
-  }, []);
+  }, [getAllCountries]);
+
+  const onSubmit = async (data: TbasicConsumer) => {
+    try {
+      const newUser: CreateConsumer = {
+        ...data,
+        ...userType,
+      };
+      await createConsumer(newUser);
+      navigate("/login");
+    } catch (error) {
+      console.error("Error creating consumer:", error);
+    }
+  };
 
   return (
     <CommonWrapper>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" flex flex-col gap-8 px-4 "
+        className="flex flex-col gap-8 px-4"
       >
         <DashBoardHeader>Personal Information</DashBoardHeader>
 
@@ -58,13 +56,12 @@ const SignUp: React.FC<TconsumerButton> = ({ nextStep, prevStep, step }) => {
           errors={errors}
           control={control}
         />
-
-        <ConsumerButton
-          prevStep={prevStep}
-          nextStep={nextStep}
-          step={step}
-          className="py-10"
-        />
+        <Button
+          type="submit"
+          className="bg-primary-green text-white py-5 rounded-md cursor-pointer w-fit"
+        >
+          Continue <FaAngleDoubleRight />
+        </Button>
       </form>
     </CommonWrapper>
   );

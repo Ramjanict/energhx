@@ -7,26 +7,33 @@ import { basicConsumerStore } from "@/store/ConsumerStore";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(1, "Password must be at least 8 characters"),
 });
 
 type FormData = z.infer<typeof schema>;
 
 const CreatePassword = () => {
-  const { createPassword, isLoading, user } = basicConsumerStore();
+  const { createPassword, isLoading } = basicConsumerStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
+  const [emailFetched, setEmailFetched] = useState("");
+
+  console.log("token===", token);
+  console.log("emailFetched===", emailFetched);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
-
-  const [emailFetched, setEmailFetched] = useState("");
 
   useEffect(() => {
     if (token) {
@@ -43,22 +50,18 @@ const CreatePassword = () => {
   }, [token]);
 
   useEffect(() => {
-    if (!user) {
-      navigate("/");
+    if (emailFetched) {
+      reset({ email: emailFetched, password: "" });
     }
-  }, []);
-  console.log("user", user);
+  }, [emailFetched, reset]);
 
   const onSubmit = async (data: FormData) => {
     if (token) {
       await createPassword(data, token);
       navigate("/login");
     }
-    console.log("userData", data);
   };
 
-  console.log("emailFetched", emailFetched);
-  console.log("token", token);
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-76px)] bg-gray-100 p-4">
       <form
@@ -74,7 +77,6 @@ const CreatePassword = () => {
             {...register("email")}
             className="w-full border border-gray-300 rounded-md p-2"
             disabled={!!emailFetched}
-            defaultValue={emailFetched}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>

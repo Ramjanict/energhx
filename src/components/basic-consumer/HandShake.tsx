@@ -10,7 +10,7 @@ interface HandShake {
 }
 const HandShake: React.FC<HandShake> = ({ handleClose }) => {
   return (
-    <div className="w-full h-screen fixed inset-0 backdrop-blur-md  bg-black/30 flex items-center  justify-center z-50">
+    <div className="w-full h-screen fixed inset-0 backdrop-blur-md  bg-black/30 flex items-center  justify-center z-50 min-h-full">
       <div className="bg-white rounded-xl  max-w-[430px] ">
         <div
           onClick={handleClose}

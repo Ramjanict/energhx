@@ -17,8 +17,6 @@ const BasicConsumerAnalysis = () => {
   const { allBuildings, getAllBuildings } = basicConsumerStore();
   const { pathname } = useLocation();
 
-  console.log("pathname", pathname);
-
   const path =
     pathname === "/standard-consumer/analysis"
       ? "/standard-consumer/buildingInformation"

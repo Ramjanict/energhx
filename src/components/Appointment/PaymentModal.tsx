@@ -32,7 +32,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose }) => {
   const years = Array.from({ length: 21 }, (_, i) => currentYear + i);
 
   return (
-    <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto md:mt-10">
+    <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto md:mt-10 min-h-screen">
       <div className="bg-[#EAF7E6] rounded-lg w-full max-w-md relative my-4 sm:my-8 ">
         <button
           onClick={onClose}

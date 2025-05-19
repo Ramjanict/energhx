@@ -1,6 +1,4 @@
 import ThanksForm from "@/common/ThanksForm";
-import EnbridgeForm from "@/components/basic-consumer/EnbridgeForm";
-import HydroForm from "@/components/basic-consumer/HydroForm";
 import Biomass from "@/components/basic-consumer/Microservice/Biomass";
 import RoomOverView from "@/components/basic-consumer/Microservice/RoomOverView";
 import Solar from "@/components/basic-consumer/Microservice/Solar";
@@ -25,7 +23,7 @@ const BasicConsumeranalysis = () => {
   console.log("step", prevStep);
   return (
     <>
-      {step !== 4 && (
+      {step !== 2 && (
         <>
           <RoomOverView />
           <Solar />
@@ -40,9 +38,7 @@ const BasicConsumeranalysis = () => {
         </>
       )}
 
-      {step === 2 && <EnbridgeForm nextStep={nextStep} />}
-      {step === 3 && <HydroForm nextStep={nextStep} />}
-      {step === 4 && (
+      {step === 2 && (
         <ThanksForm
           title={`Welcome  ${user?.firstname}`}
           path="/standard-consumer/dashboard"
