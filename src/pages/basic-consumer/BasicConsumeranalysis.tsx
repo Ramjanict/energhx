@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { useEffect, useState } from "react";
 
-const BasicConsumeranalysis = () => {
+const BasicConsumerAnalysis = () => {
   const [step, setStep] = useState(1);
   const { user } = useConsumerStore();
   const { getAllBuildings, token } = useConsumerStore();
@@ -49,4 +49,4 @@ const BasicConsumeranalysis = () => {
   );
 };
 
-export default BasicConsumeranalysis;
+export default BasicConsumerAnalysis;
