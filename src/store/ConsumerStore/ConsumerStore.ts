@@ -33,7 +33,7 @@ export const useConsumerStore = create<ConsumerStoreType>()(
           const { data } = await axiosSecure.post("/auth", newConsumer);
 
           if (data) {
-            set({ user: data.data, isLoading: false });
+            set({ isLoading: false });
             toast.success("A confirmation email has been sent to your account");
           } else if (data.error) {
             toast.error(data.message);
