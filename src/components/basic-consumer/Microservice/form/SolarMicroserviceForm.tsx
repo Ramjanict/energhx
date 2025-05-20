@@ -4,9 +4,9 @@ import * as z from "zod";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import FormSubheader from "@/common/FormSubheader";
 import CommonWrapper from "@/common/CommonWrapper";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import Loading from "../../Loading";
 import { useNavigate } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 // Define the schema with Zod
 const formSchema = z
@@ -90,7 +90,7 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 const SolarMicroserviceForm = ({}) => {
   const navigate = useNavigate();
-  const { postSolarMicroServices, isLoading } = basicConsumerStore();
+  const { postSolarMicroServices, isLoading } = useConsumerStore();
   const {
     register,
     handleSubmit,

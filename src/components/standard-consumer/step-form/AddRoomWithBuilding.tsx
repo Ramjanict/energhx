@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CommonWrapper from "@/common/CommonWrapper";
+import { useParams } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import Loading from "@/components/basic-consumer/Loading";
 
 // src/schemas/roomSchema.ts
 const roomSchema = z.object({
@@ -150,51 +153,54 @@ const fieldNames: { name: keyof RoomData; label: string; type?: string }[] = [
 ];
 
 const defaultValues: RoomData = {
-  title: "",
-  construction: "",
-  "construction-subtype": "",
-  "percentage-glass": "0",
-  "wall-type": "",
-  city: "",
-  month: "",
-  "percentage-MDDB": "0",
-  LSM: 0,
-  "north-wall-area": 0,
-  "east-wall-area": 0,
-  "south-wall-area": 0,
-  "west-wall-area": 0,
-  "roof-type": "",
-  "roof-area": 0,
-  "north-fenestration-area-shaded": 0,
-  "north-fenestration-area-sunlit": 0,
-  "east-fenestration-area-shaded": 0,
-  "east-fenestration-area-sunlit": 0,
-  "south-fenestration-area-shaded": 0,
-  "south-fenestration-area-sunlit": 0,
-  "west-fenestration-area-shaded": 0,
-  "west-fenestration-area-sunlit": 0,
-  "indoor-shading": "",
-  "u-value-window": 0,
-  "beam-solar-heat-gain-coefficient": 0,
-  "diffuse-solar-heat-gain-coefficient": 0,
-  "beam-indoor-solar-attenuation-coefficient": 0,
-  "diffuse-indoor-solar-attenuation-coefficient": 0,
-  "lighting-type": "",
-  "number-lighting": 0,
-  "lighting-rating": 0,
-  "activity-type": "",
-  "activity-location": "",
-  "velocity-type": "",
-  "occupant-capacity": 0,
-  "start-hour": "",
-  "end-hour": "",
-  "percentage-MDHR": "0",
-  "infiltration-rate": 0,
-  "fenestration-area": 0,
-  "floor-area": 0,
+  title: "Room 123",
+  construction: "light",
+  "construction-subtype": "with carpet",
+  "percentage-glass": "50%",
+  "wall-type": "Wall 1",
+  city: "Atlanta",
+  month: "Jul",
+  "percentage-MDDB": "5.0%",
+  LSM: 75,
+  "north-wall-area": 5.57,
+  "east-wall-area": 5.57,
+  "south-wall-area": 5.57,
+  "west-wall-area": 5.57,
+  "roof-type": "Roof 1",
+  "roof-area": 12,
+  "north-fenestration-area-shaded": 0.0,
+  "north-fenestration-area-sunlit": 0.0,
+  "east-fenestration-area-shaded": 3.72,
+  "east-fenestration-area-sunlit": 0.0,
+  "south-fenestration-area-shaded": 3.72,
+  "south-fenestration-area-sunlit": 0.0,
+  "west-fenestration-area-shaded": 3.72,
+  "west-fenestration-area-sunlit": 0.0,
+  "indoor-shading": "True",
+  "u-value-window": 3.15,
+  "beam-solar-heat-gain-coefficient": 0.3978,
+  "diffuse-solar-heat-gain-coefficient": 0.41,
+  "beam-indoor-solar-attenuation-coefficient": 0.653,
+  "diffuse-indoor-solar-attenuation-coefficient": 0.79,
+  "lighting-type": "non-in-celing fluorescent luminaire",
+  "number-lighting": 5,
+  "lighting-rating": 19,
+  "activity-type": "seated",
+  "activity-location": "theater (matinee)",
+  "velocity-type": "low velocity",
+  "occupant-capacity": 4,
+  "start-hour": "08:00",
+  "end-hour": "17:00",
+  "percentage-MDHR": "5.0%",
+  "infiltration-rate": 0.041,
+  "fenestration-area": 20.2,
+  "floor-area": 9.1,
 };
 
-export default function RoomForm() {
+const RoomForm = () => {
+  const { buildingId } = useParams();
+  const { AddRoomWithBuilding, isLoading } = useConsumerStore();
+
   const {
     register,
     handleSubmit,
@@ -204,8 +210,20 @@ export default function RoomForm() {
     defaultValues,
   });
 
-  const onSubmit = (data: RoomData) => {
-    console.log("Submitted data:", data);
+  const onSubmit = async (data: RoomData) => {
+    const addRoomData = {
+      ...data,
+      buildingId: buildingId!,
+    };
+
+    console.log("addRoomData", addRoomData);
+    try {
+      if (addRoomData) {
+        await AddRoomWithBuilding(addRoomData);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
@@ -245,6 +263,8 @@ export default function RoomForm() {
           </button>
         </div>
       </form>
+      {isLoading && <Loading />}
     </CommonWrapper>
   );
-}
+};
+export default RoomForm;

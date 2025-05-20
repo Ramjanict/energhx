@@ -4,8 +4,8 @@ interface ContinueButton {
 import { useEffect, useState } from "react";
 import img from "../../../assets/home2.png";
 import axios from "axios";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { BuildingType } from "@/types/buildingType";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -19,7 +19,7 @@ const BuildingInformation5: React.FC<ContinueButton> = ({
   setSelectedBuilding,
 }) => {
   const [buildings, setBuildings] = useState<BuildingType[]>([]);
-  const { token } = basicConsumerStore();
+  const { token } = useConsumerStore();
   useEffect(() => {
     const fetchBuildings = async () => {
       try {

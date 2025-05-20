@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useFormStore } from "@/store/FormStore";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { z } from "zod";
 import { buildingInformation1Schema } from "./BuildingFormValidation";
 import { toast } from "react-toastify";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const BuildingInformation1: React.FC<ContinueButtonType> = ({
   nextStep,
@@ -26,7 +26,7 @@ const BuildingInformation1: React.FC<ContinueButtonType> = ({
     getAllCommodities,
     getAllCountries,
     token,
-  } = basicConsumerStore();
+  } = useConsumerStore();
 
   useEffect(() => {
     getAllBuildingsTypes();

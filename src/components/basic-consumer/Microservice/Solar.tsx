@@ -1,9 +1,9 @@
 import DashBoardHeader from "@/common/DashBoardHeader";
 import EnergyConvertChart from "@/components/basic-consumer/chart/EnergyConvertChart";
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const Solar = () => {
-  const { solarMicroservice } = basicConsumerStore();
+  const { solarMicroservice } = useConsumerStore();
 
   const microService = solarMicroservice?.plots;
   const plots = EnergyConvertChart(microService);

@@ -9,14 +9,14 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import ContinueButton from "@/common/ContinueButton";
 import Breadcrumbs from "@/common/Breadcrumbs";
 import lightGreen from "../../assets/Profile/lightGreen.svg";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Tutility, utility } from "./ValidationSchema";
 import { TconsumerButton } from "@/pages/basic-consumer/ConsumerButton";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const Utility: React.FC<TconsumerButton> = ({ prevStep, nextStep }) => {
-  const { user } = basicConsumerStore();
+  const { user } = useConsumerStore();
   const {
     handleSubmit,
     control,

@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -17,7 +17,7 @@ interface Login {
 }
 
 const Login: React.FC<Login> = ({ nextStep }) => {
-  const { loginUser, user, token } = basicConsumerStore();
+  const { loginUser, user, token } = useConsumerStore();
 
   console.log("userType", user?.userType);
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import BioRechart from "@/components/basic-consumer/chart/BioRechart";
 import TwoTitle from "@/components/basic-consumer/TwoTitle";
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import {
   Bar,
   CartesianGrid,
@@ -13,7 +13,7 @@ import {
   Rectangle,
 } from "recharts";
 const Biomass = () => {
-  const { biomassMicroservice } = basicConsumerStore();
+  const { biomassMicroservice } = useConsumerStore();
 
   const ranges = biomassMicroservice?.ranges ?? [];
   const results = biomassMicroservice?.results || {};

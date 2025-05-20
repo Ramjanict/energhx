@@ -10,8 +10,8 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useFormStore } from "@/store/FormStore";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { useNavigate } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -22,7 +22,7 @@ const BuildingInformation4: React.FC<ContinueButtonType> = ({
   prevStep,
 }) => {
   const { formData, updateFormData } = useFormStore();
-  const { token } = basicConsumerStore();
+  const { token } = useConsumerStore();
 
   const [wallModal, setWallModal] = useState(false);
   const navigate = useNavigate();

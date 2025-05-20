@@ -7,11 +7,10 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import CommonPersonalInfo from "@/common/form/CommonPersonalInfo";
 import { basicConsumer, TbasicConsumer } from "./ValidationSchema";
 import { FaAngleDoubleRight } from "react-icons/fa";
-
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { CreateConsumer } from "@/store/consumerStoreType/CreateConsumer";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -23,8 +22,7 @@ const SignUp = () => {
   } = useForm<TbasicConsumer>({
     resolver: zodResolver(basicConsumer),
   });
-
-  const { createConsumer, getAllCountries, userType } = basicConsumerStore();
+  const { createConsumer, getAllCountries, userType } = useConsumerStore();
 
   useEffect(() => {
     getAllCountries();

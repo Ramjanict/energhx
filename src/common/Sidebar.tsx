@@ -1,9 +1,9 @@
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { SidebarProps } from "@/types";
 import { NavLink } from "react-router-dom";
 
 const Sidebar: React.FC<SidebarProps> = ({ menuItems }) => {
-  const { token } = basicConsumerStore();
+  const { token } = useConsumerStore();
 
   return (
     <div className="w-fit h-screen text-[#758179] border-r border-t border-r-[#E7E9E8] border-t-[#E7E9E8]  border-gray-300 z-10 ">

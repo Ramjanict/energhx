@@ -6,15 +6,15 @@ import { Button } from "@/components/ui/button";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useFormStore } from "@/store/FormStore";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { buildingInformation2Schema } from "./BuildingFormValidation";
 import { z } from "zod";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 const BuildingInformation2: React.FC<ContinueButtonType> = ({
   nextStep,
   prevStep,
 }) => {
   const { formData, updateFormData } = useFormStore();
-  const { getAllServices, allServices } = basicConsumerStore();
+  const { getAllServices, allServices } = useConsumerStore();
   const countryId = formData.country;
   const stateId = formData.city;
   const commodityId = formData.commodities[0].type;

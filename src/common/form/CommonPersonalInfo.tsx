@@ -13,8 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { basicConsumerStore } from "@/store/ConsumerStore";
+
 import { useEffect } from "react";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 interface CommonPersonalInfoProps {
   register: UseFormRegister<TbasicConsumer>;
@@ -28,7 +29,7 @@ const CommonPersonalInfo: React.FC<CommonPersonalInfoProps> = ({
   control,
 }) => {
   const { allCountries, getAllCountries, getAllStates, allStates } =
-    basicConsumerStore();
+    useConsumerStore();
   useEffect(() => {
     getAllCountries();
   }, []);

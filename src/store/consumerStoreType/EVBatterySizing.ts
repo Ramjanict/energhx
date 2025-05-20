@@ -1,4 +1,10 @@
-export type EVBatterySizing = {
+export interface EVBatterySizing {
+  buildingId: string;
+  chargerModel: string;
+  powerRating: string;
+  noOfEvs: string;
+  chargingHours: string;
+  name: string;
   title: string;
   "battery-manufacturer": string;
   "battery-class": string;
@@ -9,11 +15,11 @@ export type EVBatterySizing = {
   "battery-width": number;
   "battery-thickness": number;
   "battery-mass": number;
-  "battery-capacity": number; // in Ah
-  "battery-voltage": number; // in V
+  "battery-capacity": number;
+  "battery-voltage": number;
   "battery-peak-C-rate": number;
   "battery-continous-C-rate": number;
-  "average-energy-consumption": number; // in Wh/km
-  "vehicle-range": number; // in km
-  "nominal-voltage": number; // in V
-};
+  "average-energy-consumption": number;
+  "vehicle-range": number;
+  "nominal-voltage": number;
+}

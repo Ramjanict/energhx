@@ -1,10 +1,10 @@
 import MultiStepForm from "@/components/basic-sever/MultiStepForm";
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BasicServerForm = () => {
-  const { token } = basicConsumerStore();
+  const { token } = useConsumerStore();
   const navigate = useNavigate();
 
   useEffect(() => {

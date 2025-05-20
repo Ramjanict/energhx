@@ -7,7 +7,6 @@ import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { useState } from "react";
 import { useFormStore } from "@/store/FormStore";
 import { BuildingSchema } from "./BuildingFormValidation";
-// import { basicConsumerStore } from "@/store/ConsumerStore";
 
 export interface Building {
   building_name: string;

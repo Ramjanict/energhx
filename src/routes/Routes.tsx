@@ -67,12 +67,9 @@ import DevAndServerHistory from "@/common/LMS/DevAndServerHistory";
 import BasicServerForm from "@/pages/basic-server/BasicServerForm";
 import StandardConsumerEnergyAudit from "@/pages/standard-consumer/StandardConsumerEnergyAudit";
 
-import SingleBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
-
 import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/form/SolarMicroserviceForm";
 import BiomassMicroServiceForm from "@/components/basic-consumer/Microservice/form/BiomassMicroServiceForm";
 import TotalOverview from "@/components/basic-consumer/TotalOverview";
-import AllUserBuilding from "@/components/standard-consumer/step-form/AllUserBuilding";
 import Dashboard from "@/dashboard/Dashboard";
 import WhomePage from "@/pages/wordpress/home/WhomePage";
 import ContactUs from "@/pages/wordpress/contact/ContactUs";
@@ -85,7 +82,8 @@ import BasicDeveloperBuildingInfo from "@/pages/basic-developer/BasicDeveloperBu
 import BasicServerBuildingInfo from "@/pages/basic-server/BasicServerBuildingInfo";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
 import CreatePassword from "@/components/basic-consumer/CreatePassword";
-import BasicConsumeranalysis from "@/pages/basic-consumer/BasicConsumerAnalysis 3";
+import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumerAnalysis";
+import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumerAnalysis";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -135,7 +133,7 @@ const routes = createBrowserRouter([
         element: <ContactUs />,
       },
       {
-        path: "/ev-battery",
+        path: "/ev-battery/:buildingId",
         element: <EvBatteryForm />,
       },
 
@@ -164,7 +162,7 @@ const routes = createBrowserRouter([
       { path: "history", element: <BasicConsumerHistory /> },
       { path: "history/:id", element: <BasicConsumerService /> },
       { path: "settings", element: <BasicConsumerSettings /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+      { path: "analysis", element: <BasicConsumerAnalysis /> },
       {
         path: "form",
         element: <BasicConsumerForm />,
@@ -192,15 +190,7 @@ const routes = createBrowserRouter([
         path: "buildingInformation",
         element: <StandardConsumerBuildingInfo />,
       },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
-      {
-        path: "buildingInformation/allBuildings",
-        element: <AllUserBuilding />,
-      },
-      {
-        path: "buildingInformation/allBuildings/:buildingId",
-        element: <SingleBuilding />,
-      },
+      { path: "analysis", element: <StandardConsumerAnalysis /> },
       {
         path: "energy-audit",
         element: <StandardConsumerEnergyAudit />,
@@ -248,7 +238,7 @@ const routes = createBrowserRouter([
         element: <BasicServerDashboard />,
       },
       { path: "buildingInformation", element: <BasicServerBuildingInfo /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
+      { path: "analysis", element: <BasicConsumerAnalysis /> },
       {
         path: "settings",
         element: <ServerSettings />,
@@ -321,7 +311,6 @@ const routes = createBrowserRouter([
       { path: "", element: <BasicDeveloperDashboard /> },
       { path: "dashboard", element: <BasicDeveloperDashboard /> },
       { path: "buildingInformation", element: <BasicDeveloperBuildingInfo /> },
-      { path: "analysis", element: <BasicConsumeranalysis /> },
       { path: "settings", element: <BasicDeveloperSetting /> },
       { path: "form", element: <BasicDeveloperForm /> },
     ],

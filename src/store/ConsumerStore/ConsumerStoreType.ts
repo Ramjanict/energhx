@@ -1,19 +1,21 @@
-import { allBuildingsData } from "./consumerStoreType/AllBuildings";
-import { AllServices } from "./consumerStoreType/Allservices";
-import { BiomassMicroservice } from "./consumerStoreType/BiomassMicroservice";
-import { BuildingsTypes } from "./consumerStoreType/BuildingTypes";
-import { Commodity } from "./consumerStoreType/Commodity";
-import { CreateConsumer } from "./consumerStoreType/CreateConsumer";
-import { EnergyBuildingData } from "./consumerStoreType/EnergyBuildingData";
-import { EneryAuditArrayData } from "./consumerStoreType/EneryAuditArrayData";
-import { EVBatterySizing } from "./consumerStoreType/EVBatterySizing";
-import { User } from "./consumerStoreType/LoginUser";
-import { PostBiomassMicroServices } from "./consumerStoreType/PostBiomassMicroServices";
-import { PostSolarMicroServices } from "./consumerStoreType/PostSolarMicroServices";
-import { RoomData } from "./consumerStoreType/RoomData";
-import { SolarMicroservice } from "./consumerStoreType/SolarMicroservice";
-import { State } from "./consumerStoreType/States";
-import { Country, UserData } from "./consumerStoreType/UserData";
+import { AllBattery } from "../consumerStoreType/AllBattery";
+import { AllBatteryType } from "../consumerStoreType/AllbatteryTypes";
+import { allBuildingsData } from "../consumerStoreType/AllBuildings";
+import { AllServices } from "../consumerStoreType/Allservices";
+import { BiomassMicroservice } from "../consumerStoreType/BiomassMicroservice";
+import { BuildingsTypes } from "../consumerStoreType/BuildingTypes";
+import { Commodity } from "../consumerStoreType/Commodity";
+import { CreateConsumer } from "../consumerStoreType/CreateConsumer";
+import { EnergyBuildingData } from "../consumerStoreType/EnergyBuildingData";
+import { EneryAuditArrayData } from "../consumerStoreType/EneryAuditArrayData";
+import { EVBatterySizing } from "../consumerStoreType/EVBatterySizing";
+import { User } from "../consumerStoreType/LoginUser";
+import { PostBiomassMicroServices } from "../consumerStoreType/PostBiomassMicroServices";
+import { PostSolarMicroServices } from "../consumerStoreType/PostSolarMicroServices";
+import { RoomData } from "../consumerStoreType/RoomData";
+import { SolarMicroservice } from "../consumerStoreType/SolarMicroservice";
+import { State } from "../consumerStoreType/States";
+import { Country, UserData } from "../consumerStoreType/UserData";
 
 export type ConsumerStoreType = {
   user: UserData | null;
@@ -31,8 +33,13 @@ export type ConsumerStoreType = {
   solarMicroservice: SolarMicroservice | null;
   biomassMicroservice: BiomassMicroservice | null;
   isLoading: boolean;
+  allBatteryType: AllBatteryType[];
+  allBattery: AllBattery[];
 
   createConsumer: (newConsumer: CreateConsumer) => Promise<void>;
+  getBatteryTypes: () => Promise<void>;
+  getAllBattery: () => Promise<void>;
+
   AddBattery: (battery: EVBatterySizing) => Promise<void>;
   getAllCountries: () => Promise<void>;
   //all building

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useRoomFormStore } from "@/store/RoomFormStore";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -19,8 +19,7 @@ const BuildingInformation8: React.FC<ContinueButtonType> = ({
   prevStep,
 }) => {
   const { roomFormData } = useRoomFormStore();
-  const { token } = basicConsumerStore();
-  console.log(token, "token in building");
+  const { token } = useConsumerStore();
 
   const [mobility, setMobility] = useState(false);
 

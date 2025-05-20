@@ -5,11 +5,11 @@ import home3 from "@/assets/home3.png";
 import { motion } from "framer-motion";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import { useNavigate } from "react-router-dom";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { useEffect } from "react";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 const Home = () => {
   const navigate = useNavigate();
-  const { getUserType, user } = basicConsumerStore();
+  const { getUserType, user } = useConsumerStore();
 
   const userType = [
     { user: "Normal Energy Users", path: "/basic-consumer/dashboard" },

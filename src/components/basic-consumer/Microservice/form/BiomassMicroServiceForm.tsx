@@ -1,12 +1,12 @@
 import CommonWrapper from "@/common/CommonWrapper";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import FormSubheader from "@/common/FormSubheader";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Loading from "../../Loading";
 import { useNavigate } from "react-router-dom";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 // Define the schema with Zod
 const FeedstockSchema = z.object({
@@ -65,7 +65,7 @@ const feedstockOptions = [
 
 const BiomassMicroServiceForm = ({}) => {
   const navigate = useNavigate();
-  const { postBiomassMicroServices, isLoading } = basicConsumerStore();
+  const { postBiomassMicroServices, isLoading } = useConsumerStore();
   const {
     register,
     handleSubmit,

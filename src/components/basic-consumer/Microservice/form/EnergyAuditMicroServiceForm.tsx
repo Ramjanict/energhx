@@ -3,8 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import CommonWrapper from "@/common/CommonWrapper";
-import { basicConsumerStore } from "@/store/ConsumerStore";
 import Loading from "../../Loading";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 // Define Zod schemas
 const applianceSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -108,7 +108,7 @@ interface EnergyAuditMicroServiceForm {
 const EnergyAuditMicroServiceForm: React.FC<EnergyAuditMicroServiceForm> = ({
   nextStep,
 }) => {
-  const { postEnergyAudit, isLoading, energyAudit } = basicConsumerStore();
+  const { postEnergyAudit, isLoading, energyAudit } = useConsumerStore();
 
   console.log("energyAudit", energyAudit);
 

@@ -1,8 +1,8 @@
-import { basicConsumerStore } from "@/store/ConsumerStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { Link, useNavigate } from "react-router-dom";
 
 const DropDown = () => {
-  const { token, logOutUser } = basicConsumerStore();
+  const { token, logOutUser } = useConsumerStore();
   const navigate = useNavigate();
   return (
     <div className="w-48 bg-white shadow-lg rounded-lg z-50">

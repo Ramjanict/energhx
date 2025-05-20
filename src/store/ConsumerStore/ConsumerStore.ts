@@ -8,7 +8,7 @@ const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
 
-export const basicConsumerStore = create<ConsumerStoreType>()(
+export const useConsumerStore = create<ConsumerStoreType>()(
   persist(
     (set, get) => ({
       user: null,
@@ -24,6 +24,8 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
       solarMicroservice: null,
       biomassMicroservice: null,
       isLoading: false,
+      allBatteryType: [],
+      allBattery: [],
 
       createConsumer: async (newConsumer) => {
         set({ isLoading: true });
@@ -109,7 +111,7 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
         }
       },
 
-      //all building
+      //all users Buildings
       getAllBuildings: async () => {
         const token = get().token;
         if (!token) {
@@ -169,9 +171,18 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
         }
       },
       AddRoomWithBuilding: async (room) => {
+        const token = get().token;
+        if (!token) {
+          toast.error("Token is required to fetch building types.");
+          return;
+        }
         set({ isLoading: true });
         try {
-          const { data } = await axiosSecure.post("/buildings/room", room);
+          const { data } = await axiosSecure.post("/buildings/room", room, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           if (data) {
             toast.success(data.message);
@@ -180,7 +191,7 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
             toast.error(data.message);
           }
         } catch (error) {
-          console.error("Problem during Signup", error);
+          console.error("Problem during creating Room", error);
           toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
@@ -293,18 +304,66 @@ export const basicConsumerStore = create<ConsumerStoreType>()(
           set({ isLoading: false });
         }
       },
-      //Add Battery
+
+      // get battery types
+      getBatteryTypes: async () => {
+        set({ isLoading: true });
+        try {
+          const token = get().token;
+          const { data } = await axiosSecure.get("/buildings/ev-types", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (data) {
+            set({ allBatteryType: data.data, isLoading: false });
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       AddBattery: async (battery) => {
         set({ isLoading: true });
         try {
-          const { data } = await axiosSecure.post(
-            "/analysis/ev/battery/sizing",
-            battery
-          );
+          const token = get().token;
+          const { data } = await axiosSecure.post("/buildings/ev", battery, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           if (data) {
             toast.success(data.message);
             set({ isLoading: false });
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during  create battery", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      // get battery types
+      getAllBattery: async () => {
+        set({ isLoading: true });
+        try {
+          const token = get().token;
+          const { data } = await axiosSecure.get("/buildings/ev", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (data) {
+            set({ allBattery: data.data, isLoading: false });
           } else if (data.error) {
             toast.error(data.message);
           }
