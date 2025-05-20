@@ -82,8 +82,9 @@ import BasicDeveloperBuildingInfo from "@/pages/basic-developer/BasicDeveloperBu
 import BasicServerBuildingInfo from "@/pages/basic-server/BasicServerBuildingInfo";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
 import CreatePassword from "@/components/basic-consumer/CreatePassword";
-import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumerAnalysis";
+
 import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumerAnalysis";
+import BasicConsumeranalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -162,7 +163,7 @@ const routes = createBrowserRouter([
       { path: "history", element: <BasicConsumerHistory /> },
       { path: "history/:id", element: <BasicConsumerService /> },
       { path: "settings", element: <BasicConsumerSettings /> },
-      { path: "analysis", element: <BasicConsumerAnalysis /> },
+      { path: "analysis", element: <BasicConsumeranalysis /> },
       {
         path: "form",
         element: <BasicConsumerForm />,
