@@ -1,6 +1,6 @@
 import img from "../../../assets/wordpress/hero-banner.png";
-import Header from "./Header";
-import WordPressWrapper from "../WordPressWrapper";
+import Header from "../Common/Header";
+import WordPressWrapper from "../Common/WordPressWrapper";
 
 const Hero = () => {
   return (

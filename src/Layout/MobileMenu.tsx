@@ -13,7 +13,7 @@ interface MobileMenuProps {
 }
 const MobileMenu: React.FC<MobileMenuProps> = ({ setIsOpen }) => {
   return (
-    <div className=" bg-white  fixed top-0 right-0 h-full w-full sm:w-1/2  shadow md:hidden flex justify-between p-4 z-50 ">
+    <div className=" bg-white  fixed top-0 right-0 h-full w-full sm:w-1/2  shadow md:hidden flex justify-between p-4 z-50  text-black">
       <ul className=" flex flex-col gap-4 ">
         {menuItems.map((item, i) => (
           <li key={i} className="">

@@ -38,7 +38,7 @@ const consumerMenu = [
   },
   { path: "/standard-consumer/history", label: "History", icon: IoMdTime },
   { path: "/standard-consumer/settings", label: "Settings", icon: MdSettings },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootStandardConsumer = () => {

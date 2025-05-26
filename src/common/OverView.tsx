@@ -2,9 +2,17 @@ import CommonHeader from "./CommonHeader";
 import DashBoardHeader from "./DashBoardHeader";
 import twing from "../assets/twing.png";
 import { OverViewProps } from "@/types";
+import { useLocation } from "react-router-dom";
 
 const OverView: React.FC<OverViewProps> = ({ object, handleOverview }) => {
-  console.log("handleOverview", handleOverview);
+  const { pathname } = useLocation();
+
+  const hideUI = [
+    "/basic-consumer/dashboard",
+    "/basic-consumer/dashboard/",
+    "/basic-consumer",
+    "/basic-consumer/",
+  ].includes(pathname);
   return (
     <div>
       <div className=" bg-white rounded-lg ">
@@ -30,14 +38,16 @@ const OverView: React.FC<OverViewProps> = ({ object, handleOverview }) => {
             <span className="text-primary font-semibold mr-1">Note:</span>
             {object.note}
           </p>
-          {/* 
-          {object.button && (
-            <div onClick={handleOverview} className="mt-10 text-center">
-              <button className="w-full py-3 bg-light-green text-primary  transition-all rounded-lg hover:bg-primary hover:text-white hover:cursor-pointer">
-                {object.price}$ - {object.button}
-              </button>
-            </div>
-          )} */}
+
+          <div className={`${hideUI ? "hidden" : ""}`}>
+            {object.button && (
+              <div onClick={handleOverview} className={`mt-10 text-center `}>
+                <button className="w-full py-3 bg-light-green text-primary  transition-all rounded-lg hover:bg-primary hover:text-white hover:cursor-pointer">
+                  {object.price}$ - {object.button}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

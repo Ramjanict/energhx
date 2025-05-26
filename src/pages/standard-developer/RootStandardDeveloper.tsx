@@ -26,7 +26,7 @@ const standardDeveloperSiderBarMenu = [
   { path: "/standard-developer/history", label: "History", icon: IoMdTime },
 
   { path: "/standard-developer/settings", label: "Settings", icon: MdSettings },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 const RootStandardDeveloper = () => {
   const [user] = useState({

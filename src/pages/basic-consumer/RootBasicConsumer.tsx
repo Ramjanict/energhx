@@ -21,7 +21,7 @@ const consumerMenu = [
   { path: "/basic-consumer/analysis", label: "Analysis", icon: TbReportSearch },
   { path: "/basic-consumer/settings", label: "Settings", icon: MdSettings },
 
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootBasicConsumer = () => {

@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
-import AdminRoute from "./AdminRoutes";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import CertifiedAssociates from "@/pages/standard-consumer/StandardConsumerAssociates";
@@ -78,13 +77,11 @@ import Consulting from "@/pages/wordpress/consulting/Consulting";
 import Research from "@/pages/wordpress/research/Research";
 import AboutUs from "@/pages/wordpress/about/AboutUs";
 import EvBatteryForm from "@/pages/basic-consumer/EvBatteryForm";
-import BasicDeveloperBuildingInfo from "@/pages/basic-developer/BasicDeveloperBuildingInfo";
-import BasicServerBuildingInfo from "@/pages/basic-server/BasicServerBuildingInfo";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
 import CreatePassword from "@/components/basic-consumer/CreatePassword";
-
+import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumerAnalysis";
 import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumerAnalysis";
-import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
+import ResearchDetails from "@/pages/wordpress/research/ResearchDetails";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -103,11 +100,6 @@ const routes = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard />,
       },
-
-      {
-        path: "/admin",
-        element: <AdminRoute />,
-      },
       {
         path: "/home",
         element: <WhomePage />,
@@ -123,6 +115,10 @@ const routes = createBrowserRouter([
       {
         path: "/research",
         element: <Research />,
+      },
+      {
+        path: "/research/:title",
+        element: <ResearchDetails />,
       },
 
       {
@@ -238,7 +234,7 @@ const routes = createBrowserRouter([
         path: "dashboard",
         element: <BasicServerDashboard />,
       },
-      { path: "buildingInformation", element: <BasicServerBuildingInfo /> },
+
       {
         path: "settings",
         element: <ServerSettings />,
@@ -310,7 +306,6 @@ const routes = createBrowserRouter([
     children: [
       { path: "", element: <BasicDeveloperDashboard /> },
       { path: "dashboard", element: <BasicDeveloperDashboard /> },
-      { path: "buildingInformation", element: <BasicDeveloperBuildingInfo /> },
       { path: "settings", element: <BasicDeveloperSetting /> },
       { path: "form", element: <BasicDeveloperForm /> },
     ],

@@ -26,7 +26,7 @@ const menuItems = [
   { path: "/standard-server/history", label: "History", icon: IoMdTime },
 
   { path: "/standard-server/settings", label: "Settings", icon: MdSettings },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 const RootStandardServer = () => {
   const [user] = useState({

@@ -9,23 +9,10 @@ import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { useServerStore } from "@/store/ServerStore";
-import { TbReportSearch } from "react-icons/tb";
-import { RiBuilding2Line } from "react-icons/ri";
 const developerMenu = [
   { path: "/basic-developer/dashboard", label: "Dashboard", icon: FaHome },
-  {
-    path: "/basic-developer/buildingInformation",
-    label: "Building Information",
-    icon: RiBuilding2Line,
-  },
-  {
-    path: "/basic-developer/analysis",
-    label: "Analysis",
-    icon: TbReportSearch,
-  },
-
   { path: "/basic-developer/settings", label: "Settings", icon: MdSettings },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootBasicDeveloper = () => {

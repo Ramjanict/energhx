@@ -12,6 +12,9 @@ const Layout: React.FC = () => {
     "/research",
     "/energhxplus",
     "/contact-us",
+    "/research/emmanuel-ob-ogedengbe",
+    "/research/olugbenga-o-noah",
+    "/research/buraimoh-olanike-maria",
   ].includes(pathname);
   return (
     <div>

@@ -10,22 +10,10 @@ import userpic from "../../assets/user.png";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { IoMdTime } from "react-icons/io";
 import { useServerStore } from "@/store/ServerStore";
-import { TbReportSearch } from "react-icons/tb";
-import { RiBuilding2Line } from "react-icons/ri";
 const serverMenu = [
   { path: "/basic-server/dashboard", label: "Dashboard", icon: FaHome },
-  {
-    path: "/basic-server/buildingInformation",
-    label: "Building Information",
-    icon: RiBuilding2Line,
-  },
-  {
-    path: "/basic-server/analysis",
-    label: "Analysis",
-    icon: TbReportSearch,
-  },
   { path: "/basic-server/settings", label: "Settings", icon: IoMdTime },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootBasicServer = () => {

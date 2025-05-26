@@ -51,7 +51,7 @@ const serverInternMenu = [
     label: "Settings",
     icon: MdSettings,
   },
-  { path: "/logout", label: "Logout", icon: MdLogout },
+  { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootStandardServerCertified = () => {
