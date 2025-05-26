@@ -79,9 +79,9 @@ import AboutUs from "@/pages/wordpress/about/AboutUs";
 import EvBatteryForm from "@/pages/basic-consumer/EvBatteryForm";
 import AddRoomWithBuilding from "@/components/standard-consumer/step-form/AddRoomWithBuilding";
 import CreatePassword from "@/components/basic-consumer/CreatePassword";
-import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumerAnalysis";
 import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumerAnalysis";
 import ResearchDetails from "@/pages/wordpress/research/ResearchDetails";
+import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
 const routes = createBrowserRouter([
   {
     path: "/",
