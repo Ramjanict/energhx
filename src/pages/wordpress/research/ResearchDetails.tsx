@@ -33,7 +33,7 @@ const ResearchDetails = () => {
         <div className=" pt-16">
           <div className=" flex flex-col lg:flex-row gap-4 ">
             <img
-              className="max:min-w-xl  rounded-lg"
+              className="w-[450px]  rounded-lg"
               src={researcher?.image}
               alt={researcher?.title}
             />
@@ -51,7 +51,7 @@ const ResearchDetails = () => {
             </div>
           </div>
           <div>
-            <h2 className=" font-bold py-1 sm">A. Professional Profile</h2>
+            <h2 className=" font-bold py-1 ">A. Professional Profile</h2>
             {researcher?.profile?.map((item) => (
               <div className="flex items-start max-w-5xl py-1">
                 <span className="text-2xl ">
@@ -74,7 +74,7 @@ const ResearchDetails = () => {
           </div>
         </div>
         {/* Recommended Researchers */}
-        <div className="py-5">
+        <div className="pt-10 pb-16">
           <h2 className="text-2xl font-semibold pb-2 ">Researchers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {recommendedResearchers.map((item, i) => (
