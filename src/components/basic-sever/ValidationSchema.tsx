@@ -1,43 +1,51 @@
 import { z } from "zod";
 
-export const sungUpSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+const MAX_IMAGE_SIZE = 4 * 1024 * 1024; // 4MB
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
+export const signupSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  otherName: z.string().optional(),
+  sex: z.enum(["MALE", "FEMALE"]),
   companyName: z.string().optional(),
-  sex: z.enum(["male", "female"]),
-  mail: z.string().email("Invalid email address"),
-  number: z.string().min(2, "Number must be at least 2 characters"),
-  street: z.string().min(3, "Street must be at least 3 characters"),
-  city: z.string().min(3, "City must be at least 3 characters"),
+  email: z.string().email("Invalid email address"),
+  image: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Please upload a valid image file",
+    })
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
+      message: "Only .jpg, .jpeg, .png, and .webp formats are supported",
+    })
+    .refine((file) => file?.size <= MAX_IMAGE_SIZE, {
+      message: "Max file size is 4MB",
+    })
+    .optional()
+    .or(z.literal(undefined)),
+  streetNumber: z
+    .number({ invalid_type_error: "Street number must be a number" })
+    .int()
+    .positive("Street number must be a positive integer"),
+  street: z.string().min(1, "Street name is required"),
+  city: z.string().min(1, "City is required"),
   postalCode: z
-    .string()
-    .min(3, "Postal code must be at least 3 characters")
-    .transform((val) => parseInt(val, 10)),
-  province: z.string().min(2, "Province must be at least 2 characters"),
-  country: z.string().min(2, "Country must be at least 2 characters"),
-  interest: z.string().optional(),
+    .number({ invalid_type_error: "Postal code must be a number" })
+    .int()
+    .nonnegative("Postal code must be a non-negative integer"),
+  countryId: z.string().uuid("Please select a valid country"),
+  stateId: z.string().uuid("Please select a valid state"),
+  // userType: z.enum(["SERVER", "DEVELOPER"]),
 });
 
-export type FormData = z.infer<typeof sungUpSchema>;
+export type SignUpType = z.infer<typeof signupSchema>;
 
-export const workExperienceSchema = z.object({
-  workEngagement: z
-    .string()
-    .min(2, "Work engagement must be at least 2 characters"),
-  workEngagementTwo: z
-    .string()
-    .min(2, "Work engagement must be at least 2 characters"),
-  countryOfResidence: z
-    .string()
-    .min(2, "Country of residence must be at least 2 characters"),
-  uploadDocOne: z.instanceof(File).optional(),
-  uploadDocTwo: z.instanceof(File).optional(),
-  passportPhotograph: z.instanceof(File).optional(),
-});
-
-export type workExperienceType = z.infer<typeof workExperienceSchema>;
-
-export const workExperienceTwoSchema = z.object({
+export const workExperience = z.object({
   workEngagementThree: z
     .string()
     .min(2, "Work engagement must be at least 2 characters"),
@@ -68,72 +76,4 @@ export const workExperienceTwoSchema = z.object({
   recommendationLetter: z.instanceof(File).optional(),
 });
 
-export type workExperienceTwoType = z.infer<typeof workExperienceTwoSchema>;
-
-export const verifySubmitSchema = z.object({
-  verifyFirstName: z
-    .string()
-    .min(2, "First name must be at least 2 characters"),
-  verifyLastName: z.string().min(2, "Last name must be at least 2 characters"),
-  homeTel: z.string().min(10, "Home telephone must be at least 10 characters"),
-  altTel: z
-    .string()
-    .min(10, "Alternative telephone must be at least 10 characters"),
-  verifyMail: z.string().email("Invalid email address"),
-  companyName: z
-    .string()
-    .min(2, "Company name must be at least 2 characters")
-    .optional(),
-});
-
-export type verifySubmitType = z.infer<typeof verifySubmitSchema>;
-
-export const upgradeFacilitesSchema = z.object({
-  service: z.string().min(2, "Service must be at least 2 characters"),
-  utilityName: z.string().min(2, "Utility name must be at least 2 characters"),
-  accountNo: z.coerce
-    .number()
-    .min(2, "Account number must be at least 2 characters"),
-  upgradeFacilitiesHomeTel: z
-    .string()
-    .min(10, "Home telephone must be at least 10 characters"),
-  upgradeFacilitiesAltTel: z
-    .string()
-    .min(10, "Alternative telephone must be at least 10 characters"),
-  streetAddress: z
-    .string()
-    .min(3, "Street address must be at least 3 characters"),
-  suite: z.string().min(2, "Suite must be at least 2 characters"),
-  upgradeFacilitiesCity: z
-    .string()
-    .min(3, "City must be at least 3 characters"),
-  upgradeFacilitiesPostalCode: z
-    .string()
-    .min(3, "Postal code must be at least 3 characters"),
-});
-
-export type upgradeFacilitiesType = z.infer<typeof upgradeFacilitesSchema>;
-
-export const upgradeFacilitesSchemaTwo = z.object({
-  upgradeFacilitiesFirstName: z
-    .string()
-    .min(2, "First name must be at least 2 characters"),
-  upgradeFacilitiesLastName: z
-    .string()
-    .min(2, "Last name must be at least 2 characters"),
-  upgradeFacilitiesHomeTelTwo: z
-    .string()
-    .min(10, "Home telephone must be at least 10 characters"),
-  upgradeFacilitiesAltTelTwo: z
-    .string()
-    .min(10, "Home telephone must be at least 10 characters"),
-  upgradeFacilitiesMailTwo: z.string().email("Invalid email address"),
-  upgradeFacilitiesCompanyName: z
-    .string()
-    .min(2, "Company name must be at least 2 characters")
-    .optional(),
-});
-
-export type upgradeFacilitiesTwoType = z.infer<
-  typeof upgradeFacilitesSchemaTwo
->;
+export type WorkExperienceType = z.infer<typeof workExperience>;

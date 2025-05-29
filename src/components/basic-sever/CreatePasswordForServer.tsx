@@ -3,7 +3,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import { useServerStore } from "@/store/ServerStore/ServerStore";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -12,8 +12,8 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const CreatePassword = () => {
-  const { createPassword, isLoading } = useConsumerStore();
+const CreatePasswordForServer = () => {
+  const { createPassword, isLoading } = useServerStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
@@ -106,4 +106,4 @@ const CreatePassword = () => {
   );
 };
 
-export default CreatePassword;
+export default CreatePasswordForServer;

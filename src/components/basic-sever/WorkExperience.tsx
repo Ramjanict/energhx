@@ -1,349 +1,242 @@
 import CommonWrapper from "@/common/CommonWrapper";
 import { Button } from "@/components/ui/button";
-import {
-  workExperienceSchema,
-  workExperienceType,
-} from "@/components/basic-sever/ValidationSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
 import { FaAngleDoubleRight, FaAngleLeft } from "react-icons/fa";
-import { MdOutlineFileUpload } from "react-icons/md";
-import { CiSquarePlus } from "react-icons/ci";
-import { toast } from "react-toastify";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import DashBoardHeader from "@/common/DashBoardHeader";
 import Breadcrumbs from "@/common/Breadcrumbs";
+import DashBoardHeader from "@/common/DashBoardHeader";
+import AddExperience from "./AddExperience";
+import { AiOutlineUpload } from "react-icons/ai";
 
-interface WorkExperienceProps {
-  formData: any;
-  updateFormData: (field: string, value: string | number | File) => void;
-  nextStep: () => void;
-  prevStep: () => void;
-}
-
-const WorkExperience: React.FC<WorkExperienceProps> = ({
-  formData,
-  updateFormData,
-  nextStep,
-  prevStep,
-}) => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<workExperienceType>({
-    resolver: zodResolver(workExperienceSchema),
-    defaultValues: { ...formData },
-  });
-
-  const [uploadDocOnePreview, setUploadDocOnePreview] = useState<string | null>(
-    null
-  );
-  const [uploadDocTwoPreview, setUploadDocTwoPreview] = useState<string | null>(
-    null
-  );
-  const [passportPhotoPreview, setPassportPhotoPreview] = useState<
-    string | null
-  >(null);
-
-  const onSubmit = (data: workExperienceType) => {
-    Object.entries(data).forEach(([field, value]) => {
-      updateFormData(field, value);
-    });
-    nextStep();
-    toast.success("Form Submitted successfully");
-  };
-  const handlePrevious = () => {
-    prevStep();
-  };
-
-  const validateFileType = (file: File, allowedTypes: string[]) => {
-    return allowedTypes.includes(file.type);
-  };
+const WorkExperience = () => {
   return (
     <div>
       <CommonWrapper>
-        <div className="">
+        <div>
           <div className="pb-10">
             <Breadcrumbs />
           </div>
           <DashBoardHeader> Work Experience</DashBoardHeader>
-          <p className="my-6 text-primary-gray text-md font-semibold">
-            Personal Information
+
+          <p className="text-primary-gray text-sm font-semibold py-4">
+            Provide the needed qualifications and details needed.
           </p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label
-              htmlFor="workEngagement"
-              className="text-primary-gray text-md"
-            >
-              Name of work engagement
-            </label>
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-4 lg:gap-12 mt-3 mb-3">
-              <div className="w-full lg:w-auto">
+          <p className="text-primary-gray text-sm font-semibold py-2">
+            Work details
+          </p>
+
+          <form className="flex flex-col gap-6">
+            {/* First Two Inputs */}
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              <div className="w-full">
+                <label
+                  htmlFor="workEngagementThree"
+                  className="text-primary-gray block mb-1"
+                >
+                  Name of work engagement
+                </label>
                 <input
                   type="text"
-                  id="workEngagement"
-                  {...register("workEngagement")}
-                  className="w-full lg:w-[486px] p-2 border border-primary-gray"
+                  id="workEngagementThree"
+                  className="w-full p-2 border border-primary-gray outline-none"
                 />
-                {errors.workEngagement && (
-                  <p className="text-red-500">
-                    {errors.workEngagement.message}
-                  </p>
-                )}
               </div>
-              <div className="flex flex-col gap-5">
+
+              <div className="w-full">
                 <label
-                  htmlFor="uploadDocOne"
-                  className="flex items-center justify-center gap-2 w-full lg:w-[236px] p-2 bg-light-green text-primary-green border border-primary-green rounded cursor-pointer hover:bg-gray-100"
+                  htmlFor="addressOfWorkEngagement"
+                  className="text-primary-gray block mb-1"
                 >
-                  {uploadDocOnePreview ? (
-                    <p className="text-green-500 mt-2">
-                      📄 {uploadDocOnePreview}
-                    </p>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <MdOutlineFileUpload className="text-primary-green text-2xl" />
-                      <span>Upload Documents</span>
-                    </div>
-                  )}
+                  Address of work engagement
                 </label>
-
-                <input
-                  type="file"
-                  id="uploadDocOne"
-                  {...register("uploadDocOne")}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      if (validateFileType(file, ["application/pdf"])) {
-                        setValue("uploadDocOne", file);
-                        setUploadDocOnePreview(file.name);
-                      } else {
-                        toast.error(
-                          "Only PDF files are allowed for Document 1"
-                        );
-                      }
-                    }
-                  }}
-                  className="hidden"
-                />
-
-                {errors.uploadDocOne && (
-                  <p className="text-red-500">{errors.uploadDocOne.message}</p>
-                )}
-              </div>
-              <Button className="bg-primary-green text-white w-fit self-center">
-                <span>
-                  <CiSquarePlus />
-                </span>
-                Add
-              </Button>
-            </div>
-            <label
-              htmlFor="workEngagementTwo"
-              className="text-primary-gray text-md"
-            >
-              Name of work engagement
-            </label>
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-y-4 lg:gap-12 mt-3 mb-3">
-              <div className="w-full lg:w-auto">
                 <input
                   type="text"
-                  id="workEngagementTwo"
-                  {...register("workEngagementTwo")}
-                  className="w-full lg:w-[486px] p-2 border border-primary-gray"
+                  id="addressOfWorkEngagement"
+                  className="w-full p-2 border border-primary-gray outline-none"
                 />
-                {errors.workEngagementTwo && (
-                  <p className="text-red-500">
-                    {errors.workEngagementTwo.message}
-                  </p>
-                )}
               </div>
-              <div className="flex flex-col gap-5">
-                <label
-                  htmlFor="uploadDocTwo"
-                  className="flex items-center justify-center gap-2 w-full lg:w-[236px] p-2 bg-light-green text-primary-green border border-primary-green rounded cursor-pointer hover:bg-gray-100"
-                >
-                  {uploadDocTwoPreview ? (
-                    <p className="text-green-500 mt-2">
-                      📄 {uploadDocTwoPreview}
-                    </p>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <MdOutlineFileUpload className="text-primary-green text-2xl" />
-                      <span>Upload Documents</span>
-                    </div>
-                  )}
-                </label>
+            </div>
 
+            {/* Job Title + Period */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="w-full">
+                <label
+                  htmlFor="jobStatus"
+                  className="text-primary-gray block mb-1"
+                >
+                  Title or job status
+                </label>
                 <input
-                  type="file"
-                  id="uploadDocTwo"
-                  {...register("uploadDocTwo")}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      if (validateFileType(file, ["application/pdf"])) {
-                        setValue("uploadDocTwo", file);
-                        setUploadDocTwoPreview(file.name);
-                      } else {
-                        toast.error(
-                          "Only PDF files are allowed for Document 2"
-                        );
-                      }
-                    }
-                  }}
-                  className="hidden"
+                  type="text"
+                  id="jobStatus"
+                  className="w-full p-2 border border-primary-gray outline-none"
                 />
-
-                {errors.uploadDocTwo && (
-                  <p className="text-red-500">{errors.uploadDocTwo.message}</p>
-                )}
               </div>
-              <Button className="bg-primary-green text-white w-fit self-center">
-                <span>
-                  <CiSquarePlus />
-                </span>
-                Add
-              </Button>
-            </div>
 
-            {/* Second Part */}
-            <div className="flex flex-col gap-2">
-              <div>
+              <div className="w-full">
                 <label
-                  htmlFor="workEngagementTwo"
-                  className="text-primary-gray text-md"
+                  htmlFor="startPeriod"
+                  className="text-primary-gray block mb-1"
                 >
-                  Passport Photograph
+                  Period
                 </label>
-              </div>
-              <div className="flex flex-col gap-5">
-                <label
-                  htmlFor="passportPhotograph"
-                  className="flex items-center justify-center gap-2 w-full lg:w-[236px] p-2 bg-light-green text-primary-green border border-primary-green rounded cursor-pointer hover:bg-gray-100"
-                >
-                  {passportPhotoPreview ? (
-                    <div className="mt-2">
-                      <img
-                        src={passportPhotoPreview}
-                        alt="Passport Preview"
-                        className="w-24 h-24 object-cover rounded-md border border-primary-green"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <MdOutlineFileUpload className="text-primary-green text-2xl" />
-                      <span>Upload Documents</span>
-                    </div>
-                  )}
-                </label>
-
                 <input
-                  type="file"
-                  id="passportPhotograph"
-                  {...register("passportPhotograph")}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      if (
-                        validateFileType(file, [
-                          "image/png",
-                          "image/jpeg",
-                          "image/jpg",
-                        ])
-                      ) {
-                        setValue("passportPhotograph", file);
-                        const imageURL = URL.createObjectURL(file);
-                        setPassportPhotoPreview(imageURL);
-                      } else {
-                        toast.error(
-                          "Only image files (PNG/JPG) are allowed for Passport Photograph"
-                        );
-                      }
-                    }
-                  }}
-                  className="hidden"
+                  type="text"
+                  id="startPeriod"
+                  placeholder="Start Date"
+                  className="w-full p-2 border border-primary-gray outline-none"
                 />
-
-                {errors.passportPhotograph && (
-                  <p className="text-red-500">
-                    {errors.passportPhotograph.message}
-                  </p>
-                )}
               </div>
-            </div>
 
-            <div className="col-span-2 w-full mt-5 mb-[50px] flex flex-col gap-2">
-              <div>
+              <div className="w-full">
                 <label
-                  htmlFor="workEngagementTwo"
-                  className="text-primary-gray text-md"
+                  htmlFor="stopPeriod"
+                  className="text-primary-gray block mb-1"
                 >
-                  Province (s)/Country of Residence
+                  Period
                 </label>
-              </div>
-              <div>
-                <Controller
-                  name="countryOfResidence"
-                  control={control}
-                  render={({ field }) => (
-                    <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full lg:w-[486px] rounded-none border-primary-gray">
-                        <SelectValue placeholder="Select Country" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-light-green">
-                        <SelectItem
-                          value="light"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          Canada
-                        </SelectItem>
-                        <SelectItem
-                          value="dark"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          USA
-                        </SelectItem>
-                        <SelectItem
-                          value="system"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          Mexico
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                <input
+                  type="text"
+                  id="stopPeriod"
+                  placeholder="End Date"
+                  className="w-full p-2 border border-primary-gray outline-none"
                 />
-                {errors.countryOfResidence && (
-                  <p className="text-red-500">
-                    {errors.countryOfResidence.message}
-                  </p>
-                )}
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-[200px]">
+
+            <AddExperience />
+
+            <p className="text-primary-gray text-sm font-semibold">
+              Publications & References
+            </p>
+
+            {/* Publisher & Title */}
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              <div className="w-full">
+                <label
+                  htmlFor="publisher"
+                  className="text-primary-gray block mb-1"
+                >
+                  Publisher
+                </label>
+                <input
+                  type="text"
+                  id="publisher"
+                  className="w-full p-2 border border-primary-gray outline-none"
+                />
+              </div>
+
+              <div className="w-full">
+                <label
+                  htmlFor="titleOfPublication"
+                  className="text-primary-gray block mb-1"
+                >
+                  Title of publication
+                </label>
+                <input
+                  type="text"
+                  id="titleOfPublication"
+                  className="w-full p-2 border border-primary-gray outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Authors */}
+            <div>
+              <label
+                htmlFor="listOfAuthors"
+                className="text-primary-gray block mb-1"
+              >
+                List of authors
+              </label>
+              <textarea
+                rows={5}
+                id="listOfAuthors"
+                className="w-full p-2 border border-primary-gray outline-none"
+              />
+            </div>
+
+            {/* Pages & Year */}
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              <div className="w-full">
+                <label htmlFor="pages" className="text-primary-gray block mb-1">
+                  Pages
+                </label>
+                <input
+                  type="text"
+                  id="pages"
+                  className="w-full p-2 border border-primary-gray outline-none"
+                />
+              </div>
+
+              <div className="w-full">
+                <label
+                  htmlFor="yearOfPublication"
+                  className="text-primary-gray block mb-1"
+                >
+                  Year of Publication
+                </label>
+                <input
+                  type="number"
+                  id="yearOfPublication"
+                  className="w-full p-2 border border-primary-gray outline-none"
+                />
+              </div>
+            </div>
+
+            <AddExperience />
+
+            <p className="text-primary-gray text-sm font-semibold">
+              References & Job recommendation
+            </p>
+
+            <div className="w-full">
+              <label
+                htmlFor="nameOfPersonOrCompany"
+                className="text-primary-gray block mb-1"
+              >
+                Name of person or company
+              </label>
+              <input
+                type="text"
+                id="nameOfPersonOrCompany"
+                className="w-full p-2 border border-primary-gray outline-none"
+              />
+            </div>
+
+            <p className="text-primary-gray text-sm">
+              Reference/ recommendation letter, if applicable
+            </p>
+
+            {/* ✅ Fixed Upload Section */}
+            <div className="w-full md:w-[236px]">
+              <label
+                htmlFor="recommendationLetter"
+                className="flex items-center justify-center gap-2 w-full p-2 bg-light-green text-primary-green border border-primary-green rounded cursor-pointer hover:bg-gray-100"
+              >
+                <AiOutlineUpload />
+                <span>Upload</span>
+              </label>
+              <input
+                type="file"
+                id="recommendationLetter"
+                className="hidden"
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              />
+            </div>
+
+            <AddExperience />
+
+            {/* Navigation Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-5 py-10">
               <Button
                 variant="outline"
-                className="bg-light-green border-primary-green text-primary-green py-5 rounded-md w-full sm:w-fit"
-                onClick={handlePrevious}
+                className="bg-light-green hover:bg-green-200 border-primary-green text-primary-green py-5 rounded-md w-full sm:w-auto"
               >
                 <FaAngleLeft />
                 Previous
               </Button>
               <Button
                 type="submit"
-                className="bg-primary-green text-white py-5 rounded-md w-full sm:w-fit"
+                className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto"
               >
                 Continue <FaAngleDoubleRight />
               </Button>

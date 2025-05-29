@@ -65,7 +65,6 @@ import StandardConsumerHistory from "@/pages/standard-consumer/StandardConsumerH
 import DevAndServerHistory from "@/common/LMS/DevAndServerHistory";
 import BasicServerForm from "@/pages/basic-server/BasicServerForm";
 import StandardConsumerEnergyAudit from "@/pages/standard-consumer/StandardConsumerEnergyAudit";
-
 import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/form/SolarMicroserviceForm";
 import BiomassMicroServiceForm from "@/components/basic-consumer/Microservice/form/BiomassMicroServiceForm";
 import TotalOverview from "@/components/basic-consumer/TotalOverview";
@@ -82,6 +81,7 @@ import CreatePassword from "@/components/basic-consumer/CreatePassword";
 import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumerAnalysis";
 import ResearchDetails from "@/pages/wordpress/research/ResearchDetails";
 import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
+import CreatePasswordForServer from "@/components/basic-sever/CreatePasswordForServer";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -139,9 +139,15 @@ const routes = createBrowserRouter([
         element: <AddRoomWithBuilding />,
       },
 
+      //only for the  consumer users
       {
         path: "/create-password",
         element: <CreatePassword />,
+      },
+      //only for the  server and developer users
+      {
+        path: "/user-create-password",
+        element: <CreatePasswordForServer />,
       },
       {
         path: "/login",

@@ -7,23 +7,34 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import { useServerStore } from "@/store/ServerStore/ServerStore";
+
 const Home = () => {
   const navigate = useNavigate();
   const { getUserType, user } = useConsumerStore();
+  const { getUser, DevToken, DevUser, getDevUserType, userType } =
+    useServerStore();
 
-  const userType = [
+  console.log("userType", userType);
+  const userTypeList = [
     { user: "Normal Energy Users", path: "/basic-consumer/dashboard" },
-    { user: "Energy Interns", path: "/basic-server/dashboard" },
-    { user: "Energy Installers", path: "/basic-developer/dashboard" },
+    { user: "SERVER", path: "/basic-server/dashboard" },
+    { user: "DEVELOPER", path: "/basic-developer/dashboard" },
   ];
-
   useEffect(() => {
-    const matched = userType.find((u) => u.user === user?.userType);
+    const currentUserType = user?.userType || DevUser?.user.userType;
+    const matched = userTypeList.find((u) => u.user === currentUserType);
 
     if (matched) {
       navigate(matched.path);
     }
-  }, [user]);
+  }, [user, DevUser]);
+
+  useEffect(() => {
+    if (DevToken) {
+      getUser();
+    }
+  }, [DevToken]);
 
   return (
     <CommonWrapper>
@@ -53,7 +64,7 @@ const Home = () => {
           <motion.div
             onClick={() => {
               navigate("/basic-server/form");
-              getUserType("Energy Interns");
+              getDevUserType("SERVER");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
@@ -69,7 +80,7 @@ const Home = () => {
           <motion.div
             onClick={() => {
               navigate("/basic-developer/form");
-              getUserType("Energy Installers");
+              getDevUserType("DEVELOPER");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}

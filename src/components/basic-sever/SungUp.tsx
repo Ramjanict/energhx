@@ -1,327 +1,443 @@
+import React, { useEffect, useState } from "react";
 import CommonWrapper from "@/common/CommonWrapper";
+import DashBoardHeader from "@/common/DashBoardHeader";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { FaAngleLeft } from "react-icons/fa6";
+} from "../ui/select";
 import { FaAngleDoubleRight } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { Button } from "../ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormData,
-  sungUpSchema,
-} from "@/components/basic-sever/ValidationSchema";
-import DashBoardHeader from "@/common/DashBoardHeader";
+import { AiOutlineUpload } from "react-icons/ai";
+import { useServerStore } from "@/store/ServerStore/ServerStore";
+import { SignUpType, signupSchema } from "./ValidationSchema";
 
-interface SungUpProps {
-  formData: any;
-  updateFormData: (field: string, value: string | number) => void;
-  nextStep: () => void;
-}
+const SignUp = () => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const {
+    allCountry,
+    allSates,
+    countries,
+    states,
+    userRegister,
+    isLoading,
+    userType,
+  } = useServerStore();
 
-const SungUp: React.FC<SungUpProps> = ({
-  formData,
-  updateFormData,
-  nextStep,
-}) => {
+  useEffect(() => {
+    countries();
+  }, [countries]);
+
   const {
     register,
     handleSubmit,
+    setValue,
+
     control,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(sungUpSchema),
-    defaultValues: { ...formData },
+  } = useForm<SignUpType>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      firstName: "Md Ramjan",
+      lastName: "Ali",
+      otherName: "Romen",
+      sex: "MALE",
+      companyName: "Softvence",
+      email: "example@gmail.com",
+      image: undefined,
+      streetNumber: 105,
+      street: "Charaykuri",
+      city: "Dhaka",
+      postalCode: 7000,
+      countryId: "",
+      stateId: "",
+      // userType: "SERVER",
+    },
   });
 
-  const onSubmit = (data: FormData) => {
-    Object.entries(data).forEach(([field, value]) => {
-      updateFormData(field, value);
-    });
-    nextStep();
-    toast.success("A confirmation email has been sent to your account");
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("image", file, { shouldValidate: true });
+      const imageURL = URL.createObjectURL(file);
+      setImagePreview(imageURL);
+    }
+  };
+
+  const onSubmit = async (data: SignUpType) => {
+    const newUser = { ...data, userType };
+    try {
+      const formData = new FormData();
+      const { image, ...restData } = newUser;
+      formData.append("text", JSON.stringify(restData));
+
+      if (image && image instanceof File) {
+        formData.append("file", image);
+      }
+      await userRegister(formData);
+    } catch (error) {
+      console.error("Form submission failed:", error);
+    }
   };
 
   return (
-    <div>
-      <CommonWrapper>
-        <div className="">
-          <DashBoardHeader>Sung Up</DashBoardHeader>
-          <p className="mt-5 text-primary-gray text-md font-semibold">
-            Personal Information
-          </p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col lg:flex-row gap-6 mt-5">
-              <div className="flex-1">
-                <label
-                  htmlFor="firstName"
-                  className="text-primary-gray text-md"
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  {...register("firstName")}
-                  placeholder="First Name"
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                />
-                {errors.firstName && (
-                  <p className="text-red-500">{errors.firstName.message}</p>
-                )}
-              </div>
-              <div className="flex-1">
-                <label htmlFor="lastName" className="text-primary-gray text-md">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  {...register("lastName")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Last Name"
-                />
-                {errors.lastName && (
-                  <p className="text-red-500">{errors.lastName.message}</p>
-                )}
-              </div>
-              <div className="flex-1">
-                <label htmlFor="lastName" className="text-primary-gray text-md">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  {...register("companyName")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Company Name"
-                />
-                {errors.companyName && (
-                  <p className="text-red-500">{errors.companyName.message}</p>
-                )}
-              </div>
+    <CommonWrapper>
+      <div>
+        <DashBoardHeader>Sign Up</DashBoardHeader>
+        <p className="mt-5 text-primary-gray text-md font-semibold">
+          Personal Information
+        </p>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* First Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="firstName" className="text-primary-gray text-md">
+                First Name
+              </label>
+              <input
+                {...register("firstName")}
+                id="firstName"
+                placeholder="First Name"
+                className="mt-1 w-full p-2 border border-primary-gray"
+              />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.firstName.message}
+                </p>
+              )}
             </div>
 
-            {/* Second Part */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 items-center">
-              <div>
-                <label className="text-primary-gray">Sex</label>
-                <div className="flex gap-4 mt-2">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      value="male"
-                      {...register("sex")}
-                      className="hidden peer"
-                    />
-                    <span className="w-5 h-5 inline-block border rounded-sm border-primary-gray bg-white peer-checked:bg-primary-green"></span>
-                    <span className="ml-2 text-primary-gray">Male</span>
-                  </label>
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="radio"
-                      value="female"
-                      {...register("sex")}
-                      className="hidden peer"
-                    />
-                    <span className="w-5 h-5 inline-block border rounded-sm border-primary-gray bg-white peer-checked:bg-primary-green"></span>
-                    <span className="ml-2 text-primary-gray">Female</span>
-                  </label>
-                </div>
-                {errors.sex && (
-                  <p className="text-red-500">{errors.sex.message}</p>
-                )}
-              </div>
+            <div>
+              <label htmlFor="lastName" className="text-primary-gray text-md">
+                Last Name
+              </label>
+              <input
+                {...register("lastName")}
+                id="lastName"
+                placeholder="Last Name"
+                className="mt-1 w-full p-2 border border-primary-gray"
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="otherName" className="text-primary-gray text-md">
+                Other Name
+              </label>
+              <input
+                {...register("otherName")}
+                id="otherName"
+                placeholder="Other Name"
+                className="mt-1 w-full p-2 border border-primary-gray"
+              />
+              {errors.otherName && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.otherName.message}
+                </p>
+              )}
+            </div>
 
-              <div>
-                <label htmlFor="mail" className="text-primary-gray text-md">
-                  Mail
+            <div>
+              <label className="text-primary-gray text-md">Company Name</label>
+              <input
+                type="text"
+                {...register("companyName")}
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="Company Name"
+              />
+            </div>
+          </div>
+
+          {/* Second Part */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 items-center">
+            {/* Gender */}
+            <div>
+              <label className="text-primary-gray">Sex</label>
+              <div className="flex gap-4 ">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    value="MALE"
+                    className="hidden peer"
+                    {...register("sex")}
+                  />
+                  <span className="min-w-5 min-h-5 inline-block border rounded-sm border-primary-gray bg-white peer-checked:bg-primary-green"></span>
+                  <span className="text-primary-gray ml-1">Male</span>
                 </label>
-                <input
-                  type="text"
-                  id="mail"
-                  {...register("mail")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Enter Email"
-                />
-                {errors.mail && (
-                  <p className="text-red-500">{errors.mail.message}</p>
-                )}
-              </div>
-
-              <p className="col-span-1 md:col-span-2 lg:col-span-3 my-5 text-primary-gray font-semibold">
-                Street Address
-              </p>
-
-              <div>
-                <label htmlFor="number" className="text-primary-gray text-md">
-                  Number
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    value="FEMALE"
+                    className="hidden peer"
+                    {...register("sex")}
+                  />
+                  <span className="min-w-5 min-h-5 inline-block border rounded-sm border-primary-gray bg-white peer-checked:bg-primary-green"></span>
+                  <span className="text-primary-gray ml-1">Female</span>
                 </label>
-                <input
-                  type="number"
-                  id="number"
-                  {...register("number")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Enter Number"
-                />
-                {errors.number && (
-                  <p className="text-red-500">{errors.number.message}</p>
-                )}
               </div>
+              {errors.sex && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.sex.message}
+                </p>
+              )}
+            </div>
 
-              <div>
-                <label htmlFor="street" className="text-primary-gray text-md">
-                  Street
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  {...register("street")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Street Address"
-                />
-                {errors.street && (
-                  <p className="text-red-500">{errors.street.message}</p>
-                )}
-              </div>
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="text-primary-gray text-md">
+                Email
+              </label>
+              <input
+                {...register("email")}
+                id="email"
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="Enter Email"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
 
-              <div>
-                <label htmlFor="city" className="text-primary-gray text-md">
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  {...register("city")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="City"
-                />
-                {errors.city && (
-                  <p className="text-red-500">{errors.city.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="postalCode"
-                  className="text-primary-gray text-md"
-                >
-                  Postal Code
-                </label>
-                <input
-                  type="number"
-                  id="postalCode"
-                  {...register("postalCode")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Postal Code"
-                />
-                {errors.postalCode && (
-                  <p className="text-red-500">{errors.postalCode.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="province" className="text-primary-gray text-md">
-                  Province
-                </label>
-                <input
-                  type="text"
-                  id="province"
-                  {...register("province")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="province"
-                />
-                {errors.province && (
-                  <p className="text-red-500">{errors.province.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label htmlFor="country" className="text-primary-gray text-md">
-                  Country
-                </label>
-                <input
-                  type="text"
-                  id="country"
-                  {...register("country")}
-                  className="mt-1 w-full p-2 border border-primary-gray"
-                  placeholder="Country"
-                />
-                {errors.country && (
-                  <p className="text-red-500">{errors.country.message}</p>
-                )}
-              </div>
-
-              <p className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col mt-5 text-primary-gray font-semibold">
-                Internship Interest
-                <span className="text-primary-gray font-extralight mt-2">
-                  Internship Interest (must select at least one)
+            {/* Image Upload */}
+            <div>
+              <label
+                htmlFor="photo"
+                className="block text-primary-gray text-md mb-1"
+              >
+                Photo
+              </label>
+              <div className="flex items-center border border-primary bg-secondary p-2 relative">
+                <span className="text-xl text-primary">
+                  <AiOutlineUpload />
                 </span>
-              </p>
-
-              <div className="col-span-1 md:col-span-2 lg:col-span-2 w-full mb-[50px]">
-                <Controller
-                  name="interest"
-                  control={control}
-                  render={({ field }) => (
-                    <Select {...field} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full md:w-[486px] rounded-none border-primary-gray">
-                        <SelectValue placeholder="Choose" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-light-green">
-                        <SelectItem
-                          value="light"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          Light
-                        </SelectItem>
-                        <SelectItem
-                          value="dark"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          Dark
-                        </SelectItem>
-                        <SelectItem
-                          value="system"
-                          className="hover:bg-primary-green hover:text-white"
-                        >
-                          System
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
+                <p className="px-2 text-primary">Upload photo</p>
+                <input
+                  type="file"
+                  id="photo"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                {errors.interest && (
-                  <p className="text-red-500">{errors.interest.message}</p>
-                )}
               </div>
+              {errors.image && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1">
+                  {errors.image.message}
+                </p>
+              )}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-[200px] mt-8">
-              <Button
-                variant="outline"
-                className="bg-light-green border-primary-green text-primary-green py-5 rounded-md w-full sm:w-auto"
-              >
-                <FaAngleLeft />
-                Previous
-              </Button>
-              <Button
-                type="submit"
-                className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto"
-              >
-                Continue <FaAngleDoubleRight />
-              </Button>
+            {/* Image Preview */}
+            <div>
+              {imagePreview && (
+                <div className="mt-2">
+                  <p className="text-sm text-primary-gray mb-1">
+                    Image Preview:
+                  </p>
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="max-w-xs max-h-48 object-contain border border-primary-gray rounded-md"
+                  />
+                </div>
+              )}
+              {imagePreview && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setValue("image", undefined, { shouldValidate: true });
+                    setImagePreview(null);
+                    const input = document.getElementById(
+                      "photo"
+                    ) as HTMLInputElement;
+                    if (input) input.value = "";
+                  }}
+                  className="mt-2 text-sm bg-red-500 px-4 py-2 rounded-md text-white"
+                >
+                  Remove Image
+                </button>
+              )}
             </div>
-          </form>
-        </div>
-      </CommonWrapper>
-    </div>
+
+            {/* Street Address Label */}
+            <p className="col-span-1 md:col-span-2 lg:col-span-3 text-primary-gray font-semibold">
+              Street Address
+            </p>
+
+            <div>
+              <label
+                htmlFor="streetNumber"
+                className="text-primary-gray text-md"
+              >
+                Street number
+              </label>
+              <input
+                type="number"
+                {...register("streetNumber", { valueAsNumber: true })}
+                id="streetNumber"
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="Enter Number"
+              />
+              {errors.streetNumber && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.streetNumber.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="street" className="text-primary-gray text-md">
+                Street
+              </label>
+              <input
+                {...register("street")}
+                id="street"
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="Street Address"
+              />
+              {errors.street && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.street.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="city" className="text-primary-gray text-md">
+                City
+              </label>
+              <input
+                {...register("city")}
+                id="city"
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="City"
+              />
+              {errors.city && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.city.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="postalCode" className="text-primary-gray text-md">
+                Postal Code
+              </label>
+              <input
+                type="number"
+                {...register("postalCode", { valueAsNumber: true })}
+                id="postalCode"
+                className="mt-1 w-full p-2 border border-primary-gray"
+                placeholder="Postal Code"
+              />
+              {errors.postalCode && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.postalCode.message}
+                </p>
+              )}
+            </div>
+
+            {/* Country Select */}
+            <div>
+              <label
+                htmlFor="countryId"
+                className="text-primary-gray block mb-1"
+              >
+                Country
+              </label>
+              <Controller
+                name="countryId"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      states(value);
+                    }}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="w-full outline-none text-primary-gray py-5 rounded-none">
+                      <SelectValue placeholder="Choose country" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-light-green">
+                      {allCountry.map((country) => (
+                        <SelectItem
+                          key={country.id}
+                          value={country.id}
+                          className="hover:bg-primary-green hover:text-white"
+                        >
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.countryId && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.countryId.message}
+                </p>
+              )}
+            </div>
+
+            {/* State Select */}
+            <div>
+              <label htmlFor="stateId" className="text-primary-gray block mb-1">
+                Province
+              </label>
+              <Controller
+                name="stateId"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full outline-none text-primary-gray py-5 rounded-none">
+                      <SelectValue placeholder="Choose province" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-light-green">
+                      {allSates.map((state) => (
+                        <SelectItem
+                          key={state.id}
+                          value={state.id}
+                          className="hover:bg-primary-green hover:text-white"
+                        >
+                          {state.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.stateId && (
+                <p className="text-red-500 text-xs sm:text-sm">
+                  {errors.stateId.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="py-10">
+            <Button
+              type="submit"
+              className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto cursor-pointer"
+            >
+              {isLoading ? "Processing" : "Continue"}
+              <FaAngleDoubleRight />
+            </Button>
+          </div>
+        </form>
+      </div>
+    </CommonWrapper>
   );
 };
 
-export default SungUp;
+export default SignUp;

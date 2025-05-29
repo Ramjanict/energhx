@@ -1,20 +1,20 @@
-import MultiStepForm from "@/components/basic-sever/MultiStepForm";
-import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import SungUp from "@/components/basic-sever/SungUp";
+import { useServerStore } from "@/store/ServerStore/ServerStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BasicDeveloperForm = () => {
-  const { token } = useConsumerStore();
+  const { DevToken } = useServerStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      navigate("/basic-developer/dashboard");
+    if (DevToken) {
+      navigate("/basic-server/dashboard");
     }
-  }, [token]);
+  }, [DevToken]);
   return (
     <>
-      <MultiStepForm link="/basic-developer" />
+      <SungUp />
     </>
   );
 };
