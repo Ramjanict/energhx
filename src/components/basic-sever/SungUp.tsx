@@ -369,7 +369,7 @@ const SignUp = () => {
                       <SelectValue placeholder="Choose country" />
                     </SelectTrigger>
                     <SelectContent className="bg-light-green">
-                      {allCountry.map((country) => (
+                      {allCountry?.map((country) => (
                         <SelectItem
                           key={country.id}
                           value={country.id}
@@ -403,7 +403,7 @@ const SignUp = () => {
                       <SelectValue placeholder="Choose province" />
                     </SelectTrigger>
                     <SelectContent className="bg-light-green">
-                      {allSates.map((state) => (
+                      {allSates?.map((state) => (
                         <SelectItem
                           key={state.id}
                           value={state.id}
