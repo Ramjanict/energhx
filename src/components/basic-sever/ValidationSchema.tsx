@@ -40,40 +40,71 @@ export const signupSchema = z.object({
     .nonnegative("Postal code must be a non-negative integer"),
   countryId: z.string().uuid("Please select a valid country"),
   stateId: z.string().uuid("Please select a valid state"),
-  // userType: z.enum(["SERVER", "DEVELOPER"]),
 });
 
 export type SignUpType = z.infer<typeof signupSchema>;
 
-export const workExperience = z.object({
-  workEngagementThree: z
-    .string()
-    .min(2, "Work engagement must be at least 2 characters"),
-  addressOfWorkEngagement: z
-    .string()
-    .min(2, "Address of work engagement must be at least 2 characters"),
-  jobStatus: z.string().min(2, "Job status must be at least 2 characters"),
-  startPeriod: z.string().min(2, "Start period must be at least 2 characters"),
-  stopPeriod: z.string().min(2, "Stop period must be at least 2 characters"),
-  publisher: z.string().min(2, "Publisher must be at least 2 characters"),
-  titleOfPublication: z
-    .string()
-    .min(2, "Title of publication must be at least 2 characters"),
-  listOfAuthors: z
-    .string()
-    .min(2, "List of authors must be at least 2 characters"),
-  pages: z.string().min(2, "Pages must be at least 2 characters"),
-  yearOfPublication: z.coerce
-    .number()
-    .min(2, "Year of publication must be at least 2 characters"),
-  nameOfPersonOrCompany: z
-    .string()
-    .min(2, "Number of person or company must be at least 2 characters"),
-  reference: z
-    .string()
-    .min(2, "Referrence must be at least 2 characters")
-    .optional(),
-  recommendationLetter: z.instanceof(File).optional(),
+const referenceSchema = z.object({
+  name: z.string().min(1, "Reference name is required"),
 });
 
-export type WorkExperienceType = z.infer<typeof workExperience>;
+const publicationSchema = z.object({
+  publisher: z.string().min(1, "Publisher is required"),
+  title: z.string().min(1, "Title is required"),
+  authorList: z.string().min(1, "Author list is required"),
+  pages: z.string().min(1, "Pages are required"),
+  publicationYear: z.number().int("Publication year must be an integer"),
+});
+
+const experienceSchema = z.object({
+  name: z.string().min(1),
+  address: z.string().min(1),
+  title: z.string().min(1),
+  startDate: z
+    .string()
+    .transform((val) => {
+      const [day, month, year] = val.split("-").map(Number);
+      const date = new Date(2000 + year, month - 1, day);
+      if (isNaN(date.getTime())) throw new Error("Invalid date");
+      return date.toISOString();
+    })
+    .pipe(
+      z.string().refine((val) => val.endsWith("Z"), {
+        message: "Must be in ISO 8601 UTC format",
+      })
+    ),
+  endDate: z
+    .string()
+    .transform((val) => {
+      const [day, month, year] = val.split("-").map(Number);
+      const date = new Date(2000 + year, month - 1, day);
+      if (isNaN(date.getTime())) throw new Error("Invalid date");
+      return date.toISOString();
+    })
+    .pipe(
+      z.string().refine((val) => val.endsWith("Z"), {
+        message: "Must be in ISO 8601 UTC format",
+      })
+    ),
+});
+const dataSchema = z.object({
+  reference: referenceSchema,
+  publications: z.array(publicationSchema),
+  experiences: z.array(experienceSchema),
+  file: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: "Please upload a valid image file",
+    })
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file?.type), {
+      message: "Only .jpg, .jpeg, .png, pdf, and .webp formats are supported",
+    })
+    .refine((file) => file?.size <= MAX_IMAGE_SIZE, {
+      message: "Max file size is 4MB",
+    })
+    .optional()
+    .or(z.literal(undefined)),
+});
+
+export default dataSchema;
+export type UserExperience = z.infer<typeof dataSchema>;

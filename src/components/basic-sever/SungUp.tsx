@@ -28,6 +28,7 @@ const SignUp = () => {
     userType,
   } = useServerStore();
 
+  console.log("userType", userType);
   useEffect(() => {
     countries();
   }, [countries]);
@@ -55,7 +56,6 @@ const SignUp = () => {
       postalCode: 7000,
       countryId: "",
       stateId: "",
-      // userType: "SERVER",
     },
   });
 
@@ -70,6 +70,8 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpType) => {
     const newUser = { ...data, userType };
+
+    console.log("JSON.stringify", newUser);
     try {
       const formData = new FormData();
       const { image, ...restData } = newUser;
@@ -78,7 +80,9 @@ const SignUp = () => {
       if (image && image instanceof File) {
         formData.append("file", image);
       }
-      await userRegister(formData);
+      if (userType) {
+        await userRegister(formData);
+      }
     } catch (error) {
       console.error("Form submission failed:", error);
     }

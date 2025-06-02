@@ -68,7 +68,6 @@ import StandardConsumerEnergyAudit from "@/pages/standard-consumer/StandardConsu
 import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/form/SolarMicroserviceForm";
 import BiomassMicroServiceForm from "@/components/basic-consumer/Microservice/form/BiomassMicroServiceForm";
 import TotalOverview from "@/components/basic-consumer/TotalOverview";
-import Dashboard from "@/dashboard/Dashboard";
 import WhomePage from "@/pages/wordpress/home/WhomePage";
 import ContactUs from "@/pages/wordpress/contact/ContactUs";
 import Energhxplus from "@/pages/wordpress/energhxplus/Energhxplus";
@@ -82,6 +81,9 @@ import StandardConsumerAnalysis from "@/pages/standard-consumer/StandardConsumer
 import ResearchDetails from "@/pages/wordpress/research/ResearchDetails";
 import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
 import CreatePasswordForServer from "@/components/basic-sever/CreatePasswordForServer";
+import WorkExperience from "@/components/basic-sever/WorkExperience";
+import Admin from "@/dashboard/pages/Admin";
+import AdminLoginForm from "@/dashboard/Common/AdminLoginForm";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -98,7 +100,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: <Admin />,
+      },
+      {
+        path: "/admin-login",
+        element: <AdminLoginForm />,
       },
       {
         path: "/home",
@@ -246,6 +252,10 @@ const routes = createBrowserRouter([
         element: <ServerSettings />,
       },
       {
+        path: "experience",
+        element: <WorkExperience />,
+      },
+      {
         path: "form",
         element: <BasicServerForm />,
       },
@@ -313,6 +323,10 @@ const routes = createBrowserRouter([
       { path: "", element: <BasicDeveloperDashboard /> },
       { path: "dashboard", element: <BasicDeveloperDashboard /> },
       { path: "settings", element: <BasicDeveloperSetting /> },
+      {
+        path: "experience",
+        element: <WorkExperience />,
+      },
       { path: "form", element: <BasicDeveloperForm /> },
     ],
   },

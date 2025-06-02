@@ -1,4 +1,3 @@
-import { Register } from "react-router-dom";
 import { Login } from "./type/login";
 import { Country } from "./type/country";
 import { State } from "../consumerStoreType/States";
@@ -11,10 +10,12 @@ export type ServerStoreType = {
   isLoading: boolean;
   allCountry: Country[];
   allSates: State[];
-  userRegister: (registerUser: Register) => void;
+  userRegister: (registerUser: any, file?: File) => Promise<void>;
   createPassword: (userData: Login, token: string) => void;
   getUser: () => void;
   getDevUserType: (userType: string) => void;
+  addExperienceServer: (userId: string, experience: any) => void;
+  addExperienceDeveloper: (userId: string, experience: any) => void;
   countries: () => void;
   states: (id: string) => void;
   login: (loginUser: Login) => void;

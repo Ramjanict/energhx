@@ -1,8 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import NavbarStandard from "./NavbarStandard";
+import { useServerStore } from "@/store/ServerStore/ServerStore";
+import { useEffect } from "react";
 
 const Layout: React.FC = () => {
   const { pathname } = useLocation();
+  const { getUser, DevToken } = useServerStore();
 
   const hideUI = [
     "/dashboard",
@@ -15,7 +18,15 @@ const Layout: React.FC = () => {
     "/research/emmanuel-ob-ogedengbe",
     "/research/olugbenga-o-noah",
     "/research/buraimoh-olanike-maria",
+    "/admin-login",
   ].includes(pathname);
+
+  useEffect(() => {
+    if (DevToken) {
+      getUser();
+    }
+  }, [DevToken]);
+
   return (
     <div>
       <div className={`${hideUI ? "hidden" : ""}`}>

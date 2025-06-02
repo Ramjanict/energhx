@@ -22,7 +22,7 @@ const DropDown = () => {
     <div className="w-48 bg-white shadow-lg rounded-lg z-50">
       <ul className="py-2">
         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-          <Link to="/profile">Profile</Link>
+          <Link to="/admin-login">Admin</Link>
         </li>
         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
           <Link to="/settings">Settings</Link>

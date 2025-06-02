@@ -107,7 +107,7 @@ export const useServerStore = create<ServerStoreType>()(
         set({ isLoading: true });
 
         try {
-          const { data } = await axiosSecure.get(`country/${id}/states`);
+          const { data } = await axiosSecure.get(`/country/${id}/states`);
 
           if (data) {
             set({ allSates: data.data });
@@ -121,6 +121,55 @@ export const useServerStore = create<ServerStoreType>()(
           set({ isLoading: false });
         }
       },
+      addExperienceServer: async (userId, experience) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          const { data } = await axiosSecure.post(
+            `/server/profile/${userId}`,
+            experience,
+            { headers: { Authorization: token } }
+          );
+
+          if (data) {
+            set({ isLoading: false });
+            toast.success(data.message);
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error: any) {
+          console.error("Problem during  Uploading document", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      addExperienceDeveloper: async (userId, experience) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          const { data } = await axiosSecure.post(
+            `/developer/profile/${userId}`,
+            experience,
+            { headers: { Authorization: token } }
+          );
+
+          if (data) {
+            set({ isLoading: false });
+            toast.success(data.message);
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error: any) {
+          console.error("Problem during  Uploading document", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
       login: async (loginUser) => {
         set({ isLoading: true });
 

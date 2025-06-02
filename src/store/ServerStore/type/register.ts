@@ -7,9 +7,7 @@ export interface Register {
   lastName: string;
   otherName: string;
   sex: Sex;
-  phoneNumber: string;
   companyName: string;
-
   streetNumber: number;
   street: string;
   postalCode: number;
@@ -17,4 +15,9 @@ export interface Register {
   countryId: string; // UUID
   stateId: string; // UUID
   userType: UserType;
+}
+
+export interface RegisterType {
+  text: Register;
+  file?: File | undefined;
 }

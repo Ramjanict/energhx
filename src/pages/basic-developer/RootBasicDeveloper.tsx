@@ -9,52 +9,53 @@ import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { useServerStore } from "@/store/ServerStore";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 const developerMenu = [
   { path: "/basic-developer/dashboard", label: "Dashboard", icon: FaHome },
   { path: "/basic-developer/settings", label: "Settings", icon: MdSettings },
+  {
+    path: "/basic-developer/experience",
+    label: "Add Experience",
+    icon: AiOutlineCloudUpload,
+  },
   { path: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const RootBasicDeveloper = () => {
   const { showPayment } = useServerStore();
+  const { pathname } = useLocation();
+
   const [user] = useState({
     name: "Emmnauel Nonye",
     role: "Developer (Basic)",
     profileImg: userImg,
   });
 
+  const isFormPage =
+    pathname === "/basic-developer/form" ||
+    pathname === "/basic-developer/experience";
+
   const handleUpgrade = () => {
     showPayment();
   };
-  const { pathname } = useLocation();
   return (
     <div>
-      {pathname === "/basic-developer/form" ? (
-        <NavbarStandard />
-      ) : (
-        <NavbarAdmin user={user} />
-      )}
-      <div className={`${pathname === "/basic-developer/form" && "hidden"}`}>
+      {isFormPage ? <NavbarStandard /> : <NavbarAdmin user={user} />}
+      {!isFormPage && (
         <CommonBanner
-          name="Emmnauel Nonye"
-          role="Developer (Basic)"
-          imageUrl={userImg}
+          name={user.name}
+          role={user.role}
+          imageUrl={user.profileImg}
           onUpgrade={handleUpgrade}
         />
-      </div>
+      )}
 
       <CommonWrapper>
         <div className="flex w-full">
-          <div
-            className={`${pathname === "/basic-developer/form" && "hidden"}`}
-          >
-            <Sidebar menuItems={developerMenu} />
-          </div>
+          {!isFormPage && <Sidebar menuItems={developerMenu} />}
           <div
             className={`flex-1 p-6 relative ${
-              pathname === "/basic-developer/form"
-                ? "border-0"
-                : "border-t border-t-[#E7E9E8] "
+              isFormPage ? "border-0" : "border-t border-t-[#E7E9E8] "
             }`}
           >
             <Outlet />

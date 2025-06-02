@@ -9,7 +9,7 @@ const BasicDeveloperForm = () => {
 
   useEffect(() => {
     if (DevToken) {
-      navigate("/basic-server/dashboard");
+      navigate("/basic-developer/dashboard");
     }
   }, [DevToken]);
   return (
