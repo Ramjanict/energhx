@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const Layout: React.FC = () => {
   const { pathname } = useLocation();
-  const { getUser, DevToken } = useServerStore();
+  const { getUser } = useServerStore();
 
   const hideUI = [
     "/dashboard",
@@ -22,10 +22,8 @@ const Layout: React.FC = () => {
   ].includes(pathname);
 
   useEffect(() => {
-    if (DevToken) {
-      getUser();
-    }
-  }, [DevToken]);
+    getUser();
+  }, []);
 
   return (
     <div>

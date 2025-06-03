@@ -74,6 +74,8 @@ const WorkExperience = () => {
   };
   const userId = DevUser?.id;
   const userType = DevUser?.user?.userType;
+
+  console.log("userType userType", userType);
   const onSubmit = async (data: UserExperience) => {
     try {
       const formData = new FormData();

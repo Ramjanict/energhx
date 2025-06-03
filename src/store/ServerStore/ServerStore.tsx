@@ -68,23 +68,29 @@ export const useServerStore = create<ServerStoreType>()(
       getUser: async () => {
         set({ isLoading: true });
         const DevToken = get().DevToken;
-        try {
-          const { data } = await axiosSecure.get("/user/me", {
-            headers: { Authorization: `${DevToken}` },
-          });
 
-          if (data) {
-            set({ DevUser: data.data });
-          } else if (data.error) {
-            toast.error(data.message);
+        try {
+          if (DevToken) {
+            const { data } = await axiosSecure.get("/user/me", {
+              headers: { Authorization: `${DevToken}` },
+            });
+
+            if (data) {
+              set({ DevUser: data.data });
+            } else if (data.error) {
+              toast.error(data.message);
+            }
+          } else {
+            toast.error("DevToken not found.");
           }
         } catch (error: any) {
-          console.error("Problem during  get all country", error);
+          console.error("Problem during getUser:", error);
           toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
         }
       },
+
       countries: async () => {
         set({ isLoading: true });
 
