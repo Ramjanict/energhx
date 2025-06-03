@@ -2,27 +2,32 @@ import React from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
-type Program = {
+type Module = {
   id: string;
-  thumbnail: string;
-  description: string;
   title: string;
-  price: number;
-  publishedFor: "DEVELOPER" | "SERVER";
+  thumbnail: string;
+  createdAt: string;
+  updatedAt: string;
+  courseId: string;
 };
 
-type ProgramCardProps = {
-  program: Program;
+type ModuleCardProps = {
+  module: Module;
   onEdit?: () => void;
+  selectedCourseId: string;
 };
 
-const ModuleCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
-  const { deleteProgram, getAllProgram, isLoading } = useAdminStore();
+const ModuleCard: React.FC<ModuleCardProps> = ({
+  module,
+  onEdit,
+  selectedCourseId,
+}) => {
+  const { isLoading, getAllModule, deleteModule } = useAdminStore();
 
   const handleDelete = async () => {
     try {
-      await deleteProgram(program.id);
-      await getAllProgram();
+      await deleteModule(module.id);
+      await getAllModule(selectedCourseId);
     } catch (error) {
       console.error("Failed to delete program:", error);
     }
@@ -32,24 +37,14 @@ const ModuleCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
     <div className="relative max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 border">
       <img
         className="w-full h-48 object-cover"
-        src={program.thumbnail}
-        alt={program.title || "Program Thumbnail"}
+        src={module.thumbnail}
+        alt={module.title || "Program Thumbnail"}
       />
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-semibold capitalize text-gray-800">
-          {program.title}
+          {module.title}
         </h2>
-        <p className="text-sm text-gray-600 line-clamp-3">
-          {program.description}
-        </p>
-        <div className="flex items-center justify-between pt-4">
-          <span className="text-lg font-bold text-green-600">
-            ${program.price}
-          </span>
-          <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 uppercase">
-            {program.publishedFor}
-          </span>
-        </div>
+        module
         <div className="flex justify-end items-center gap-2 pt-4">
           <button
             onClick={onEdit}

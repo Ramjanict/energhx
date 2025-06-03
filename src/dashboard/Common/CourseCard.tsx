@@ -19,11 +19,11 @@ type courseCardProps = {
 };
 
 const CourseCard: React.FC<courseCardProps> = ({ course, onEdit }) => {
-  const { deleteProgram, getAllCourse, isLoading } = useAdminStore();
+  const { deleteCourse, getAllCourse, isLoading } = useAdminStore();
 
   const handleDelete = async () => {
     try {
-      await deleteProgram(course.id);
+      await deleteCourse(course.id);
       await getAllCourse();
     } catch (error) {
       console.error("Failed to delete course:", error);
@@ -32,11 +32,14 @@ const CourseCard: React.FC<courseCardProps> = ({ course, onEdit }) => {
 
   return (
     <div className="relative max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 border">
-      <img
-        className="w-full h-48 object-cover"
-        src={course.thumbnail}
-        alt={course.title || "course Thumbnail"}
-      />
+      {course.thumbnail ? (
+        <img
+          className="w-full h-48 object-cover"
+          src={course.thumbnail}
+          alt={course.title}
+        />
+      ) : null}
+
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-semibold capitalize text-gray-800">
           {course.title}

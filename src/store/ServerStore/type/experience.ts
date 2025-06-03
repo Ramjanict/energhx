@@ -1,15 +1,15 @@
-export type UserExperience = {
-  reference?: {
+export type FormData = {
+  reference: {
     name: string;
   };
-  publications?: {
+  publications: {
     publisher: string;
     title: string;
     authorList: string;
     pages: string;
     publicationYear: number;
   }[];
-  experiences?: {
+  experiences: {
     name: string;
     title: string;
     address: string;

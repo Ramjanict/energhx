@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,12 @@ const AdminLoginForm = () => {
       console.error("Login failed:", error);
     }
   };
+
+  useEffect(() => {
+    if (DevToken) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   return (
     <div className="flex w-full min-h-screen">

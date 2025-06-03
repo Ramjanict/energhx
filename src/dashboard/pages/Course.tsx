@@ -18,10 +18,7 @@ import { RiCloseLargeLine } from "react-icons/ri";
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
   thumbnail: z.string().url("Thumbnail must be a valid URL"),
-  programId: z
-    .string()
-    .uuid("Program ID must be a valid UUID")
-    .min(1, "Program ID is required"),
+  programId: z.string(),
 });
 
 type CourseFormData = z.infer<typeof courseSchema>;
@@ -33,6 +30,8 @@ const Course: React.FC = () => {
     allProgram,
     getAllProgram,
     getAllCourse,
+    updateCourse,
+
     allCourse,
   } = useAdminStore();
 
@@ -40,6 +39,7 @@ const Course: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseFormData | null>(
     null
   );
+  const [courseId, setCourseId] = useState<string | null>(null);
 
   const {
     register,
@@ -57,8 +57,7 @@ const Course: React.FC = () => {
     },
   });
 
-  console.log("selectedCourse", selectedCourse);
-
+  console.log("courseId", courseId);
   useEffect(() => {
     getAllProgram();
   }, [getAllProgram]);
@@ -73,9 +72,15 @@ const Course: React.FC = () => {
   }, [selectedCourse, reset]);
 
   const onSubmit = async (data: CourseFormData) => {
-    await createCourse(data);
+    courseId && selectedCourse
+      ? await updateCourse(courseId, data)
+      : await createCourse(data);
+
+    getAllCourse();
+    getAllProgram();
     setIsCourseOpen(false);
     setSelectedCourse(null);
+    setCourseId(null);
     reset();
     getAllCourse();
   };
@@ -92,6 +97,7 @@ const Course: React.FC = () => {
             onEdit={() => {
               setSelectedCourse(course);
               setIsCourseOpen(true);
+              setCourseId(course.id);
             }}
           />
         ))}
@@ -118,7 +124,7 @@ const Course: React.FC = () => {
             >
               <div className="w-full flex justify-between items-center ">
                 <AdminCommonHeader className="!pb-0">
-                  Create Course
+                  {selectedCourse ? "Update Course" : "Create Course"}
                 </AdminCommonHeader>
                 <div
                   onClick={() => {

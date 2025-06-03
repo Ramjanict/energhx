@@ -18,7 +18,6 @@ import ProgramCard from "../Common/ProgramCard";
 
 // Zod schema
 const programSchema = z.object({
-  id: z.string(),
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   price: z
@@ -39,6 +38,7 @@ const Program: React.FC = () => {
   const [isProgramOpen, setIsProgramOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] =
     useState<ProgramFormData | null>(null);
+  const [programId, setProgramId] = useState<string | null>(null);
 
   useEffect(() => {
     getAllProgram();
@@ -53,21 +53,26 @@ const Program: React.FC = () => {
   } = useForm<ProgramFormData>({
     resolver: zodResolver(programSchema),
     defaultValues: {
-      title: "solar system installer",
+      title: "energy system installer",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia quia obcaecati facilis consequuntur provident, sed ex illo ullam. Quos, quasi! Explicabo, dicta aperiam! Id accusantium incidunt quidem voluptatum harum tempore.",
       price: 70,
       thumbnail:
-        "https://www.pexels.com/photo/solar-panels-on-snow-with-windmill-under-clear-day-sky-433308/",
+        "https://images.pexels.com/photos/2309992/pexels-photo-2309992.jpeg?auto=compress&cs=tinysrgb&w=600",
       publishedFor: "DEVELOPER",
     },
   });
 
   const onSubmit = async (data: ProgramFormData) => {
-    await createProgram(data);
+    programId && selectedProgram
+      ? await updateProgram(programId, data)
+      : await createProgram(data);
+
+    getAllProgram();
     setIsProgramOpen(false);
     setSelectedProgram(null);
-    reset(); // clear form
+    setProgramId(null);
+    reset();
   };
 
   useEffect(() => {
@@ -86,8 +91,7 @@ const Program: React.FC = () => {
             onEdit={() => {
               setSelectedProgram(program);
               setIsProgramOpen(true);
-              updateProgram(program.id, program);
-              getAllProgram();
+              setProgramId(program.id);
             }}
           />
         ))}
@@ -110,7 +114,7 @@ const Program: React.FC = () => {
             >
               <div className="w-full flex justify-between items-center ">
                 <AdminCommonHeader className="!pb-0">
-                  Create Program
+                  {selectedProgram ? "Update Program" : "Create Program"}
                 </AdminCommonHeader>
                 <div
                   onClick={() => {

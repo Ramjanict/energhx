@@ -18,8 +18,17 @@ export const useAdminStore = create<AdminStoreType>()(
       isLoading: false,
       allProgram: [],
       allCourse: [],
-      allModule: [],
-
+      allModule: {
+        id: "",
+        title: "",
+        thumbnail: "",
+        averageRating: 0,
+        isCompleted: false,
+        createdAt: "",
+        updatedAt: "",
+        programId: "",
+        modules: [],
+      },
       // Program async function
       createProgram: async (program) => {
         set({ isLoading: true });
@@ -42,6 +51,27 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating Program", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      getAllProgram: async () => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+        try {
+          const { data } = await axiosSecure.get(`/program`, {
+            headers: { Authorization: token },
+          });
+
+          if (data) {
+            set({ isLoading: false, allProgram: data.data });
+            toast.success(data.message);
+          } else if (data.error) {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          console.error("Problem during getting all program", error);
           toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
@@ -108,28 +138,6 @@ export const useAdminStore = create<AdminStoreType>()(
         }
       },
 
-      getAllProgram: async () => {
-        set({ isLoading: true });
-        const token = get().DevToken;
-        try {
-          const { data } = await axiosSecure.get(`/program`, {
-            headers: { Authorization: token },
-          });
-
-          if (data) {
-            set({ isLoading: false, allProgram: data.data });
-            toast.success(data.message);
-          } else if (data.error) {
-            toast.error(data.message);
-          }
-        } catch (error) {
-          console.error("Problem during getting all program", error);
-          toast.error("Something went wrong. Please try again.");
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
       // Course async function
       createCourse: async (course) => {
         set({ isLoading: true });
@@ -157,33 +165,6 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
-      updateCourse: async (program) => {
-        set({ isLoading: true });
-        const token = get().DevToken;
-
-        try {
-          if (!token) {
-            toast.error("Authentication token is missing.");
-            return;
-          }
-
-          const { data } = await axiosSecure.patch("/program", program, {
-            headers: { Authorization: token },
-          });
-
-          if (data?.message) {
-            toast.success(data.message);
-          } else if (data?.error) {
-            toast.error(data.message || "An error occurred.");
-          }
-        } catch (error) {
-          console.error("Problem during creating Program", error);
-          toast.error("Something went wrong. Please try again.");
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
       getAllCourse: async () => {
         set({ isLoading: true });
         const token = get().DevToken;
@@ -200,6 +181,62 @@ export const useAdminStore = create<AdminStoreType>()(
 
           if (data?.message) {
             set({ allCourse: data?.data });
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating Program", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      updateCourse: async (courseId, course) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.patch(
+            `/course/${courseId}`,
+            course,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating Program", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      deleteCourse: async (courseId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.delete(`/course/${courseId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
             toast.success(data.message);
           } else if (data?.error) {
             toast.error(data.message || "An error occurred.");
@@ -239,7 +276,7 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
-      getAllModule: async () => {
+      getAllModule: async (singleCourseId) => {
         set({ isLoading: true });
         const token = get().DevToken;
 
@@ -249,7 +286,7 @@ export const useAdminStore = create<AdminStoreType>()(
             return;
           }
 
-          const { data } = await axiosSecure.get("/module", {
+          const { data } = await axiosSecure.get(`/course/${singleCourseId}`, {
             headers: { Authorization: token },
           });
 
@@ -266,8 +303,145 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
+      updateModule: async (moduleId, module) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.patch(
+            `/module/${moduleId}`,
+            module,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message) {
+            set({ allModule: data.data });
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      deleteModule: async (moduleId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.delete(`/module/${moduleId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ allModule: data.data });
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
       // Content async function
       createContent: async (module) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post("/module", module, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      getAllContent: async (module) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post("/module", module, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      updateContent: async (module) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post("/module", module, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      deleteContent: async (module) => {
         set({ isLoading: true });
         const token = get().DevToken;
 
