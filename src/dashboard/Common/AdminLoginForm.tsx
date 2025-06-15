@@ -82,14 +82,13 @@ const AdminLoginForm = () => {
                 required
               />
             </div>
-            {!DevToken && (
-              <Button
-                type="submit"
-                className="w-full p-6 bg-primary hover:bg-green-500 text-white font-medium rounded-md transition-colors cursor-pointer"
-              >
-                {DevToken ? "Logout" : isLoading ? "Logging in..." : "Log In"}
-              </Button>
-            )}
+
+            <Button
+              type="submit"
+              className="w-full p-6 bg-primary hover:bg-green-500 text-white font-medium rounded-md transition-colors cursor-pointer"
+            >
+              {isLoading ? "Logging in..." : "Log In"}
+            </Button>
           </form>
         </div>
       </div>
