@@ -11,6 +11,7 @@ import Quiz from "./Quiz";
 import Review from "./Review";
 import Payment from "./Payment";
 import Content from "./Content";
+import BasicContent from "./BasicContent";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -31,6 +32,7 @@ const Admin = () => {
           {activeTab === "program" && <Program />}
           {activeTab === "course" && <Course />}
           {activeTab === "module" && <Module />}
+          {activeTab === "basicContent" && <BasicContent />}
           {activeTab === "content" && <Content />}
           {activeTab === "quiz" && <Quiz />}
           {activeTab === "review" && <Review />}

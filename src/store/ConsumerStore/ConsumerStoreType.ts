@@ -1,21 +1,22 @@
-import { AllBattery } from "../consumerStoreType/AllBattery";
-import { AllBatteryType } from "../consumerStoreType/AllbatteryTypes";
-import { allBuildingsData } from "../consumerStoreType/AllBuildings";
-import { AllServices } from "../consumerStoreType/Allservices";
-import { BiomassMicroservice } from "../consumerStoreType/BiomassMicroservice";
-import { BuildingsTypes } from "../consumerStoreType/BuildingTypes";
-import { Commodity } from "../consumerStoreType/Commodity";
-import { CreateConsumer } from "../consumerStoreType/CreateConsumer";
-import { EnergyBuildingData } from "../consumerStoreType/EnergyBuildingData";
-import { EneryAuditArrayData } from "../consumerStoreType/EneryAuditArrayData";
-import { EVBatterySizing } from "../consumerStoreType/EVBatterySizing";
-import { User } from "../consumerStoreType/LoginUser";
-import { PostBiomassMicroServices } from "../consumerStoreType/PostBiomassMicroServices";
-import { PostSolarMicroServices } from "../consumerStoreType/PostSolarMicroServices";
-import { RoomData } from "../consumerStoreType/RoomData";
-import { SolarMicroservice } from "../consumerStoreType/SolarMicroservice";
-import { State } from "../consumerStoreType/States";
-import { Country, UserData } from "../consumerStoreType/UserData";
+import { AllBattery } from "./type/AllBattery";
+import { AllBatteryType } from "./type/AllbatteryTypes";
+import { allBuildingsData } from "./type/AllBuildings";
+import { AllServices } from "./type/Allservices";
+import { BiomassMicroservice } from "./type/BiomassMicroservice";
+import { BuildingsTypes } from "./type/BuildingTypes";
+import { Commodity } from "./type/Commodity";
+import { CreateConsumer } from "./type/CreateConsumer";
+import { EnergyBuildingData } from "./type/EnergyBuildingData";
+import { EneryAuditArrayData } from "./type/EneryAuditArrayData";
+import { EVBatterySizing } from "./type/EVBatterySizing";
+import { User } from "./type/LoginUser";
+import { PostBiomassMicroServices } from "./type/PostBiomassMicroServices";
+import { PostSolarMicroServices } from "./type/PostSolarMicroServices";
+import { RoomData } from "./type/RoomData";
+import { SolarMicroservice } from "./type/SolarMicroservice";
+import { State } from "./type/States";
+import { UpdatePassword } from "./type/UpdatedPassword";
+import { Country, UserData } from "./type/UserData";
 
 export type ConsumerStoreType = {
   user: UserData | null;
@@ -64,6 +65,7 @@ export type ConsumerStoreType = {
   ) => Promise<void>;
 
   createPassword: (userData: User, token: string) => Promise<void>;
+  updatePassword: (userData: UpdatePassword) => Promise<void>;
   loginUser: (newUser: User) => Promise<void>;
   logOutUser: () => void;
 };

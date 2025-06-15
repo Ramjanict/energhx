@@ -5,36 +5,13 @@ import home3 from "@/assets/home3.png";
 import { motion } from "framer-motion";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { getUserType, user } = useConsumerStore();
-  const { getUser, DevToken, DevUser, getDevUserType, userType } =
-    useServerStore();
-
-  console.log("userType", userType);
-  const userTypeList = [
-    { user: "Normal Energy Users", path: "/basic-consumer/dashboard" },
-    { user: "SERVER", path: "/basic-server/dashboard" },
-    { user: "DEVELOPER", path: "/basic-developer/dashboard" },
-  ];
-  useEffect(() => {
-    const currentUserType = user?.userType || DevUser?.user.userType;
-    const matched = userTypeList.find((u) => u.user === currentUserType);
-
-    if (matched) {
-      navigate(matched.path);
-    }
-  }, [user, DevUser]);
-
-  useEffect(() => {
-    if (DevToken) {
-      getUser();
-    }
-  }, [DevToken]);
+  const { getUserType } = useConsumerStore();
+  const { getDevUserType } = useAdminStore();
 
   return (
     <CommonWrapper>
@@ -43,7 +20,6 @@ const Home = () => {
           SELECT YOUR PREFERRED USER-TYPE
         </DashBoardHeader>
         <div className="w-full flex gap-6 flex-wrap justify-center ">
-          {/* Energy Consumer */}
           <motion.div
             onClick={() => {
               navigate("/basic-consumer/form");
@@ -60,7 +36,6 @@ const Home = () => {
             </p>
           </motion.div>
 
-          {/* Energy Server */}
           <motion.div
             onClick={() => {
               navigate("/basic-server/form");
@@ -76,7 +51,7 @@ const Home = () => {
               Energy Server
             </p>
           </motion.div>
-          {/* Energy Developer */}
+
           <motion.div
             onClick={() => {
               navigate("/basic-developer/form");

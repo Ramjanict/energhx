@@ -4,9 +4,9 @@ import Solar from "@/components/basic-consumer/Microservice/Solar";
 import TwoTitle from "./TwoTitle";
 import RoomOverView from "./Microservice/RoomOverView";
 import { useNavigate } from "react-router-dom";
-import { useServerStore } from "@/store/ServerStore";
 import PaymentModal from "../Appointment/PaymentModal";
 import HandShake from "./HandShake";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
 
 interface TotalOverview {
   nextStep?: () => void;
@@ -20,7 +20,7 @@ const TotalOverview: React.FC<TotalOverview> = ({ nextStep }) => {
     isPaymentModalOpen,
     showPayment,
     closePayment,
-  } = useServerStore();
+  } = usePaymentStore();
 
   const handlenext = () => {
     showPayment();

@@ -17,7 +17,10 @@ import { RiCloseLargeLine } from "react-icons/ri";
 // Zod Schema
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  thumbnail: z.string().url("Thumbnail must be a valid URL"),
+  thumbnail: z.union([
+    z.instanceof(File).refine((file) => file.size > 0, "Thumbnail is required"),
+    z.string().min(1, "Thumbnail is required"),
+  ]),
   programId: z.string(),
 });
 
@@ -40,24 +43,24 @@ const Course: React.FC = () => {
     null
   );
   const [courseId, setCourseId] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<CourseFormData>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       title: "React developer",
-      thumbnail:
-        "https://images.pexels.com/photos/19895867/pexels-photo-19895867/free-photo-of-engineer-standing-among-solar-panels.jpeg?auto=compress&cs=tinysrgb&w=600",
+      thumbnail: "",
       programId: "",
     },
   });
 
-  console.log("courseId", courseId);
   useEffect(() => {
     getAllProgram();
   }, [getAllProgram]);
@@ -72,9 +75,17 @@ const Course: React.FC = () => {
   }, [selectedCourse, reset]);
 
   const onSubmit = async (data: CourseFormData) => {
+    const formData = new FormData();
+
+    const { thumbnail, ...restData } = data;
+    formData.append("text", JSON.stringify(restData));
+
+    if (thumbnail instanceof File) {
+      formData.append("file", thumbnail);
+    }
     courseId && selectedCourse
-      ? await updateCourse(courseId, data)
-      : await createCourse(data);
+      ? await updateCourse(courseId, formData)
+      : await createCourse(formData);
 
     getAllCourse();
     getAllProgram();
@@ -87,7 +98,7 @@ const Course: React.FC = () => {
 
   return (
     <div>
-      <AdminCommonHeader>Your all Course</AdminCommonHeader>
+      <AdminCommonHeader>All Courses</AdminCommonHeader>
 
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
         {allCourse?.map((course) => (
@@ -153,16 +164,53 @@ const Course: React.FC = () => {
 
               <div>
                 <label className="text-primary-gray block mb-1">
-                  Thumbnail URL
+                  Thumbnail
                 </label>
                 <input
-                  type="url"
-                  {...register("thumbnail")}
-                  className="w-full border border-primary-gray p-2 outline-none"
-                  placeholder="https://example.com/thumbnail.jpg"
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setPreview(URL.createObjectURL(file));
+                      setValue("thumbnail", file, { shouldValidate: true });
+                    }
+                  }}
                 />
+
+                {!preview && (
+                  <label
+                    htmlFor="thumbnail"
+                    className="block cursor-pointer border border-primary-gray py-2 px-4 text-primary-gray hover:bg-primary-green hover:text-white transition"
+                  >
+                    Upload Thumbnail
+                  </label>
+                )}
+
+                {preview && (
+                  <div className="w-full mt-2">
+                    <img
+                      src={preview}
+                      alt="Thumbnail Preview"
+                      className="w-fit max-h-20 object-contain border border-gray-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreview(null);
+                        setValue("thumbnail", "", { shouldValidate: true });
+                      }}
+                      className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mt-1"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+
                 {errors.thumbnail && (
-                  <p className="text-red-500 text-xs sm:text-sm">
+                  <p className="text-red-500 text-xs sm:text-sm mt-1">
                     {errors.thumbnail.message}
                   </p>
                 )}

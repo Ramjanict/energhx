@@ -1,10 +1,10 @@
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
 import { Link, useNavigate } from "react-router-dom";
 
 const DropDown = () => {
   const { token, logOutUser } = useConsumerStore();
-  const { DevToken, logout } = useServerStore();
+  const { DevToken, logout } = useAdminStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {

@@ -1,20 +1,36 @@
 import { create } from "zustand";
 
-type PaymentStore = {
-  isOrderModalOpen: boolean;
-  showHand: boolean;
-  showPaymentModal: (data: boolean) => void;
-  handleNextOrder: (data: boolean) => void;
+type usePaymentStore = {
+  isBookingModalOpen: boolean;
+  isPaymentModalOpen: boolean;
+  isHandShakeOpen: boolean;
+  showBookingModal: () => void;
+  closeBookingModal: () => void;
+  showPayment: () => void;
+  closePayment: () => void;
+  handleHandShake: (data: boolean) => void;
 };
 
-export const usePaymentStore = create<PaymentStore>((set) => ({
-  isOrderModalOpen: false,
-  showHand: false,
-
-  showPaymentModal: (data) => {
-    set({ isOrderModalOpen: data });
+export const usePaymentStore = create<usePaymentStore>((set) => ({
+  isBookingModalOpen: false,
+  isHandShakeOpen: false,
+  isPaymentModalOpen: false,
+  showBookingModal: () => {
+    set({ isBookingModalOpen: true });
   },
-  handleNextOrder: (data) => {
-    set({ showHand: data });
+
+  closeBookingModal: () => {
+    set({ isBookingModalOpen: false });
+  },
+
+  showPayment: () => {
+    set({ isPaymentModalOpen: true });
+  },
+  closePayment: () => {
+    set({ isPaymentModalOpen: false });
+  },
+
+  handleHandShake: (data) => {
+    set({ isHandShakeOpen: data });
   },
 }));

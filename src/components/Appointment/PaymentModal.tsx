@@ -6,7 +6,7 @@ import discoverCard from "../../assets/Discover.svg";
 import frame from "../../assets/Frame.svg";
 import jcb from "../../assets/Japan Credit Bureau.svg";
 import cb from "../../assets/Cartes Bancaires.svg";
-import { useServerStore } from "@/store/ServerStore";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState<
     "card" | "bank" | "twoOnline"
   >("card");
-  const { handleHandShake, closePayment } = useServerStore();
+  const { handleHandShake, closePayment } = usePaymentStore();
 
   if (!isOpen) return null;
 
@@ -36,7 +36,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-[#EAF7E6] rounded-lg w-full max-w-md relative my-4 sm:my-8 ">
         <button
           onClick={onClose}
-          className="absolute right-2 sm:right-4 top-2 sm:top-4 text-gray-500 hover:text-gray-700"
+          className="absolute right-2 sm:right-4 top-2 sm:top-4 text-gray-500 hover:text-gray-700 cursor-pointer"
         >
           <X size={20} />
         </button>

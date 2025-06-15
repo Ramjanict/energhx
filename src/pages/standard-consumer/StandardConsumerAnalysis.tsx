@@ -7,7 +7,7 @@ import Solar from "@/components/basic-consumer/Microservice/Solar";
 import TwoTitle from "@/components/basic-consumer/TwoTitle";
 import { Button } from "@/components/ui/button";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
-import { useServerStore } from "@/store/ServerStore";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const StandardConsumerAnalysis = () => {
     isPaymentModalOpen,
     closePayment,
     showPayment,
-  } = useServerStore();
+  } = usePaymentStore();
   const navigate = useNavigate();
   const { allBuildings, getAllBuildings, isLoading, token } =
     useConsumerStore();

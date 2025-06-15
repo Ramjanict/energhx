@@ -1,17 +1,17 @@
 import SungUp from "@/components/basic-sever/SungUp";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BasicServerForm = () => {
-  const { DevToken } = useServerStore();
+  const { DevUser } = useAdminStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (DevToken) {
-      navigate("/basic-server/dashboard");
+    if (DevUser?.user.userType === "SERVER") {
+      navigate("/choose-program");
     }
-  }, [DevToken]);
+  }, [DevUser]);
 
   return (
     <>

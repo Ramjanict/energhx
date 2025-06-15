@@ -14,10 +14,14 @@ import {
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { RiCloseLargeLine } from "react-icons/ri";
 import ModuleCard from "../Common/ModuleCard";
+import AllCourse from "../components/AllCourse";
 // Zod Schema
 export const moduleSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  thumbnail: z.string().url("Thumbnail must be a valid URL"),
+  thumbnail: z.union([
+    z.instanceof(File).refine((file) => file.size > 0, "Thumbnail is required"),
+    z.string().min(1, "Thumbnail is required"),
+  ]),
   courseId: z
     .string()
     .uuid("Course ID must be a valid UUID")
@@ -42,6 +46,7 @@ const Module: React.FC = () => {
     null
   );
   const [selectedCourseId, setSelectedCourseId] = useState("");
+  const [preview, setPreview] = useState<string | null>(null);
 
   const [moduleId, setModuleId] = useState<string | null>(null);
 
@@ -50,18 +55,17 @@ const Module: React.FC = () => {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ModuleFormData>({
     resolver: zodResolver(moduleSchema),
     defaultValues: {
       title: "solar video",
-      thumbnail:
-        "https://images.pexels.com/photos/1025990/pexels-photo-1025990.jpeg?auto=compress&cs=tinysrgb&w=600",
+      thumbnail: "",
       courseId: "",
     },
   });
 
-  console.log("selectedCourseId", selectedCourseId);
   const handleCourseChange = (value: string) => {
     setSelectedCourseId(value);
     if (value) {
@@ -78,9 +82,17 @@ const Module: React.FC = () => {
     }
   }, [selectedModule, reset]);
   const onSubmit = async (data: ModuleFormData) => {
+    const formData = new FormData();
+
+    const { thumbnail, ...restData } = data;
+    formData.append("text", JSON.stringify(restData));
+
+    if (thumbnail instanceof File) {
+      formData.append("file", thumbnail);
+    }
     moduleId && selectedModule
-      ? await updateModule(moduleId, data)
-      : await createModule(data);
+      ? await updateModule(moduleId, formData)
+      : await createModule(formData);
     if (selectedCourseId) {
       getAllModule(selectedCourseId);
     }
@@ -95,29 +107,22 @@ const Module: React.FC = () => {
     <div>
       {/* allCourse  */}
       <div className="flex items-center gap-6">
-        <AdminCommonHeader className=" !pb-0">
-          Choose your course
-        </AdminCommonHeader>
-        <Select onValueChange={handleCourseChange} value={selectedCourseId}>
-          <SelectTrigger className="outline-none text-primary-gray rounded max-w-2xl">
-            <SelectValue placeholder="Choose your Course" />
-          </SelectTrigger>
-          <SelectContent className="bg-light-green">
-            {allCourse?.map((course) => (
-              <SelectItem key={course.id} value={course.id}>
-                {course.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <AdminCommonHeader className=" !pb-0">Choose course</AdminCommonHeader>
+
+        <AllCourse
+          handleCourseChange={handleCourseChange}
+          selectedCourseId={selectedCourseId}
+        />
       </div>
 
       <div className="">
-        <AdminCommonHeader className="pt-6">
-          {allModule?.modules?.length > 0
-            ? `Your Modules (${allModule.modules.length})`
-            : "This course does not contain any modules"}
-        </AdminCommonHeader>
+        <div className="">
+          <AdminCommonHeader className="pt-6">
+            {Array.isArray(allModule?.modules) && allModule.modules.length > 0
+              ? `Modules (${allModule.modules.length})`
+              : "This course does not contain any modules"}
+          </AdminCommonHeader>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
           {allModule?.modules?.map((module) => (
@@ -182,16 +187,53 @@ const Module: React.FC = () => {
                 {/* Thumbnail URL */}
                 <div>
                   <label className="text-primary-gray block mb-1">
-                    Thumbnail URL
+                    Thumbnail
                   </label>
                   <input
-                    type="url"
-                    {...register("thumbnail")}
-                    className="w-full border border-primary-gray p-2 outline-none"
-                    placeholder="https://example.com/thumbnail.jpg"
+                    id="thumbnail"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setPreview(URL.createObjectURL(file));
+                        setValue("thumbnail", file, { shouldValidate: true });
+                      }
+                    }}
                   />
+
+                  {!preview && (
+                    <label
+                      htmlFor="thumbnail"
+                      className="block cursor-pointer border border-primary-gray py-2 px-4 text-primary-gray hover:bg-primary-green hover:text-white transition"
+                    >
+                      Upload Thumbnail
+                    </label>
+                  )}
+
+                  {preview && (
+                    <div className="w-full mt-2">
+                      <img
+                        src={preview}
+                        alt="Thumbnail Preview"
+                        className="w-fit max-h-20 object-contain border border-gray-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPreview(null);
+                          setValue("thumbnail", "", { shouldValidate: true });
+                        }}
+                        className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mt-1"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+
                   {errors.thumbnail && (
-                    <p className="text-red-500 text-xs sm:text-sm">
+                    <p className="text-red-500 text-xs sm:text-sm mt-1">
                       {errors.thumbnail.message}
                     </p>
                   )}

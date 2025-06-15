@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   courseFilterArray,
   courseList,
@@ -8,9 +8,20 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import ProgressBar from "@/components/ui/ProgressBar";
 import { calculatePercentage } from "@/lib/utils";
 import CommonHeader from "@/common/CommonHeader";
+import { useNavigate } from "react-router-dom";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const StandardServerDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("enrolled");
+  const navigate = useNavigate();
+  const { DevToken } = useAdminStore();
+
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/basic-developer/form");
+    }
+  }, [DevToken]);
+
   return (
     <div className="">
       <CommonHeader>Overview</CommonHeader>

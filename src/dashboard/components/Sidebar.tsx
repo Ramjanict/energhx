@@ -5,7 +5,7 @@ import { BsFillGridFill } from "react-icons/bs";
 import { MdQuiz, MdOutlineReviews, MdPayment } from "react-icons/md";
 import { PiVideoFill } from "react-icons/pi";
 import { LiaPhotoVideoSolid } from "react-icons/lia";
-import { BiHive } from "react-icons/bi";
+import { BiHive, BiSolidBookmarkAltPlus } from "react-icons/bi";
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
 import { Link } from "react-router-dom";
 
@@ -14,6 +14,11 @@ const sidebarList = [
   { label: "Program", tab: "program", icon: VscFileSubmodule },
   { label: "Course", tab: "course", icon: BiHive },
   { label: "Module", tab: "module", icon: PiVideoFill },
+  {
+    label: "Basic Content",
+    tab: "basicContent",
+    icon: BiSolidBookmarkAltPlus,
+  },
   { label: "Content", tab: "content", icon: LiaPhotoVideoSolid },
   { label: "Quiz", tab: "quiz", icon: MdQuiz },
   { label: "Review", tab: "review", icon: MdOutlineReviews },

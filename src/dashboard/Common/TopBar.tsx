@@ -10,11 +10,11 @@ const TopBar = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const { DevToken, adminLogout } = useAdminStore();
+  const { DevToken, logout } = useAdminStore();
 
   const handleClick = () => {
     if (DevToken) {
-      adminLogout();
+      logout();
     } else {
       navigate("/admin-login");
     }

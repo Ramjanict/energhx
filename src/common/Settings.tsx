@@ -1,13 +1,9 @@
 import { useState } from "react";
 import { LuUserRound } from "react-icons/lu";
 import { SlLockOpen } from "react-icons/sl";
-import { GoCreditCard } from "react-icons/go";
-import { TbUsersGroup } from "react-icons/tb";
 import CommonHeader from "@/common/CommonHeader";
 import Profile from "@/components/standard-consumer/settings/Profile";
 import Password from "@/components/standard-consumer/settings/Password";
-import SocialProfile from "@/components/standard-consumer/settings/SocialProfile";
-import Billing from "@/components/standard-consumer/settings/Billing";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -18,10 +14,6 @@ const Settings = () => {
         return <Profile />;
       case "password":
         return <Password />;
-      case "social profile":
-        return <SocialProfile />;
-      case "billing":
-        return <Billing />;
       default:
         return <Profile />;
     }
@@ -30,8 +22,6 @@ const Settings = () => {
   const tablist = [
     { title: "profile", icon: <LuUserRound /> },
     { title: "password", icon: <SlLockOpen /> },
-    { title: "social profile", icon: <TbUsersGroup /> },
-    { title: "billing", icon: <GoCreditCard /> },
   ];
   return (
     <div className="w-full">
@@ -47,6 +37,7 @@ const Settings = () => {
             onClick={() => {
               setActiveTab(item.title);
             }}
+            key={item.title}
           >
             <button className="text-2xl cursor-pointer ">{item.icon}</button>
             <button className=" capitalize text-base sm:text-lg cursor-pointer ">

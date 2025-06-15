@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { FaHome, FaPhotoVideo } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { IoMdTime } from "react-icons/io";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -12,10 +12,16 @@ import CommonWrapper from "@/common/CommonWrapper";
 import Sidebar from "@/common/Sidebar";
 
 import userpic from "../../assets/user.png";
-import { useServerStore } from "@/store/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const serverMenu = [
   { path: "/basic-server/dashboard", label: "Dashboard", icon: FaHome },
+
+  {
+    path: "/basic-server/all-courses",
+    label: "All Courses",
+    icon: FaPhotoVideo,
+  },
   { path: "/basic-server/settings", label: "Settings", icon: IoMdTime },
   {
     path: "/basic-server/experience",
@@ -27,7 +33,8 @@ const serverMenu = [
 
 const RootBasicServer = () => {
   const { pathname } = useLocation();
-  const { showPayment } = useServerStore();
+  const { DevUser } = useAdminStore();
+  const navigate = useNavigate();
 
   const [user] = useState({
     name: "Emmnauel Nonye",
@@ -40,7 +47,11 @@ const RootBasicServer = () => {
     pathname === "/basic-server/experience";
 
   const handleUpgrade = () => {
-    showPayment();
+    if (DevUser?.user?.userType === "SERVER") {
+      navigate("/basic-server/all-courses");
+    } else {
+      navigate("/basic-developer/all-courses");
+    }
   };
 
   return (

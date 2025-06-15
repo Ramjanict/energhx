@@ -84,6 +84,9 @@ import CreatePasswordForServer from "@/components/basic-sever/CreatePasswordForS
 import WorkExperience from "@/components/basic-sever/WorkExperience";
 import Admin from "@/dashboard/pages/Admin";
 import AdminLoginForm from "@/dashboard/Common/AdminLoginForm";
+import ChooseProgram from "@/components/chooseDashboard/ChooseProgram";
+import Success from "@/common/LMS/Success";
+import Cancel from "@/common/LMS/Cancel";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -158,6 +161,18 @@ const routes = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/choose-program",
+        element: <ChooseProgram />,
+      },
+      {
+        path: "/payment/success",
+        element: <Success />,
+      },
+      {
+        path: "/payment/cancel",
+        element: <Cancel />,
       },
     ],
   },
@@ -241,7 +256,7 @@ const routes = createBrowserRouter([
         path: "",
         element: <BasicServerDashboard />,
       },
-
+      { path: "all-courses", element: <StandardServerAllCourse /> },
       {
         path: "dashboard",
         element: <BasicServerDashboard />,

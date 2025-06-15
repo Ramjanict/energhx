@@ -3,7 +3,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -13,7 +13,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CreatePasswordForServer = () => {
-  const { createPassword, isLoading } = useServerStore();
+  const { createPassword, isLoading } = useAdminStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
@@ -97,7 +97,7 @@ const CreatePasswordForServer = () => {
         <button
           type="submit"
           disabled={isSubmitting || isLoading}
-          className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition disabled:opacity-50"
+          className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition disabled:opacity-50 cursor-pointer"
         >
           {isSubmitting || isLoading ? "Submitting..." : "Create Password"}
         </button>

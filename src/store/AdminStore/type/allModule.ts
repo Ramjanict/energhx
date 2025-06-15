@@ -6,6 +6,14 @@ export type Module = {
   updatedAt: string;
   courseId: string;
 };
+export type BasicContent = {
+  id: string;
+  title: string;
+  video: string;
+  createdAt: string;
+  updatedAt: string;
+  courseId: string;
+};
 
 export type AllModule = {
   id: string;
@@ -16,5 +24,6 @@ export type AllModule = {
   createdAt: string;
   updatedAt: string;
   programId: string;
-  modules: Module[];
+  modules?: Module[];
+  basicContents?: BasicContent[];
 };

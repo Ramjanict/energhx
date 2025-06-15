@@ -2,17 +2,28 @@ import CommonHeader from "./CommonHeader";
 import DashBoardHeader from "./DashBoardHeader";
 import twing from "../assets/twing.png";
 import { OverViewProps } from "@/types";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
-const OverView: React.FC<OverViewProps> = ({ object, handleOverview }) => {
+const OverView: React.FC<OverViewProps> = ({ object }) => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
+  const { DevUser } = useAdminStore();
   const hideUI = [
     "/basic-consumer/dashboard",
     "/basic-consumer/dashboard/",
     "/basic-consumer",
     "/basic-consumer/",
   ].includes(pathname);
+
+  const handleOverview = () => {
+    if (DevUser?.user?.userType === "SERVER") {
+      navigate("/basic-server/all-courses");
+    } else {
+      navigate("/basic-developer/all-courses");
+    }
+  };
   return (
     <div>
       <div className=" bg-white rounded-lg ">

@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import dataSchema, { UserExperience } from "./ValidationSchema";
 import { useRef, useState } from "react";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
 import { useNavigate } from "react-router-dom";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const WorkExperience = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -16,7 +16,7 @@ const WorkExperience = () => {
   const navigate = useNavigate();
 
   const { addExperienceServer, addExperienceDeveloper, DevUser, isLoading } =
-    useServerStore();
+    useAdminStore();
 
   const {
     register,

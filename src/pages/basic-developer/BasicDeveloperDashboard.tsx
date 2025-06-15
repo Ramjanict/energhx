@@ -1,7 +1,9 @@
 import OverView from "@/common/OverView";
 import PaymentModal from "@/components/Appointment/PaymentModal";
 import HandShake from "@/components/basic-consumer/HandShake";
-import { useServerStore } from "@/store/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const object = {
@@ -30,8 +32,13 @@ const BasicDeveloperDashboard = () => {
     isPaymentModalOpen,
     showPayment,
     closePayment,
-  } = useServerStore();
-
+  } = usePaymentStore();
+  const { DevToken } = useAdminStore();
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/basic-developer/form");
+    }
+  }, [DevToken]);
   return (
     <div>
       <OverView handleOverview={showPayment} object={object} />

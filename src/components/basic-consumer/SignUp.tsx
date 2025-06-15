@@ -7,7 +7,7 @@ import DashBoardHeader from "@/common/DashBoardHeader";
 import CommonPersonalInfo from "@/common/form/CommonPersonalInfo";
 import { basicConsumer, TbasicConsumer } from "./ValidationSchema";
 import { FaAngleDoubleRight } from "react-icons/fa";
-import { CreateConsumer } from "@/store/consumerStoreType/CreateConsumer";
+import { CreateConsumer } from "@/store/ConsumerStore/type/CreateConsumer";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";

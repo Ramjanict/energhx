@@ -1,11 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
 import NavbarStandard from "./NavbarStandard";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
 import { useEffect } from "react";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const Layout: React.FC = () => {
   const { pathname } = useLocation();
-  const { getUser } = useServerStore();
+  const { getUser } = useAdminStore();
 
   const hideUI = [
     "/dashboard",
@@ -23,7 +23,7 @@ const Layout: React.FC = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [pathname]);
 
   return (
     <div>

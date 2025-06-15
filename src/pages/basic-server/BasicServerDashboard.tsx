@@ -1,7 +1,6 @@
 import OverView from "@/common/OverView";
-import PaymentModal from "@/components/Appointment/PaymentModal";
-import HandShake from "@/components/basic-consumer/HandShake";
-import { useServerStore } from "@/store/ServerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const object = {
@@ -23,30 +22,19 @@ const object = {
 };
 const BasicServerDashboard = () => {
   const navigate = useNavigate();
-  const {
-    isHandShakeOpen,
-    handleHandShake,
-    isPaymentModalOpen,
-    showPayment,
-    closePayment,
-  } = useServerStore();
+
+  const { DevToken, singleProgram } = useAdminStore();
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/basic-server/form");
+    }
+  }, [DevToken]);
+
+  console.log("singleProgram", singleProgram);
 
   return (
     <>
-      <OverView handleOverview={showPayment} object={object} />
-
-      {isPaymentModalOpen && (
-        <PaymentModal isOpen={isPaymentModalOpen} onClose={closePayment} />
-      )}
-
-      {isHandShakeOpen && (
-        <HandShake
-          handleClose={() => {
-            handleHandShake(false);
-            navigate("/standard-server");
-          }}
-        />
-      )}
+      <OverView object={object} />
     </>
   );
 };

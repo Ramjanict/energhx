@@ -8,8 +8,8 @@ import CommonWrapper from "@/common/CommonWrapper";
 import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
-import { useServerStore } from "@/store/ServerStore";
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
 const developerMenu = [
   { path: "/basic-developer/dashboard", label: "Dashboard", icon: FaHome },
   { path: "/basic-developer/settings", label: "Settings", icon: MdSettings },
@@ -22,7 +22,7 @@ const developerMenu = [
 ];
 
 const RootBasicDeveloper = () => {
-  const { showPayment } = useServerStore();
+  const { showPayment } = usePaymentStore();
   const { pathname } = useLocation();
 
   const [user] = useState({

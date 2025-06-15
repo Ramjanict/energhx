@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConsumerLogin from "./ConsumerLogin";
 import DevServerLogin from "./DevServerLogin";
 import {
@@ -8,15 +8,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import { useNavigate } from "react-router-dom";
+
+type UserType = "Energy Consumer" | "Energy Server" | "Energy Developer";
 
 const Login = () => {
-  const [userType, setUserType] = useState("Energy Consumer");
+  const [user, setUser] = useState<UserType>("Energy Consumer");
+  const navigate = useNavigate();
 
-  const userOptions = [
-    { user: "Energy Consumer" },
-    { user: "Energy Server" },
-    { user: "Energy Developer" },
+  const userOptions: UserType[] = [
+    "Energy Consumer",
+    "Energy Server",
+    "Energy Developer",
   ];
+
+  const { token } = useConsumerStore();
+  const { DevToken } = useAdminStore();
+  const currentToken = token || DevToken;
+  useEffect(() => {
+    if (currentToken) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="flex items-center justify-center h-auto md:min-h-[calc(100vh-70px)] p-4">
@@ -24,35 +39,33 @@ const Login = () => {
         <h2 className="text-2xl font-semibold text-center pb-5">
           Please select your user type
         </h2>
+
         <div className="flex justify-between py-6">
           <Select
-            onValueChange={(value) => {
-              setUserType(value);
-            }}
-            value={userType}
+            onValueChange={(value: UserType) => setUser(value)}
+            value={user}
           >
-            <SelectTrigger className=" outline-none">
+            <SelectTrigger className="outline-none">
               <SelectValue placeholder="Select user type" />
             </SelectTrigger>
             <SelectContent className="bg-white">
-              {userOptions.map((option, i) => (
+              {userOptions.map((option) => (
                 <SelectItem
-                  key={i}
-                  value={option.user}
-                  className=" !hover:bg-primary hover:text-white"
+                  key={option}
+                  value={option}
+                  className="hover:bg-primary hover:text-white"
                 >
-                  {option.user}
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
-            <div className="text-sm font-semibold ">{userType}</div>
           </Select>
         </div>
 
-        {userType === "Energy Consumer" ? (
-          <ConsumerLogin />
+        {user === "Energy Consumer" ? (
+          <ConsumerLogin users={user} />
         ) : (
-          <DevServerLogin />
+          <DevServerLogin users={user} />
         )}
       </div>
     </div>

@@ -1,85 +1,104 @@
 import React from "react";
 import { IoIosStar, IoIosStarOutline } from "react-icons/io";
-import newspaperfolding from "/src/assets/courses/newspaper-folding.png";
 import carouselvideo from "/src/assets/courses/carousel-video.png";
-import { Link } from "react-router-dom";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { FaCrown } from "react-icons/fa6";
 
-// Define the Course type
-interface Course {
-  id: number;
+export type CourseData = {
+  id: string;
   title: string;
-  description: string;
-  totalModules: string;
-  totalClass: number;
-  assignment: number;
-  rating: number;
-  reviews: number;
-  image: string;
-}
-
-// Define props type
-interface CourseCardProps {
-  course: Course;
-  pathname?: string;
-}
-
-// Function to generate star ratings
-const renderStars = (rating: number) => {
-  return (
-    <div className="flex text-yellow-500 text-lg">
-      {/* Filled Stars */}
-      {Array.from({ length: Math.floor(rating) }, (_, i) => (
-        <IoIosStar key={`filled-${i}`} />
-      ))}
-      {/* Empty Stars */}
-      {Array.from({ length: 5 - Math.floor(rating) }, (_, i) => (
-        <IoIosStarOutline key={`empty-${i}`} />
-      ))}
-    </div>
-  );
+  thumbnail: string;
+  averageRating: number;
+  isCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  programId: string;
+  _count: { modules: number; reviews: number };
 };
 
-const CourseCard: React.FC<CourseCardProps> = ({ course, pathname }) => {
+interface CourseCardProps {
+  course: CourseData;
+}
+
+const renderStars = (rating: number) => (
+  <div className="flex text-yellow-500 text-base">
+    {Array.from({ length: Math.floor(rating) }, (_, i) => (
+      <IoIosStar key={`filled-${i}`} />
+    ))}
+    {Array.from({ length: 5 - Math.floor(rating) }, (_, i) => (
+      <IoIosStarOutline key={`empty-${i}`} />
+    ))}
+  </div>
+);
+
+const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+  const { getAllModule, payment } = useAdminStore();
+
+  const handlePayment = async (programId: string) => {
+    if (programId) {
+      await payment(programId);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  console.log("course", course);
   return (
-    <div className=" rounded-lg shadow-md  relative p-4">
-      <div className="relative">
+    <div className="rounded-xl shadow-[0_0_1px_2px_rgba(0,0,0,0.04)] p-4 bg-white hover:shadow-lg transition duration-300 ">
+      <div className="flex flex-col md:flex-row gap-10">
         <img
-          src={course.image}
+          src={course.thumbnail}
           alt={course.title}
-          className="w-full h-40 object-cover rounded-md"
+          className="w-full md:w-[250px] h-[200px] object-cover rounded-lg"
         />
-        <span className="absolute bottom-2 left-2 bg-[#FFFAE9] text-[#F1BB00] px-2 py-1 rounded text-sm">
-          Total Modules {course.totalModules}
-        </span>
-      </div>
 
-      {/* Course Details */}
-      <h2 className="font-bold text-lg mt-3">{course.title}</h2>
-      <p className=" text-[#758179] mt-2">{course.description}</p>
-      <div className="flex justify-between items-center mt-3 text-gray-700 text-sm">
-        <span className="flex gap-2">
-          <img src={carouselvideo} /> {course.totalClass} Classes
-        </span>
-        <span className="flex gap-2">
-          <img src={newspaperfolding} /> {course.assignment} Assignments
-        </span>
-      </div>
+        <div className="f flex flex-col gap-4">
+          <h2 className="font-semibold  text-xl md:text-2xl text-gray-800">
+            {course.title}
+          </h2>
 
-      {/* Star Ratings */}
-      <div className="flex items-center mt-4">
-        {renderStars(course.rating)}
-        <span className="text-gray-500 text-sm ml-2">
-          (Review {course.reviews})
-        </span>
-      </div>
+          <div className="flex  gap-6 text-gray-600 text-sm">
+            <div className="flex items-center gap-2">
+              <img src={carouselvideo} alt="Modules" className="w-5 h-5" />
+              <span>{course._count?.modules} modules</span>
+            </div>
+            <div className="flex items-center">
+              {renderStars(course.averageRating)}
+              <span className="text-gray-500 text-sm ml-2">
+                ({course._count?.reviews} Reviews)
+              </span>
+            </div>
+          </div>
 
-      {pathname && (
-        <Link to={`${pathname}/${course.id}`}>
-          <button className="bg-[#EAF7E6] text-[#2DAD00] w-full py-2 mt-6 rounded-lg cursor-pointer hover:bg-[#2DAD00] hover:text-white">
-            Book Now
-          </button>
-        </Link>
-      )}
+          <div className="flex  items-center gap-6 mt-2">
+            <button
+              onClick={() => handlePayment(course.programId)}
+              className="cursor-pointer px-4 py-2 rounded-lg bg-primary text-white transition hover:bg-green-500"
+            >
+              <div className="flex items-center gap-1 text-xs sm:text-lg">
+                <span>
+                  <FaCrown />
+                </span>
+                Upgrade
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                getAllModule(course.id);
+                scrollToTop();
+              }}
+              className="cursor-pointer px-4 py-2 rounded-lg bg-primary text-white transition hover:bg-green-500"
+            >
+              Continue Course
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

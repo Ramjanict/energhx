@@ -1,12 +1,12 @@
-import { useServerStore } from "@/store/ServerStore";
 import BuildingInfo from "../standard-consumer/StandardConsumerBuildingInfo";
 import PaymentModal from "@/components/Appointment/PaymentModal";
 import HandShake from "@/components/basic-consumer/HandShake";
+import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
 import { useNavigate } from "react-router-dom";
 
 const BasicServerBuildingInfo = () => {
   const { isHandShakeOpen, handleHandShake, isPaymentModalOpen, closePayment } =
-    useServerStore();
+    usePaymentStore();
   const navigate = useNavigate();
   return (
     <div>

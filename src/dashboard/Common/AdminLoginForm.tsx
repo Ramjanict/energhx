@@ -1,11 +1,11 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const AdminLoginForm = () => {
-  const { adminLogin, isLoading, DevToken } = useAdminStore();
+  const { login, isLoading, DevToken } = useAdminStore();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
@@ -18,18 +18,12 @@ const AdminLoginForm = () => {
         console.error("Email and password are required.");
         return;
       }
-      await adminLogin({ email, password });
+      await login({ email, password });
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
-
-  useEffect(() => {
-    if (DevToken) {
-      navigate("/dashboard");
-    }
-  }, []);
 
   return (
     <div className="flex w-full min-h-screen">

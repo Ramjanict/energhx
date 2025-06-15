@@ -1,7 +1,7 @@
 import { PlusCircle, BatteryFull } from "lucide-react";
 import DashBoardHeader from "@/common/DashBoardHeader";
 import { Link } from "react-router-dom";
-import { AllBuilding } from "@/store/consumerStoreType/AllBuildings";
+import { AllBuilding } from "@/store/ConsumerStore/type/AllBuildings";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { useEffect } from "react";
 

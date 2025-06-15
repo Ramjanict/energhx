@@ -13,8 +13,8 @@ import { Button } from "../ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AiOutlineUpload } from "react-icons/ai";
-import { useServerStore } from "@/store/ServerStore/ServerStore";
 import { SignUpType, signupSchema } from "./ValidationSchema";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const SignUp = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -25,10 +25,9 @@ const SignUp = () => {
     states,
     userRegister,
     isLoading,
-    userType,
-  } = useServerStore();
+    devUserType,
+  } = useAdminStore();
 
-  console.log("userType", userType);
   useEffect(() => {
     countries();
   }, [countries]);
@@ -59,6 +58,7 @@ const SignUp = () => {
     },
   });
 
+  console.log("devUserType", devUserType);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -69,9 +69,9 @@ const SignUp = () => {
   };
 
   const onSubmit = async (data: SignUpType) => {
-    const newUser = { ...data, userType };
+    const newUser = { ...data, userType: devUserType };
+    console.log("data", data);
 
-    console.log("JSON.stringify", newUser);
     try {
       const formData = new FormData();
       const { image, ...restData } = newUser;
@@ -80,7 +80,7 @@ const SignUp = () => {
       if (image && image instanceof File) {
         formData.append("file", image);
       }
-      if (userType) {
+      if (devUserType) {
         await userRegister(formData);
       }
     } catch (error) {

@@ -12,18 +12,8 @@ interface NavbarAdminProps {
   user: NavbarUserProps;
 }
 const NavbarAdmin = ({ user }: NavbarAdminProps) => {
-  const [sticky, setSticky] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setSticky(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []); //
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,9 +41,8 @@ const NavbarAdmin = ({ user }: NavbarAdminProps) => {
     <>
       <nav
         className={`
-        } bg-white  flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8] z-50 ${
-          sticky ? "fixed top-0 left-0 w-full shadow-md" : "relative"
-        } `}
+bg-white  flex justify-between items-center px-4 xl:px-[5%] py-4 border-b border-[#E7E9E8] z-50 
+      `}
       >
         <CommonWrapper>
           <div className="w-full flex justify-between items-center">

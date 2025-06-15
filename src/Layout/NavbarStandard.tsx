@@ -18,7 +18,6 @@ const menuItems = [
 const NavbarStandard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sticky, setSticky] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); // <- Ref for dropdown
 
   // Detect outside click
@@ -36,18 +35,10 @@ const NavbarStandard = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setSticky(window.scrollY > 100);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div className={`${sticky ? "fixed bg-white" : ""} w-full z-10`}>
+    <div className={` w-full z-10`}>
       <nav className="bg-white flex justify-between items-center px-4 xl:px-[5%] h-18 border-b border-[#E7E9E8] z-50 transition-all duration-300">
         <Link to="/">
           <img src={Logo} alt="Logo" className="h-8" />

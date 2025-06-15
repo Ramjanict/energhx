@@ -401,6 +401,38 @@ export const useConsumerStore = create<ConsumerStoreType>()(
           set({ isLoading: false });
         }
       },
+      updatePassword: async (userData) => {
+        const { token } = get();
+        set({ isLoading: true });
+
+        try {
+          if (!token) {
+            toast.error("Authentication token missing. Please log in again.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(
+            "/auth/reset-password",
+            userData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "Password update failed.");
+          }
+        } catch (error) {
+          console.error("Problem during password update", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
 
       loginUser: async (newUser) => {
         set({ isLoading: true });
