@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const AdminLoginForm = () => {
-  const { login, isLoading, DevToken } = useAdminStore();
+  const { login, isLoading } = useAdminStore();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
