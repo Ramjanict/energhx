@@ -1,13 +1,21 @@
+import { AllAdmin } from "./type/allAdmin";
 import { AllContent } from "./type/allContent";
 import { AllCourse } from "./type/allCourse";
-import { AllModule } from "./type/allModule";
-import { allProgram } from "./type/allProgram";
+import { AllModule, BasicContent } from "./type/allModule";
+import { PaymentDataItem } from "./type/allPayment";
+import { AllProgram } from "./type/allProgram";
+import { WatchedContentProgress } from "./type/allProgress";
+import { AllQuiz } from "./type/allquiz";
 import { Country } from "./type/country";
 import { Login } from "./type/login";
+import { QuizSubmissionResponse } from "./type/mark";
 import { Myprogram } from "./type/myProgram";
-import { Quiz } from "./type/quiz";
+import { Quiz, QuizData } from "./type/quiz";
+import { SingleContent } from "./type/singleContent";
 import { SingleProgramData } from "./type/singleProgram";
 import { State } from "./type/state";
+import { AnswerSubmission } from "./type/SubmitQuiz";
+import { UpdatePassword } from "./type/updatePassword";
 import { User } from "./type/user";
 
 export type AdminStoreType = {
@@ -17,21 +25,29 @@ export type AdminStoreType = {
   allCountry: Country[];
   allSates: State[];
   isLoading: boolean;
-  allProgram: allProgram[];
+  allProgram: AllProgram[];
   allCourse: AllCourse[];
   allModule: AllModule;
   allContent: AllContent;
+  singleContent: SingleContent;
+  allBasicContent: BasicContent[];
   myProgram: Myprogram[];
   singleProgram: SingleProgramData;
-
+  allAdmin: AllAdmin[];
+  allQuiz: AllQuiz;
+  courseProgress: WatchedContentProgress;
+  mark: QuizSubmissionResponse;
+  allPayment: PaymentDataItem[];
   // -------------------
   // User;
   // -------------------
 
   userRegister: (registerUser: FormData, file?: File) => Promise<void>;
   createPassword: (userData: Login, token: string) => void;
+  updatedDevPassword: (userPassword: UpdatePassword) => void;
   getDevUserType: (userType: string) => void;
   getUser: () => void;
+  updateUser: (newUser: FormData, file?: File) => void;
   addExperienceServer: (userId: string, experience: FormData) => void;
   addExperienceDeveloper: (userId: string, experience: FormData) => void;
   countries: () => void;
@@ -71,7 +87,7 @@ export type AdminStoreType = {
   // -------------------
 
   createBasicContent: (basicContent: FormData) => Promise<void>;
-  getAllBasicContent: (singleCourseId: string) => Promise<void>;
+  getAllBasicContent: () => Promise<void>;
   updateBasicContent: (
     basicContentId: string,
     basicContent: FormData
@@ -83,6 +99,7 @@ export type AdminStoreType = {
   // -------------------
   createContent: (content: FormData) => Promise<void>;
   getAllContent: (singleModuleId: string) => Promise<void>;
+  getSingleContent: (singleContentId: string) => Promise<void>;
   updateContent: (contentId: string, content: FormData) => Promise<void>;
   deleteContent: (contentId: string) => Promise<void>;
 
@@ -91,12 +108,30 @@ export type AdminStoreType = {
   // -------------------
 
   createQuiz: (quiz: Quiz) => Promise<void>;
+  getAllQuiz: (quizId: string) => Promise<void>;
+  submitQuiz: (answerSheet: AnswerSubmission) => Promise<void>;
+  UpdateQuiz: (quizId: string, quizData: QuizData) => Promise<void>;
+  deleteQuiz: (contentId: string) => Promise<void>;
 
   // -------------------
   // payment
   // -------------------
 
   payment: (programId: string) => Promise<void>;
+  getAllPayment: () => Promise<void>;
+
+  // -------------------
+  //  Add admin
+  // -------------------
+
+  addAdmin: (admin: FormData, file?: File) => Promise<void>;
+  getAllAdmin: () => Promise<void>;
+
+  // -------------------
+  //  progress
+  // -------------------
+  setProgress: (courseId: string, singleContentId: string) => Promise<void>;
+  getProgress: (courseId: string) => Promise<void>;
 
   // -------------------
   //  login and logout

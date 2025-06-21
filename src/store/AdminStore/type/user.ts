@@ -1,15 +1,28 @@
-type Data = {
-  email: string;
-  id: string;
-  userType: "SERVER" | "DEVELOPER" | "ADMIN" | string; // Adjust based on actual enum values
-  status: "ACTIVE" | "INACTIVE" | string; // Adjust as needed
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-};
-
 export type User = {
   id: string;
   email: string;
+  status: "ACTIVE" | "INACTIVE" | string;
   userId: string;
-  user: Data;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    otherName: string | null;
+    sex: "MALE" | "FEMALE" | string;
+    password: string;
+    profile_photo: string;
+    companyName: string;
+    streetNumber: number;
+    street: string;
+    postalCode: number;
+    city: string;
+    countryId: string;
+    stateId: string;
+    isVerified: boolean;
+    userType: "DEVELOPER" | "ADMIN" | "SERVER" | string;
+    status: "ACTIVE" | "INACTIVE" | string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };

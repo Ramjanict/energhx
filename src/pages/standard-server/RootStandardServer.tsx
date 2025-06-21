@@ -4,7 +4,6 @@ import Sidebar from "@/common/Sidebar";
 import { Outlet } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { MdSettings, MdLogout } from "react-icons/md";
-import { FaGraduationCap } from "react-icons/fa6";
 import { FaPhotoVideo } from "react-icons/fa";
 import CommonWrapper from "@/common/CommonWrapper";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
@@ -13,11 +12,7 @@ import { IoMdTime } from "react-icons/io";
 
 const menuItems = [
   { path: "/standard-server/dashboard", label: "Dashboard", icon: FaHome },
-  {
-    path: "/standard-server/my-courses",
-    label: "My Courses/LMS",
-    icon: FaGraduationCap,
-  },
+
   {
     path: "/standard-server/all-courses",
     label: "All Courses",

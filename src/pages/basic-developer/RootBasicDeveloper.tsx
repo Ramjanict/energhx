@@ -1,17 +1,23 @@
 import CommonBanner from "@/common/CommonBanner";
 import userImg from "../../assets/user.png";
 import Sidebar from "@/common/Sidebar";
-import { Outlet, useLocation } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { FaHome, FaPhotoVideo } from "react-icons/fa";
 import { MdSettings, MdLogout } from "react-icons/md";
 import CommonWrapper from "@/common/CommonWrapper";
 import { useState } from "react";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 const developerMenu = [
   { path: "/basic-developer/dashboard", label: "Dashboard", icon: FaHome },
+
+  {
+    path: "/basic-developer/all-courses",
+    label: "All Courses",
+    icon: FaPhotoVideo,
+  },
   { path: "/basic-developer/settings", label: "Settings", icon: MdSettings },
   {
     path: "/basic-developer/experience",
@@ -22,13 +28,16 @@ const developerMenu = [
 ];
 
 const RootBasicDeveloper = () => {
-  const { showPayment } = usePaymentStore();
+  const { DevUser } = useAdminStore();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [user] = useState({
-    name: "Emmnauel Nonye",
+    name: `${DevUser?.user?.firstName ?? ""} ${
+      DevUser?.user?.lastName ?? ""
+    }`.trim(),
     role: "Developer (Basic)",
-    profileImg: userImg,
+    profileImg: DevUser?.user?.profile_photo ?? userImg,
   });
 
   const isFormPage =
@@ -36,11 +45,19 @@ const RootBasicDeveloper = () => {
     pathname === "/basic-developer/experience";
 
   const handleUpgrade = () => {
-    showPayment();
+    if (DevUser?.user?.userType === "SERVER") {
+      navigate("/basic-server/all-courses");
+    } else {
+      navigate("/basic-developer/all-courses");
+    }
   };
   return (
     <div>
-      {isFormPage ? <NavbarStandard /> : <NavbarAdmin user={user} />}
+      {isFormPage ? (
+        <NavbarStandard />
+      ) : (
+        user.profileImg && <NavbarAdmin user={user} />
+      )}
       {!isFormPage && (
         <CommonBanner
           name={user.name}

@@ -163,7 +163,7 @@ const CommonPersonalInfo: React.FC<CommonPersonalInfoProps> = ({
               type="email"
               id="mail"
               placeholder="Enter Email"
-              className=" w-full  border border-primary-gray p-2"
+              className=" w-full  border border-primary-gray p-2 "
               {...register("email")}
             />
             {errors.email && (

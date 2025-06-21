@@ -13,15 +13,20 @@ import {
 } from "@/components/ui/select";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { RiCloseLargeLine } from "react-icons/ri";
-import ModuleCard from "../Common/ModuleCard";
 import AllCourse from "../components/AllCourse";
+import BasicContentCard from "../Common/BasicContentCard";
 // Zod Schema
 export const basicContentSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  thumbnail: z.union([
-    z.instanceof(File).refine((file) => file.size > 0, "Thumbnail is required"),
-    z.string().min(1, "Thumbnail is required"),
+  video: z.union([
+    z
+      .instanceof(File)
+      .refine((file) => file && file.type.startsWith("video/"), {
+        message: "Must be a valid video file",
+      }),
+    z.undefined(),
   ]),
+
   courseId: z
     .string()
     .uuid("Course ID must be a valid UUID")
@@ -59,8 +64,7 @@ const BasicContent: React.FC = () => {
   } = useForm<BasicContentFormData>({
     resolver: zodResolver(basicContentSchema),
     defaultValues: {
-      title: "Basic content title",
-      thumbnail: "",
+      title: "",
       courseId: "",
     },
   });
@@ -83,11 +87,11 @@ const BasicContent: React.FC = () => {
   const onSubmit = async (data: BasicContentFormData) => {
     const formData = new FormData();
 
-    const { thumbnail, ...restData } = data;
+    const { video, ...restData } = data;
     formData.append("text", JSON.stringify(restData));
 
-    if (thumbnail instanceof File) {
-      formData.append("file", thumbnail);
+    if (video instanceof File) {
+      formData.append("file", video);
     }
     BasicContentId && selectedBasicContent
       ? await updateModule(BasicContentId, formData)
@@ -117,17 +121,18 @@ const BasicContent: React.FC = () => {
       <div className="">
         <div className="">
           <AdminCommonHeader className="pt-6">
-            {Array.isArray(allModule?.modules) && allModule.modules.length > 0
-              ? `Basic Content (${allModule.modules.length})`
+            {Array.isArray(allModule?.basicContents) &&
+            allModule.basicContents.length > 0
+              ? `Basic Content (${allModule.basicContents.length})`
               : "This course does not contain any Basic Content"}
           </AdminCommonHeader>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
-          {allModule?.modules?.map((basicContent) => (
-            <ModuleCard
+          {allModule?.basicContents?.map((basicContent) => (
+            <BasicContentCard
               key={basicContent.id}
-              module={basicContent}
+              basicContent={basicContent}
               selectedCourseId={selectedCourseId}
               onEdit={() => {
                 setSelectedBasicContent(basicContent);
@@ -176,7 +181,7 @@ const BasicContent: React.FC = () => {
                     type="text"
                     {...register("title")}
                     className="w-full border border-primary-gray p-2 outline-none"
-                    placeholder="Enter lesson title"
+                    placeholder="Enter Basic content title"
                   />
                   {errors.title && (
                     <p className="text-red-500 text-xs sm:text-sm">
@@ -185,46 +190,45 @@ const BasicContent: React.FC = () => {
                   )}
                 </div>
 
-                {/* Thumbnail URL */}
                 <div>
-                  <label className="text-primary-gray block mb-1">
-                    Thumbnail
-                  </label>
+                  <label className="text-primary-gray block mb-1">Video</label>
                   <input
-                    id="thumbnail"
+                    id="Video"
                     type="file"
-                    accept="image/*"
+                    accept="video/*"
                     className="hidden"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         setPreview(URL.createObjectURL(file));
-                        setValue("thumbnail", file, { shouldValidate: true });
+                        setValue("video", file, { shouldValidate: true });
                       }
                     }}
                   />
 
                   {!preview && (
                     <label
-                      htmlFor="thumbnail"
+                      htmlFor="Video"
                       className="block cursor-pointer border border-primary-gray py-2 px-4 text-primary-gray hover:bg-primary-green hover:text-white transition"
                     >
-                      Upload Thumbnail
+                      Upload video
                     </label>
                   )}
 
                   {preview && (
                     <div className="w-full mt-2">
-                      <img
+                      <video
                         src={preview}
-                        alt="Thumbnail Preview"
-                        className="w-fit max-h-20 object-contain border border-gray-200"
+                        controls
+                        className="w-full max-h-40 border border-gray-200"
                       />
                       <button
                         type="button"
                         onClick={() => {
                           setPreview(null);
-                          setValue("thumbnail", "", { shouldValidate: true });
+                          setValue("video", undefined, {
+                            shouldValidate: true,
+                          });
                         }}
                         className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mt-1"
                       >
@@ -233,9 +237,9 @@ const BasicContent: React.FC = () => {
                     </div>
                   )}
 
-                  {errors.thumbnail && (
+                  {"video" in errors && errors.video && (
                     <p className="text-red-500 text-xs sm:text-sm mt-1">
-                      {errors.thumbnail.message}
+                      {errors.video.message as string}
                     </p>
                   )}
                 </div>

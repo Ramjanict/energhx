@@ -9,6 +9,7 @@ export type ContentItem = {
   createdAt: string;
   updatedAt: string;
   moduleId: string;
+  courseId: string;
 };
 
 export type AllContent = {

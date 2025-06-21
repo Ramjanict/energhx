@@ -7,6 +7,7 @@ import { PiVideoFill } from "react-icons/pi";
 import { LiaPhotoVideoSolid } from "react-icons/lia";
 import { BiHive, BiSolidBookmarkAltPlus } from "react-icons/bi";
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
+import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const sidebarList = [
@@ -23,6 +24,7 @@ const sidebarList = [
   { label: "Quiz", tab: "quiz", icon: MdQuiz },
   { label: "Review", tab: "review", icon: MdOutlineReviews },
   { label: "Payment", tab: "payment", icon: MdPayment },
+  { label: "Add Admin", tab: "addAdmin", icon: IoIosPersonAdd },
 ];
 
 interface SidebarProps {

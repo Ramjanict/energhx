@@ -8,7 +8,7 @@ const BasicDeveloperForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (DevUser?.user.userType === "DEVELOPER") {
+    if (DevUser?.user?.userType === "DEVELOPER") {
       navigate("/choose-program");
     }
   }, [DevUser]);

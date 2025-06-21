@@ -12,7 +12,7 @@ const ChooseProgram = () => {
   const navigate = useNavigate();
   const [selectProgramId, setSelectProgramId] = useState<string | null>(null);
 
-  const userType = DevUser?.user.userType;
+  const userType = DevUser?.user?.userType;
 
   const routeMap: Record<string, string> = {
     BASIC_SERVER: "/basic-server",
@@ -32,8 +32,6 @@ const ChooseProgram = () => {
       localStorage.setItem("selectedProgram", selectProgramId);
     }
   }, [selectProgramId]);
-
-  console.log("selected", selectProgramId);
 
   const handleRouting = async (status: string) => {
     if (selectProgramId && userType) {

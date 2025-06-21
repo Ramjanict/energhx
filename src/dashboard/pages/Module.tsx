@@ -60,7 +60,7 @@ const Module: React.FC = () => {
   } = useForm<ModuleFormData>({
     resolver: zodResolver(moduleSchema),
     defaultValues: {
-      title: "solar video",
+      title: "",
       thumbnail: "",
       courseId: "",
     },
@@ -175,7 +175,7 @@ const Module: React.FC = () => {
                     type="text"
                     {...register("title")}
                     className="w-full border border-primary-gray p-2 outline-none"
-                    placeholder="Enter lesson title"
+                    placeholder="Enter module title"
                   />
                   {errors.title && (
                     <p className="text-red-500 text-xs sm:text-sm">

@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AdminStoreType } from "./AdminStoreType";
 import { defaultSingleProgramData } from "./type/singleProgram";
+import { defaultAllQuiz } from "./type/allquiz";
 
 // Secure Axios instance
 const axiosSecure = axios.create({
@@ -42,8 +43,18 @@ export const useAdminStore = create<AdminStoreType>()(
         courseId: "",
         contents: [],
       },
+      allBasicContent: [],
       myProgram: [],
       singleProgram: defaultSingleProgramData,
+      allAdmin: [],
+      allQuiz: defaultAllQuiz,
+      singleContent: null,
+      courseProgress: {
+        watchedContents: [],
+        percentage: 0,
+      },
+      mark: null,
+      allPayment: [],
       //------------------------
       // user async function
       //------------------------
@@ -90,6 +101,32 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
+      updatedDevPassword: async (userPassword) => {
+        set({ isLoading: true });
+        const DevToken = get().DevToken;
+        try {
+          if (DevToken) {
+            const { data } = await axiosSecure.patch(
+              `/auth/change-password`,
+              userPassword,
+              {
+                headers: { Authorization: `${DevToken}` },
+              }
+            );
+
+            if (data) {
+              set({ DevUser: data.data });
+              toast.success(data.message);
+            }
+          }
+        } catch (error) {
+          console.error("Problem during Signup", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
       getDevUserType: async (user) => {
         set({ devUserType: user });
       },
@@ -105,6 +142,31 @@ export const useAdminStore = create<AdminStoreType>()(
 
             if (data) {
               set({ DevUser: data.data });
+            }
+          }
+        } catch (error: any) {
+          console.error("Problem during getUser:", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      updateUser: async (newUser) => {
+        set({ isLoading: true });
+        const DevToken = get().DevToken;
+
+        try {
+          if (DevToken) {
+            const { data } = await axiosSecure.patch(
+              "user/update/me",
+              newUser,
+              {
+                headers: { Authorization: `${DevToken}` },
+              }
+            );
+
+            if (data) {
+              set({ DevUser: data.data });
+              toast.success(data.message);
             }
           }
         } catch (error: any) {
@@ -323,7 +385,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting all program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });
         }
@@ -577,6 +638,7 @@ export const useAdminStore = create<AdminStoreType>()(
       },
       //------------------------
       // basic content for basic user async function
+      // get all basic for other for admin
       //------------------------
 
       createBasicContent: async (basicContent) => {
@@ -589,9 +651,13 @@ export const useAdminStore = create<AdminStoreType>()(
             return;
           }
 
-          const { data } = await axiosSecure.post("/basic-content", basicContent, {
-            headers: { Authorization: token },
-          });
+          const { data } = await axiosSecure.post(
+            "/basic-content",
+            basicContent,
+            {
+              headers: { Authorization: token },
+            }
+          );
 
           if (data?.message) {
             toast.success(data.message);
@@ -605,7 +671,7 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
-      getAllBasicContent: async (singleCourseId) => {
+      getAllBasicContent: async () => {
         set({ isLoading: true });
         const token = get().DevToken;
 
@@ -615,12 +681,12 @@ export const useAdminStore = create<AdminStoreType>()(
             return;
           }
 
-          const { data } = await axiosSecure.get(`/course/${singleCourseId}`, {
+          const { data } = await axiosSecure.get(`/basic-content/all`, {
             headers: { Authorization: token },
           });
 
           if (data?.message) {
-            set({ allModule: data.data });
+            set({ allBasicContent: data.data });
           } else if (data?.error) {
             toast.error(data.message || "An error occurred.");
           }
@@ -642,7 +708,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
 
           const { data } = await axiosSecure.patch(
-            `/module/${moduleId}`,
+            `/basic-conten/${moduleId}`,
             module,
             {
               headers: { Authorization: token },
@@ -672,9 +738,12 @@ export const useAdminStore = create<AdminStoreType>()(
             return;
           }
 
-          const { data } = await axiosSecure.delete(`/module/${moduleId}`, {
-            headers: { Authorization: token },
-          });
+          const { data } = await axiosSecure.delete(
+            `/basic-conten/${moduleId}`,
+            {
+              headers: { Authorization: token },
+            }
+          );
 
           if (data?.message) {
             set({ allModule: data.data });
@@ -683,8 +752,8 @@ export const useAdminStore = create<AdminStoreType>()(
             toast.error(data.message || "An error occurred.");
           }
         } catch (error) {
-          console.error("Problem during creating module", error);
-          toast.error("Something went wrong. Please try again.");
+          console.error("Problem during  delete", error);
+          toast.error("Problem during  delete.");
         } finally {
           set({ isLoading: false });
         }
@@ -736,6 +805,32 @@ export const useAdminStore = create<AdminStoreType>()(
 
           if (data?.message) {
             set({ allContent: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during getting module", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      getSingleContent: async (contentId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(`/content/${contentId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ singleContent: data.data });
           } else if (data?.error) {
             toast.error(data.message || "An error occurred.");
           }
@@ -832,6 +927,125 @@ export const useAdminStore = create<AdminStoreType>()(
           set({ isLoading: false });
         }
       },
+      getAllQuiz: async (quizId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(
+            `/quiz/get-all-quizzes/${quizId}`,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message) {
+            set({ allQuiz: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      UpdateQuiz: async (quizId, quizData) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+          const { data } = await axiosSecure.patch(
+            `/quiz/${quizId}`,
+            quizData,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      submitQuiz: async (answerSheet) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(
+            `quiz/submit-quiz`,
+            answerSheet,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message && data?.success) {
+            set({ mark: data.data });
+            toast.success(data.message);
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "Something went wrong during submission.";
+          toast.error(message);
+          console.error("Submit quiz error:", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      deleteQuiz: async (contentId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.delete(
+            `/quiz/delete-quiz/${contentId}`,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.message) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
 
       //-----------------------------------
       // makePayment
@@ -861,6 +1075,162 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during making  Payment", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      getAllPayment: async () => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get("/payment/all", {
+            headers: { Authorization: token },
+          });
+
+          if (data) {
+            set({ allPayment: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during making  Payment", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      //-----------------------------------
+      // Add Admin
+      //-----------------------------------
+
+      addAdmin: async (admin) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(
+            "/admin/add-an-admin",
+            admin,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data) {
+            toast.success(data.message);
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during making  Payment", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      getAllAdmin: async () => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(
+            "/admin",
+
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data) {
+            set({ allAdmin: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during making  Payment", error);
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      //-----------------------------------
+      // progress async function
+      //-----------------------------------
+
+      setProgress: async (courseId, singleContentId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(
+            `/user/progress/${courseId}/${singleContentId}`,
+            {},
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.success) {
+            toast.success(data.message || "Progress saved successfully.");
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      getProgress: async (courseId) => {
+        set({ isLoading: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(`/user/progress/${courseId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ courseProgress: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during creating module", error);
           toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isLoading: false });

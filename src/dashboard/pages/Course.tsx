@@ -55,7 +55,7 @@ const Course: React.FC = () => {
   } = useForm<CourseFormData>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
-      title: "React developer",
+      title: "",
       thumbnail: "",
       programId: "",
     },
@@ -153,7 +153,7 @@ const Course: React.FC = () => {
                   type="text"
                   {...register("title")}
                   className="w-full border border-primary-gray p-2 outline-none"
-                  placeholder="Enter lesson title"
+                  placeholder="Enter course title"
                 />
                 {errors.title && (
                   <p className="text-red-500 text-xs sm:text-sm">

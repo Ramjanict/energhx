@@ -11,7 +11,7 @@ import CommonBanner from "@/common/CommonBanner";
 import CommonWrapper from "@/common/CommonWrapper";
 import Sidebar from "@/common/Sidebar";
 
-import userpic from "../../assets/user.png";
+import userImg from "../../assets/user.png";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const serverMenu = [
@@ -37,9 +37,11 @@ const RootBasicServer = () => {
   const navigate = useNavigate();
 
   const [user] = useState({
-    name: "Emmnauel Nonye",
+    name: `${DevUser?.user?.firstName ?? ""} ${
+      DevUser?.user?.lastName ?? ""
+    }`.trim(),
     role: "Server (Basic)",
-    profileImg: userpic,
+    profileImg: DevUser?.user?.profile_photo ?? userImg,
   });
 
   const isFormPage =

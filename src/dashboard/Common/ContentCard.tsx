@@ -38,7 +38,9 @@ const ContentCard: React.FC<ContentCardProps> = ({ content, onEdit }) => {
         />
       ) : content.contentType === "DESCRIPTION" && content.description ? (
         <div className="p-4">
-          <p className="text-gray-700 text-sm">{content.description}</p>
+          <p className="text-gray-700 text-sm  line-clamp-6">
+            {content.description}
+          </p>
         </div>
       ) : (
         <div className="p-4">

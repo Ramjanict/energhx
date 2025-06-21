@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,18 @@ const AdminLoginForm = () => {
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
+  const { DevUser, DevToken, getUser } = useAdminStore();
+
+  useEffect(() => {
+    if (DevToken) {
+      if (DevUser?.user?.userType === "SUPER_ADMIN") {
+        navigate("/dashboard");
+      }
+    }
+  }, [DevUser, navigate]);
+
+  console.log("DevUser", DevUser?.user?.userType);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,6 +31,7 @@ const AdminLoginForm = () => {
         return;
       }
       await login({ email, password });
+      await getUser();
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);

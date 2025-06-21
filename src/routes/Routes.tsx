@@ -50,7 +50,6 @@ import StandardServerDashboard from "@/pages/standard-developer/StandardDevelope
 import RootStandardServer from "@/pages/standard-server/RootStandardServer";
 import RootMyCourse from "@/common/LMS/RootMyCourse";
 import StandardServerAllCourse from "@/pages/standard-server/StandardServerAllCourse";
-import StandardServerMyCourse from "@/pages/standard-server/StandardServerMyCourse";
 import ServerCertifiedAppointmentRequest from "@/pages/standard-server-certified/ServerCertifiedAppointmentRequest";
 import RootStandardServerCertified from "@/pages/standard-server-certified/RootStandardServerCertified";
 import StandardServerCertificateDashboard from "@/pages/standard-server-certified/StandardServerCertificateDashboard";
@@ -82,11 +81,13 @@ import ResearchDetails from "@/pages/wordpress/research/ResearchDetails";
 import BasicConsumerAnalysis from "@/pages/basic-consumer/BasicConsumeranalysis";
 import CreatePasswordForServer from "@/components/basic-sever/CreatePasswordForServer";
 import WorkExperience from "@/components/basic-sever/WorkExperience";
-import Admin from "@/dashboard/pages/Admin";
 import AdminLoginForm from "@/dashboard/Common/AdminLoginForm";
 import ChooseProgram from "@/components/chooseDashboard/ChooseProgram";
 import Success from "@/common/LMS/Success";
 import Cancel from "@/common/LMS/Cancel";
+import BasicServerAllCourse from "@/pages/basic-developer/BasicDeveloperAllCourse";
+import BasicDeveloperAllCourse from "@/pages/basic-developer/BasicDeveloperAllCourse";
+import Admin from "@/dashboard/pages/Admin";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -256,7 +257,7 @@ const routes = createBrowserRouter([
         path: "",
         element: <BasicServerDashboard />,
       },
-      { path: "all-courses", element: <StandardServerAllCourse /> },
+      { path: "all-courses", element: <BasicServerAllCourse /> },
       {
         path: "dashboard",
         element: <BasicServerDashboard />,
@@ -283,14 +284,14 @@ const routes = createBrowserRouter([
     children: [
       { path: "", element: <StandardServerDashboard /> },
       { path: "dashboard", element: <StandardServerDashboard /> },
-      {
-        path: "my-courses",
-        element: <RootMyCourse />,
-        children: [
-          { path: "", element: <StandardServerMyCourse /> },
-          { path: ":id", element: <MyCourseDetails /> },
-        ],
-      },
+      // {
+      //   path: "my-courses",
+      //   element: <RootMyCourse />,
+      //   children: [
+      //     { path: "", element: <StandardServerMyCourse /> },
+      //     { path: ":id", element: <MyCourseDetails /> },
+      //   ],
+      // },
       { path: "all-courses", element: <StandardServerAllCourse /> },
       { path: "all-courses/:id", element: <CourseDetails /> },
       { path: "history", element: <StandardServerHistory /> },
@@ -338,6 +339,7 @@ const routes = createBrowserRouter([
       { path: "", element: <BasicDeveloperDashboard /> },
       { path: "dashboard", element: <BasicDeveloperDashboard /> },
       { path: "settings", element: <BasicDeveloperSetting /> },
+      { path: "all-courses", element: <BasicDeveloperAllCourse /> },
       {
         path: "experience",
         element: <WorkExperience />,

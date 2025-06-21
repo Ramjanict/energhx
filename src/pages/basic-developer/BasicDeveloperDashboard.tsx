@@ -34,6 +34,7 @@ const BasicDeveloperDashboard = () => {
     closePayment,
   } = usePaymentStore();
   const { DevToken } = useAdminStore();
+
   useEffect(() => {
     if (!DevToken) {
       navigate("/basic-developer/form");

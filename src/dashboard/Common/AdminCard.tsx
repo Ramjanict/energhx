@@ -1,50 +1,37 @@
 import React from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { AllAdmin } from "@/store/AdminStore/type/allAdmin";
 
-type Module = {
-  id: string;
-  title: string;
-  thumbnail: string;
-  createdAt: string;
-  updatedAt: string;
-  courseId: string;
-};
-
-type ModuleCardProps = {
-  module: Module;
+type ProgramCardProps = {
+  admin: AllAdmin;
   onEdit?: () => void;
-  selectedCourseId: string;
 };
 
-const ModuleCard: React.FC<ModuleCardProps> = ({
-  module,
-  onEdit,
-  selectedCourseId,
-}) => {
-  const { isLoading, getAllModule, deleteModule } = useAdminStore();
+const AdminCard: React.FC<ProgramCardProps> = ({ admin, onEdit }) => {
+  const { isLoading } = useAdminStore();
 
-  const handleDelete = async () => {
-    try {
-      await deleteModule(module.id);
-      await getAllModule(selectedCourseId);
-    } catch (error) {
-      console.error("Failed to delete program:", error);
-    }
-  };
-
+  console.log("admin", admin);
   return (
     <div className="relative max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 border">
       <img
         className="w-full h-48 object-cover"
-        src={module.thumbnail}
-        alt={module.title || "Program Thumbnail"}
+        src={admin.thumbnail}
+        alt={admin.canAccess || "Program Thumbnail"}
       />
       <div className="p-4 space-y-2">
         <h2 className="text-xl font-semibold capitalize text-gray-800">
-          {module.title}
+          {admin.email}
         </h2>
-        
+        <p className="text-sm text-gray-600 line-clamp-3">{admin.status}</p>
+        <div className="flex items-center justify-between pt-4">
+          <span className="text-lg font-bold text-green-600">
+            ${admin.canAccess}
+          </span>
+          <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 uppercase">
+            {admin.status}
+          </span>
+        </div>
         <div className="flex justify-end items-center gap-2 pt-4">
           <button
             onClick={onEdit}
@@ -53,10 +40,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
             <Pencil size={16} />
             Edit
           </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:text-white border border-red-600 rounded-lg hover:bg-red-600 transition  cursor-pointer"
-          >
+          <button className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:text-white border border-red-600 rounded-lg hover:bg-red-600 transition  cursor-pointer">
             <Trash2 size={16} />
 
             {isLoading ? "Deleting..." : "Delete"}
@@ -67,4 +51,4 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   );
 };
 
-export default ModuleCard;
+export default AdminCard;

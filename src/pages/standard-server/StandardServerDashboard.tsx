@@ -8,9 +8,13 @@ import {
   courseFilterArray,
   courseList,
 } from "@/common/LMS/standardDeveloperData";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const StandardDeveloperDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("enrolled");
+  const { DevUser } = useAdminStore();
+
+  console.log("DevUser", DevUser);
 
   return (
     <div className="">

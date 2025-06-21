@@ -15,13 +15,13 @@ const TopBar = () => {
   const handleClick = () => {
     if (DevToken) {
       logout();
+      navigate("/");
     } else {
       navigate("/admin-login");
     }
-    setAdmin(false); // Close dropdown after action
+    setAdmin(false);
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -37,7 +37,6 @@ const TopBar = () => {
 
   return (
     <header className="flex items-center justify-between border-b border-gray-200 px-6 py-4 bg-white shadow-sm">
-      {/* Search bar */}
       <div className="flex items-center w-1/2 max-w-md border border-gray-300 rounded-md overflow-hidden">
         <input
           type="text"
@@ -49,7 +48,6 @@ const TopBar = () => {
         </button>
       </div>
 
-      {/* Notification & Profile */}
       <div className="flex items-center gap-6">
         {/* Notification */}
         <button className="relative text-gray-500 hover:text-black transition">
@@ -62,7 +60,7 @@ const TopBar = () => {
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => setAdmin((prev) => !prev)}
-            className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:ring-2 hover:ring-primary transition-all"
+            className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:ring-2 hover:ring-primary transition-all cursor-pointer"
           >
             <img
               className="w-full h-full object-cover"

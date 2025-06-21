@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Home from "./Home";
 
@@ -12,10 +12,29 @@ import Review from "./Review";
 import Payment from "./Payment";
 import Content from "./Content";
 import BasicContent from "./BasicContent";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { useNavigate } from "react-router-dom";
+import CreateAdmin from "./CreateAdmin";
+import { toast } from "react-toastify";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const navigate = useNavigate();
+  const { DevUser, DevToken } = useAdminStore();
 
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/admin-login");
+      return;
+    }
+
+    if (DevUser?.user?.userType !== "SUPER_ADMIN") {
+      navigate("/admin-login");
+      toast.error("Access restricted to administrators only.");
+    }
+  }, [DevToken, DevUser, navigate]);
+
+  console.log("DevUser", !DevToken);
   return (
     <div className="flex h-screen bg-[#fafafa]">
       <Sidebar setActiveTab={setActiveTab} />
@@ -36,7 +55,8 @@ const Admin = () => {
           {activeTab === "content" && <Content />}
           {activeTab === "quiz" && <Quiz />}
           {activeTab === "review" && <Review />}
-          {activeTab === "payment" && <Payment />}{" "}
+          {activeTab === "payment" && <Payment />}
+          {activeTab === "addAdmin" && <CreateAdmin />}
         </div>
       </div>
     </div>

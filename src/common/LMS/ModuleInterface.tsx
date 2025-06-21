@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -6,54 +6,101 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { PlayCircle } from "lucide-react";
-
-type ModuleContent = {
-  id: string;
-  title: string;
-  video: string;
-  createdAt: string;
-  updatedAt: string;
-  courseId: string;
-};
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import { AllModule } from "@/store/AdminStore/type/allModule";
+import CommonHeader from "../CommonHeader";
 
 type ModuleInterfaceProps = {
-  module: ModuleContent[];
-  setVideoUrl: (url: string) => void;
+  modules: AllModule;
+  setSingleContentId: (id: string) => void;
+  handleSetProgress: (courseId: string, singleContentId: string) => void;
+  handleGetProgress: (courseId: string) => void;
 };
 
 const ModuleInterface: React.FC<ModuleInterfaceProps> = ({
-  module,
-  setVideoUrl,
+  modules,
+  setSingleContentId,
+  handleSetProgress,
+  handleGetProgress,
 }) => {
-  return (
-    <div className="rounded-xl shadow-[0_0_1px_2px_rgba(0,0,0,0.04)] bg-white p-6  w-[40%] ">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-        Course Modules
-      </h2>
+  const [courseId, setCourseId] = useState("");
+  const { getAllContent, allContent, getSingleContent, courseProgress } =
+    useAdminStore();
 
-      <Accordion type="single" collapsible className="w-full space-y-2 ">
-        {module.map((content) => (
+  const handleContent = async (moduleId: string) => {
+    if (moduleId) {
+      await getAllContent(moduleId);
+    }
+  };
+
+  const displayObject = modules?.basicContents?.length
+    ? modules.basicContents
+    : modules.modules ?? [];
+
+  const handleSingleContent = async (id: string) => {
+    await getSingleContent(id);
+    setSingleContentId(id);
+  };
+
+  const handleProgress = (courseId: string, singleContentId: string) => {
+    handleSingleContent(singleContentId);
+    handleSetProgress(courseId, singleContentId);
+    handleGetProgress(courseId);
+  };
+
+  useEffect(() => {
+    if (courseId) {
+      handleGetProgress(courseId);
+    }
+  }, [courseId]);
+
+  return (
+    <div className="rounded-2xl shadow-[0_0_1px_2px_rgba(0.04)] bg-white w-[30%] ">
+      <CommonHeader className="!pb-4">Course Modules</CommonHeader>
+
+      <Accordion type="single" collapsible className="  flex flex-col gap-2">
+        {displayObject.map((module) => (
           <AccordionItem
-            key={content.id}
-            value={content.id}
-            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm transition hover:shadow-md"
+            onClick={() => {
+              handleContent(module.id);
+              setCourseId(module.courseId);
+            }}
+            key={module.id}
+            value={module.id}
+            className="border border-gray-200 rounded-xl overflow-hidden transition hover:shadow-lg"
           >
-            <AccordionTrigger className="px-4 py-3 text-lg font-medium bg-gray-50 hover:bg-gray-100 text-left flex justify-between items-center hover:no-underline cursor-pointer">
-              <div className="flex items-center gap-2">
-                <PlayCircle className="w-5 h-5 text-green-600" />
-                <span>{content.title}</span>
+            <AccordionTrigger className="px-6 py-4 text-lg  font-medium bg-gray-50 hover:bg-gray-100 text-left flex justify-between items-center hover:no-underline cursor-pointer">
+              <div className="flex items-center gap-3">
+                <PlayCircle className="w-6 h-6 text-green-600" />
+                <span className="text-gray-800">{module.title}</span>
               </div>
             </AccordionTrigger>
 
-            <AccordionContent className="overflow-hidden transition-[height] duration-300 ease-in-out bg-white border-t border-gray-100 px-4 py-3">
-              <div className="text-sm text-gray-700 space-y-2">
-                <p
-                  onClick={() => setVideoUrl(content.video)}
-                  className=" cursor-pointer"
+            <AccordionContent className="bg-white border-t px-6 py-4 space-y-4 text-gray-700 text-sm">
+              {allContent?.contents.map((content) => (
+                <div
+                  key={content.id}
+                  onClick={() => handleProgress(content.courseId, content.id)}
+                  className="p-4 rounded-lg bg-gray-50 border border-gray-100 shadow-sm cursor-pointer"
                 >
-                  <strong>Title:</strong> {content.title}
-                </p>
-              </div>
+                  <div className="font-semibold text-base text-gray-800 ">
+                    {content.title}
+                  </div>
+                  <div className="text-sm text-gray-600 line-clamp-4">
+                    {content.description}
+                  </div>
+                  <div className=" flex justify-between py-2">
+                    <div className="text-xs font-medium text-green-600 uppercase mt-1">
+                      {content.contentType}
+                    </div>
+                    <div className="text-xs font-medium text-red-600 uppercase mt-1">
+                      {courseProgress?.watchedContents?.includes(content.id)
+                        ? "Completed"
+                        : "Locked"}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </AccordionContent>
           </AccordionItem>
         ))}

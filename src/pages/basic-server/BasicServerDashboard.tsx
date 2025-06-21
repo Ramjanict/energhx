@@ -23,14 +23,14 @@ const object = {
 const BasicServerDashboard = () => {
   const navigate = useNavigate();
 
-  const { DevToken, singleProgram } = useAdminStore();
+  const { DevToken, DevUser } = useAdminStore();
+
+  console.log("DevUser", DevUser);
   useEffect(() => {
     if (!DevToken) {
       navigate("/basic-server/form");
     }
   }, [DevToken]);
-
-  console.log("singleProgram", singleProgram);
 
   return (
     <>

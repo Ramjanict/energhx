@@ -5,9 +5,12 @@ import { passwordSchema, PasswordFormData } from "./validationSchema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import CommonButton from "@/common/CommonButton";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const Password = () => {
-  const { updatePassword, isLoading } = useConsumerStore();
+  const { isLoading } = useConsumerStore();
+  const { updatedDevPassword } = useAdminStore();
+
   const {
     register,
     handleSubmit,
@@ -28,7 +31,8 @@ const Password = () => {
   };
 
   const onSubmit = async (data: PasswordFormData) => {
-    await updatePassword(data);
+    await updatedDevPassword(data);
+    console.log("updatedDevPassword", data);
     reset();
   };
 

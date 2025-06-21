@@ -9,12 +9,13 @@ export type Module = {
 export type BasicContent = {
   id: string;
   title: string;
-  video: string;
+  video: File;
   createdAt: string;
   updatedAt: string;
   courseId: string;
 };
 
+export type ModuleCardType = Module | BasicContent;
 export type AllModule = {
   id: string;
   title: string;
