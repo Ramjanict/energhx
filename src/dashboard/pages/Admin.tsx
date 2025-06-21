@@ -22,19 +22,21 @@ const Admin = () => {
   const navigate = useNavigate();
   const { DevUser, DevToken } = useAdminStore();
 
-  useEffect(() => {
+ useEffect(() => {
     if (!DevToken) {
       navigate("/admin-login");
       return;
     }
 
-    if (DevUser?.user?.userType !== "SUPER_ADMIN") {
-      navigate("/admin-login");
+    const userType = DevUser?.user?.userType;
+
+    // Deny access if user is not SUPER_ADMIN and not ADMIN
+    if (userType !== "SUPER_ADMIN" && userType !== "ADMIN") {
       toast.error("Access restricted to administrators only.");
+      navigate("/admin-login");
     }
   }, [DevToken, DevUser, navigate]);
-
-  console.log("DevUser", !DevToken);
+  
   return (
     <div className="flex h-screen bg-[#fafafa]">
       <Sidebar setActiveTab={setActiveTab} />
