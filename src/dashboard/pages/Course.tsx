@@ -14,6 +14,7 @@ import {
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import CourseCard from "../Common/CourseCard";
 import { RiCloseLargeLine } from "react-icons/ri";
+
 // Zod Schema
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -21,7 +22,7 @@ const courseSchema = z.object({
     z.instanceof(File).refine((file) => file.size > 0, "Thumbnail is required"),
     z.string().min(1, "Thumbnail is required"),
   ]),
-  programId: z.string(),
+  programId: z.string().min(1, "Program is required"),
 });
 
 type CourseFormData = z.infer<typeof courseSchema>;
@@ -29,12 +30,12 @@ type CourseFormData = z.infer<typeof courseSchema>;
 const Course: React.FC = () => {
   const {
     createCourse,
-    isLoading,
+    isCourseCreating,
+    isCourseUpdating,
     allProgram,
     getAllProgram,
     getAllCourse,
     updateCourse,
-
     allCourse,
   } = useAdminStore();
 
@@ -64,25 +65,30 @@ const Course: React.FC = () => {
   useEffect(() => {
     getAllProgram();
   }, [getAllProgram]);
+
   useEffect(() => {
     getAllCourse();
   }, [getAllCourse]);
 
   useEffect(() => {
     if (selectedCourse) {
-      reset(selectedCourse);
+      const { title, thumbnail, programId } = selectedCourse;
+      setPreview(typeof thumbnail === "string" ? thumbnail : null);
+      reset({ title, thumbnail, programId });
+    } else {
+      setPreview(null);
+      reset();
     }
   }, [selectedCourse, reset]);
 
   const onSubmit = async (data: CourseFormData) => {
     const formData = new FormData();
-
     const { thumbnail, ...restData } = data;
     formData.append("text", JSON.stringify(restData));
-
     if (thumbnail instanceof File) {
       formData.append("file", thumbnail);
     }
+
     courseId && selectedCourse
       ? await updateCourse(courseId, formData)
       : await createCourse(formData);
@@ -92,56 +98,63 @@ const Course: React.FC = () => {
     setIsCourseOpen(false);
     setSelectedCourse(null);
     setCourseId(null);
+    setPreview(null);
     reset();
-    getAllCourse();
   };
 
   return (
     <div>
       <AdminCommonHeader>All Courses</AdminCommonHeader>
 
-      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${
+          allCourse.length > 0 ? "pb-8" : ""
+        }`}
+      >
         {allCourse?.map((course) => (
           <CourseCard
             key={course.id}
             course={course}
             onEdit={() => {
               setSelectedCourse(course);
-              setIsCourseOpen(true);
               setCourseId(course.id);
+              setIsCourseOpen(true);
             }}
           />
         ))}
       </div>
 
-      <div className="pb-10">
-        <button
-          onClick={() => {
-            setIsCourseOpen(true);
-            setSelectedCourse(null);
-          }}
-          className="w-fit bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer  "
-        >
-          Create Course
-        </button>
-      </div>
+      <AdminCommonButton
+        onClick={() => {
+          setIsCourseOpen(true);
+          setSelectedCourse(null);
+          setCourseId(null);
+        }}
+        className={`!w-fit ${allCourse.length > 0 ? "" : "mt-6"}`}
+      >
+        Create Course
+      </AdminCommonButton>
 
       {isCourseOpen && (
-        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity  min-h-screen  flex items-center  justify-center">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity min-h-screen flex items-center justify-center">
           <div className="w-full h-full flex flex-col justify-center items-center gap-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-6 bg-white  w-[90%] md:w-[60%] lg:w-[50%] xl:w-[40%] shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-xl p-8"
+              className="flex flex-col gap-6 bg-white w-[90%] md:w-[60%] lg:w-[50%] xl:w-[40%] shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-xl p-8"
             >
-              <div className="w-full flex justify-between items-center ">
+              <div className="w-full flex justify-between items-center">
                 <AdminCommonHeader className="!pb-0">
                   {selectedCourse ? "Update Course" : "Create Course"}
                 </AdminCommonHeader>
                 <div
                   onClick={() => {
                     setIsCourseOpen(false);
+                    setSelectedCourse(null);
+                    setCourseId(null);
+                    setPreview(null);
+                    reset();
                   }}
-                  className=" text-xl cursor-pointer hover:text-red-500 "
+                  className="text-xl cursor-pointer hover:text-red-500"
                 >
                   <RiCloseLargeLine />
                 </div>
@@ -217,12 +230,7 @@ const Course: React.FC = () => {
               </div>
 
               <div>
-                <label
-                  htmlFor="publishedFor"
-                  className="text-primary-gray block mb-1"
-                >
-                  Program
-                </label>
+                <label className="text-primary-gray block mb-1">Program</label>
                 <Controller
                   name="programId"
                   control={control}
@@ -248,15 +256,13 @@ const Course: React.FC = () => {
                 )}
               </div>
 
-              <div className="">
-                <AdminCommonButton>
-                  {isLoading
-                    ? "Processing..."
-                    : selectedCourse
-                    ? "Update Course"
-                    : "Create Course"}
-                </AdminCommonButton>
-              </div>
+              <AdminCommonButton>
+                {isCourseCreating || isCourseUpdating
+                  ? "Processing..."
+                  : selectedCourse
+                  ? "Update Course"
+                  : "Create Course"}
+              </AdminCommonButton>
             </form>
           </div>
         </div>

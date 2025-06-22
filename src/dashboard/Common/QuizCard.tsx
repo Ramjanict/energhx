@@ -1,5 +1,6 @@
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
-import { Pencil, Trash2 } from "lucide-react";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
 
 export type SingleQuiz = {
   id: string;
@@ -27,7 +28,7 @@ type QuizCardProps = {
 };
 
 const QuizCard: React.FC<QuizCardProps> = ({ allQuiz, handleQuiz }) => {
-  const { deleteQuiz, getAllQuiz, isLoading } = useAdminStore();
+  const { deleteQuiz, getAllQuiz, isQuizDeleting } = useAdminStore();
 
   const handleDelete = async (quizId: string) => {
     try {
@@ -39,7 +40,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ allQuiz, handleQuiz }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
       {allQuiz?.quizzes?.map((quiz, index) => (
         <div
           key={quiz.id}
@@ -70,22 +71,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ allQuiz, handleQuiz }) => {
           </p>
 
           <div className="flex justify-end items-center gap-2 pt-4">
-            <button
-              type="button"
-              onClick={() => handleQuiz(quiz.id, quiz)}
-              className="flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-white border border-blue-600 rounded-lg hover:bg-blue-600 transition  cursor-pointer"
-            >
-              <Pencil size={16} />
+            <EditButton type="button" onClick={() => handleQuiz(quiz.id, quiz)}>
               Edit
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDelete(quiz.id)}
-              className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:text-white border border-red-600 rounded-lg hover:bg-red-600 transition cursor-pointer "
-            >
-              <Trash2 size={16} />
-              {isLoading ? "Deleting..." : "Delete"}
-            </button>
+            </EditButton>
+            <DeleteButton type="button" onClick={() => handleDelete(quiz.id)}>
+              {isQuizDeleting ? "Deleting..." : "Delete"}
+            </DeleteButton>
           </div>
         </div>
       ))}

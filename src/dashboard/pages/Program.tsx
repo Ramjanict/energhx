@@ -32,8 +32,14 @@ export const programSchema = z.object({
 type ProgramFormData = z.infer<typeof programSchema>;
 
 const Program: React.FC = () => {
-  const { createProgram, isLoading, allProgram, getAllProgram, updateProgram } =
-    useAdminStore();
+  const {
+    createProgram,
+    isProgramCreating,
+    isProgramUpdating,
+    allProgram,
+    getAllProgram,
+    updateProgram,
+  } = useAdminStore();
 
   const [isProgramOpen, setIsProgramOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] =
@@ -59,7 +65,7 @@ const Program: React.FC = () => {
       description: "",
       price: 0,
       thumbnail: "",
-      publishedFor: "DEVELOPER",
+      // publishedFor intentionally excluded
     },
   });
 
@@ -86,11 +92,21 @@ const Program: React.FC = () => {
 
   useEffect(() => {
     if (selectedProgram) {
-      const { thumbnail, ...rest } = selectedProgram;
+      const { thumbnail, title, description, price, publishedFor } =
+        selectedProgram;
+
       setPreview(typeof thumbnail === "string" ? thumbnail : null);
-      reset({ ...rest, thumbnail });
+
+      reset({
+        title,
+        description,
+        price,
+        thumbnail,
+        publishedFor,
+      });
     } else {
       setPreview(null);
+      reset(); // clear the form
     }
   }, [selectedProgram, reset]);
 
@@ -99,8 +115,8 @@ const Program: React.FC = () => {
       <AdminCommonHeader>All Programs</AdminCommonHeader>
       <div
         className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${
-          allProgram.length > 0 && "pb-10"
-        } `}
+          allProgram.length > 0 ? "pb-8" : ""
+        }`}
       >
         {allProgram?.map((program) => (
           <ProgramCard
@@ -115,14 +131,16 @@ const Program: React.FC = () => {
         ))}
       </div>
 
-      <div className="pb-10">
-        <button
-          onClick={() => setIsProgramOpen(true)}
-          className="w-fit bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer"
-        >
-          Create Program
-        </button>
-      </div>
+      <AdminCommonButton
+        onClick={() => {
+          setIsProgramOpen(true);
+          setSelectedProgram(null);
+          setProgramId(null);
+        }}
+        className={` !w-fit ${allProgram.length > 0 ? "" : "mt-6"}`}
+      >
+        Create Program
+      </AdminCommonButton>
 
       {isProgramOpen && (
         <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity min-h-screen flex items-center justify-center">
@@ -285,7 +303,7 @@ const Program: React.FC = () => {
               </div>
 
               <AdminCommonButton>
-                {isLoading
+                {isProgramCreating || isProgramUpdating
                   ? "Processing..."
                   : selectedProgram
                   ? "Update Program"

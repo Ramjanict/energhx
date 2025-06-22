@@ -5,7 +5,7 @@ interface PaymentCardProps {
 }
 const PaymentCard: React.FC<PaymentCardProps> = ({ allPayment }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10 pt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6">
       {allPayment.map((payment) => (
         <div
           key={`${payment.userId}-${payment.programId}`}

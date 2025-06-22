@@ -1,10 +1,10 @@
-export interface AdminUser {
+export type User = {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
   otherName: string | null;
-  sex: "MALE" | "FEMALE";
+  sex: "MALE" | "FEMALE" | string;
   password: string;
   profile_photo: string;
   companyName: string;
@@ -15,17 +15,17 @@ export interface AdminUser {
   countryId: string;
   stateId: string;
   isVerified: boolean;
-  userType: "ADMIN";
-  status: "ACTIVE" | "INACTIVE";
-  createdAt: string; // ISO Date string
-  updatedAt: string; // ISO Date string
-}
+  userType: "ADMIN" | "DEVELOPER" | "USER" | string;
+  status: "ACTIVE" | "INACTIVE" | string;
+  createdAt: string;
+  updatedAt: string;
+};
 
-export interface AllAdmin {
+export type AdminAccessWithUser = {
   id: string;
   email: string;
-  status: "ACTIVE" | "INACTIVE";
-  canAccess: "DEVELOPER" | "SERVER";
+  status: "ACTIVE" | "INACTIVE" | string;
+  canAccess: "DEVELOPER" | "SERVER" | string;
   userId: string;
-  user: AdminUser;
-}
+  user: User;
+} | null;

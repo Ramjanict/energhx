@@ -46,7 +46,7 @@ const CreateAdminForm = () => {
     allSates,
     countries,
     addAdmin,
-    isLoading,
+    isAdminAdding,
     allAdmin,
     getAllAdmin,
   } = useAdminStore();
@@ -420,7 +420,7 @@ const CreateAdminForm = () => {
           </div>
           <div className="sm:col-span-2 md:col-span-3 w-fit py-5">
             <AdminCommonButton>
-              {isLoading ? "Processing..." : "Add Admin"}
+              {isAdminAdding ? "Processing..." : "Add Admin"}
             </AdminCommonButton>
           </div>
         </form>

@@ -1,3 +1,4 @@
+import { Pencil } from "lucide-react";
 import React, { ReactNode } from "react";
 
 interface AdminCommonButtonProps
@@ -6,7 +7,7 @@ interface AdminCommonButtonProps
   className?: string;
 }
 
-const AdminCommonButton: React.FC<AdminCommonButtonProps> = ({
+const EditButton: React.FC<AdminCommonButtonProps> = ({
   children,
   className,
   ...props
@@ -14,13 +15,14 @@ const AdminCommonButton: React.FC<AdminCommonButtonProps> = ({
   return (
     <div>
       <button
-        className={`w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer ${className}`}
+        className={`flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-white border border-blue-600 rounded-lg hover:bg-blue-600 transition  cursor-pointer ${className}`}
         {...props}
       >
+        <Pencil size={16} />
         {children}
       </button>
     </div>
   );
 };
 
-export default AdminCommonButton;
+export default EditButton;

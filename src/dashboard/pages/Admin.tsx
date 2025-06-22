@@ -21,24 +21,28 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState("home");
   const navigate = useNavigate();
   const { DevUser, DevToken } = useAdminStore();
-
   useEffect(() => {
     if (!DevToken) {
       navigate("/admin-login");
       return;
     }
 
-    if (DevUser?.user?.userType !== "SUPER_ADMIN") {
-      navigate("/admin-login");
+    const userType = DevUser?.user?.userType;
+
+    // Deny access if user is not SUPER_ADMIN and not ADMIN
+    if (userType !== "SUPER_ADMIN" && userType !== "ADMIN") {
       toast.error("Access restricted to administrators only.");
+      navigate("/admin-login");
     }
   }, [DevToken, DevUser, navigate]);
 
-  console.log("DevUser", !DevToken);
   return (
-    <div className="flex h-screen bg-[#fafafa]">
-      <Sidebar setActiveTab={setActiveTab} />
-      <div className="flex-1  overflow-auto">
+    <div className="flex min-h-screen bg-[#fafafa] overflow-hidden">
+      <div className="min-h-screen">
+        <Sidebar setActiveTab={setActiveTab} />
+      </div>
+
+      <div className="flex-1 flex flex-col max-h-screen">
         <TopBar />
 
         <div className="p-6">
@@ -46,7 +50,8 @@ const Admin = () => {
             Admin Dashboard
           </h1>
         </div>
-        <div className="px-6">
+
+        <div className="px-6 overflow-y-auto flex-1">
           {activeTab === "home" && <Home />}
           {activeTab === "program" && <Program />}
           {activeTab === "course" && <Course />}

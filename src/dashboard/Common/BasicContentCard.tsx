@@ -1,6 +1,7 @@
 import React from "react";
-import { Pencil, Trash2 } from "lucide-react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
 
 export type BasicContent = {
   id: string;
@@ -22,7 +23,8 @@ const BasicContentCard: React.FC<BasicContentProps> = ({
   onEdit,
   selectedCourseId,
 }) => {
-  const { isLoading, getAllModule, deleteBasicContent } = useAdminStore();
+  const { isBasicContentDeleting, getAllModule, deleteBasicContent } =
+    useAdminStore();
 
   // If no data, don't render anything
   if (!basicContent) return null;
@@ -55,20 +57,10 @@ const BasicContentCard: React.FC<BasicContentProps> = ({
         </h2>
 
         <div className="flex justify-end items-center gap-2 pt-4">
-          <button
-            onClick={onEdit}
-            className="flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-white border border-blue-600 rounded-lg hover:bg-blue-600 transition  cursor-pointer"
-          >
-            <Pencil size={16} />
-            Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:text-white border border-red-600 rounded-lg hover:bg-red-600 transition  cursor-pointer"
-          >
-            <Trash2 size={16} />
-            {isLoading ? "Deleting..." : "Delete"}
-          </button>
+          <EditButton onClick={onEdit}>Edit</EditButton>
+          <DeleteButton onClick={handleDelete}>
+            {isBasicContentDeleting ? "Deleting..." : "Delete"}
+          </DeleteButton>
         </div>
       </div>
     </div>

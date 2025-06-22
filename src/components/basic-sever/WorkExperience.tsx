@@ -15,8 +15,12 @@ const WorkExperience = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const { addExperienceServer, addExperienceDeveloper, DevUser, isLoading } =
-    useAdminStore();
+  const {
+    addExperienceServer,
+    addExperienceDeveloper,
+    DevUser,
+    isExperienceSubmitting,
+  } = useAdminStore();
 
   const {
     register,
@@ -420,7 +424,7 @@ const WorkExperience = () => {
                 type="submit"
                 className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto cursor-pointer"
               >
-                {isLoading ? "Processing" : "Continue"}
+                {isExperienceSubmitting ? "Processing..." : "Continue"}
                 <FaAngleDoubleRight />
               </Button>
             </div>

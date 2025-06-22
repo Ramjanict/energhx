@@ -39,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setActiveTab }) => {
     <div
       className={`${
         sidebar ? "w-[72px]" : "w-[240px]"
-      } bg-white border-r border-[#e4e4e4] flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}
+      } border-r border-[#e4e4e4] flex flex-col transition-all duration-300 ease-in-out overflow-hidden  bg-white h-full`}
     >
       <div className="p-4 flex items-center justify-between">
         {!sidebar && (

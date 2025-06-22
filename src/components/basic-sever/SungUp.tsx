@@ -24,7 +24,7 @@ const SignUp = () => {
     countries,
     states,
     userRegister,
-    isLoading,
+    isUserRegistering,
     devUserType,
   } = useAdminStore();
 
@@ -58,7 +58,6 @@ const SignUp = () => {
     },
   });
 
-  console.log("devUserType", devUserType);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -70,7 +69,6 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpType) => {
     const newUser = { ...data, userType: devUserType };
-    console.log("data", data);
 
     try {
       const formData = new FormData();
@@ -434,7 +432,7 @@ const SignUp = () => {
               type="submit"
               className="bg-primary-green text-white py-5 rounded-md w-full sm:w-auto cursor-pointer"
             >
-              {isLoading ? "Processing" : "Continue"}
+              {isUserRegistering ? "Processing..." : "Continue"}
               <FaAngleDoubleRight />
             </Button>
           </div>

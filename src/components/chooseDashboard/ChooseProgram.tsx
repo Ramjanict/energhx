@@ -6,8 +6,13 @@ import Loading from "../basic-consumer/Loading";
 import { useNavigate } from "react-router-dom";
 
 const ChooseProgram = () => {
-  const { getMyProgram, myProgram, isLoading, DevUser, getSingleProgram } =
-    useAdminStore();
+  const {
+    getMyProgram,
+    myProgram,
+    isMyProgramFetching,
+    DevUser,
+    getSingleProgram,
+  } = useAdminStore();
 
   const navigate = useNavigate();
   const [selectProgramId, setSelectProgramId] = useState<string | null>(null);
@@ -51,7 +56,7 @@ const ChooseProgram = () => {
       </DashBoardHeader>
 
       <div className="w-full max-w-6xl flex justify-center flex-wrap gap-6">
-        {isLoading ? (
+        {isMyProgramFetching ? (
           <Loading />
         ) : myProgram?.length === 0 ? (
           <p className="text-gray-500">No programs available.</p>

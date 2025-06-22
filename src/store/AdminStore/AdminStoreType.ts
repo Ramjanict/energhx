@@ -24,7 +24,6 @@ export type AdminStoreType = {
   devUserType: string;
   allCountry: Country[];
   allSates: State[];
-  isLoading: boolean;
   allProgram: AllProgram[];
   allCourse: AllCourse[];
   allModule: AllModule;
@@ -38,6 +37,53 @@ export type AdminStoreType = {
   courseProgress: WatchedContentProgress;
   mark: QuizSubmissionResponse;
   allPayment: PaymentDataItem[];
+
+  // ✅ Separate Loading States
+  isUserRegistering: boolean;
+  isPasswordCreating: boolean;
+  isPasswordUpdating: boolean;
+  isUserFetching: boolean;
+  isUserUpdating: boolean;
+  isCountryFetching: boolean;
+  isStateFetching: boolean;
+  isExperienceSubmitting: boolean;
+  isProgramCreating: boolean;
+  isProgramFetching: boolean;
+  isProgramUpdating: boolean;
+  isProgramDeleting: boolean;
+  isMyProgramFetching: boolean;
+  isSingleProgramFetching: boolean;
+  isCourseCreating: boolean;
+  isCourseFetching: boolean;
+  isCourseUpdating: boolean;
+  isCourseDeleting: boolean;
+  isModuleCreating: boolean;
+  isModuleFetching: boolean;
+  isModuleUpdating: boolean;
+  isModuleDeleting: boolean;
+  isBasicContentCreating: boolean;
+  isBasicContentFetching: boolean;
+  isBasicContentUpdating: boolean;
+  isBasicContentDeleting: boolean;
+  isContentCreating: boolean;
+  isContentFetching: boolean;
+  isSingleContentFetching: boolean;
+  isContentUpdating: boolean;
+  isContentDeleting: boolean;
+  isQuizCreating: boolean;
+  isQuizFetching: boolean;
+  isQuizUpdating: boolean;
+  isQuizSubmitting: boolean;
+  isQuizDeleting: boolean;
+  isPaymentProcessing: boolean;
+  isPaymentFetching: boolean;
+  isAdminAdding: boolean;
+  isAdminFetchingAll: boolean;
+  isAdminUpdating: boolean;
+  isAdminDeleting: boolean;
+  isProgressSetting: boolean;
+  isProgressFetching: boolean;
+  isUserLoggingIn: boolean;
   // -------------------
   // User;
   // -------------------
@@ -125,6 +171,8 @@ export type AdminStoreType = {
   // -------------------
 
   addAdmin: (admin: FormData, file?: File) => Promise<void>;
+  updateAdmin: (adminId: string, admin: FormData) => Promise<void>;
+  deleteAdmin: (adminId: string) => Promise<void>;
   getAllAdmin: () => Promise<void>;
 
   // -------------------

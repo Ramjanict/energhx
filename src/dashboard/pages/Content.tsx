@@ -82,7 +82,8 @@ type ContentItem =
 
 const Content: React.FC = () => {
   const {
-    isLoading,
+    isContentCreating,
+    isContentUpdating,
     createContent,
     allModule,
     getAllModule,
@@ -165,10 +166,13 @@ const Content: React.FC = () => {
           contentType: "VIDEO",
           title: selectedContent.title,
           moduleId: selectedContent.moduleId,
-          video: undefined, // allowed here
+          video: undefined, // We never set video as File for default
         });
+
         if (typeof selectedContent.video === "string") {
-          setPreview(selectedContent.video);
+          setPreview(selectedContent.video); // <-- Set preview here on edit
+        } else {
+          setPreview(null);
         }
       } else if (selectedContent.contentType === "DESCRIPTION") {
         reset({
@@ -176,7 +180,6 @@ const Content: React.FC = () => {
           title: selectedContent.title,
           moduleId: selectedContent.moduleId,
           description: selectedContent.description,
-          // do NOT include video here
         });
         setPreview(null);
       } else if (selectedContent.contentType === "QUIZ") {
@@ -184,12 +187,11 @@ const Content: React.FC = () => {
           contentType: "QUIZ",
           title: selectedContent.title,
           moduleId: selectedContent.moduleId,
-          // do NOT include video here
         });
         setPreview(null);
       }
     } else {
-      reset(); // reset to default values
+      reset();
       setPreview(null);
     }
   }, [selectedContent, reset]);
@@ -219,7 +221,11 @@ const Content: React.FC = () => {
           : "This module does not contain any Content"}
       </AdminCommonHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6  ${
+          (allContent?.contents?.length ?? 0) > 0 ? "pb-8" : ""
+        }`}
+      >
         {allContent?.contents?.map((content) => (
           <ContentCard
             key={content.id}
@@ -228,6 +234,7 @@ const Content: React.FC = () => {
               setSelectedContent(content as ContentItem);
               setIsContentOpen(true);
               setContentId(content.id);
+
               if (
                 content.contentType === "VIDEO" &&
                 typeof content.video === "string"
@@ -241,17 +248,15 @@ const Content: React.FC = () => {
         ))}
       </div>
 
-      <div className="">
-        <button
-          onClick={() => setIsContentOpen(true)}
-          className="w-fit bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer"
-        >
-          Create Content
-        </button>
-      </div>
+      <AdminCommonButton
+        onClick={() => setIsContentOpen(true)}
+        className="!w-fit"
+      >
+        Create Content
+      </AdminCommonButton>
 
       {isContentOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity min-h-screen flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity min-h-screen flex items-center justify-center">
           <div className="w-full h-full flex flex-col justify-center items-center gap-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -406,7 +411,7 @@ const Content: React.FC = () => {
               </div>
 
               <AdminCommonButton>
-                {isLoading
+                {isContentCreating || isContentUpdating
                   ? "Processing..."
                   : selectedContent
                   ? "Update Content"

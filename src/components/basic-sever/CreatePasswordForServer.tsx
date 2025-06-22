@@ -13,7 +13,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const CreatePasswordForServer = () => {
-  const { createPassword, isLoading } = useAdminStore();
+  const { createPassword, isPasswordCreating } = useAdminStore();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const navigate = useNavigate();
@@ -96,10 +96,12 @@ const CreatePasswordForServer = () => {
 
         <button
           type="submit"
-          disabled={isSubmitting || isLoading}
+          disabled={isSubmitting || isPasswordCreating}
           className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition disabled:opacity-50 cursor-pointer"
         >
-          {isSubmitting || isLoading ? "Submitting..." : "Create Password"}
+          {isSubmitting || isPasswordCreating
+            ? "Submitting..."
+            : "Create Password"}
         </button>
       </form>
     </div>

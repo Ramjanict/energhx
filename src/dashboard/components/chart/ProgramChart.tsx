@@ -60,7 +60,7 @@ const ProgramChart = () => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
-    <div className="space-y-8 p-4">
+    <div className="space-y-8 w-full pb-8">
       {/* Price Distribution Bar Chart */}
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
@@ -77,7 +77,6 @@ const ProgramChart = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
-
       {/* Publication Type Pie Chart */}
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
@@ -110,7 +109,6 @@ const ProgramChart = () => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-
       {/* Creation Timeline Scatter Chart */}
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">
@@ -154,53 +152,40 @@ const ProgramChart = () => {
           </ScatterChart>
         </ResponsiveContainer>
       </div>
-
-      {/* Program Details Table */}
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Program Details</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Description
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Price
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Published For
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created At
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {allProgram.map((program) => (
-                <tr key={program.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {program.title}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {program.description}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    ${program.price}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {program.publishedFor}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {format(new Date(program.createdAt), "yyyy-MM-dd HH:mm")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="min-w-full grid grid-cols-5 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="px-6 py-3 text-left">Title</div>
+            <div className="px-6 py-3 text-left">Description</div>
+            <div className="px-6 py-3 text-left">Price</div>
+            <div className="px-6 py-3 text-left">Published For</div>
+            <div className="px-6 py-3 text-left">Created At</div>
+          </div>
+          <div className="bg-white divide-y divide-gray-200">
+            {allProgram.map((program) => (
+              <div
+                key={program.id}
+                className="grid grid-cols-5 text-sm text-gray-700"
+              >
+                <div className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
+                  {program.title}
+                </div>
+                <div className="px-6 py-4 whitespace-nowrap line-clamp-1 text-gray-500">
+                  {program.description}
+                </div>
+                <div className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  ${program.price}
+                </div>
+                <div className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  {program.publishedFor}
+                </div>
+                <div className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  {format(new Date(program.createdAt), "yyyy-MM-dd HH:mm")}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

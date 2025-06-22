@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const AdminLoginForm = () => {
-  const { login, isLoading } = useAdminStore();
+  const { login, isUserLoggingIn } = useAdminStore();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ const AdminLoginForm = () => {
               type="submit"
               className="w-full p-6 bg-primary hover:bg-green-500 text-white font-medium rounded-md transition-colors cursor-pointer"
             >
-              {isLoading ? "Logging in..." : "Log In"}
+              {isUserLoggingIn ? "Logging in..." : "Log In"}
             </Button>
           </form>
         </div>

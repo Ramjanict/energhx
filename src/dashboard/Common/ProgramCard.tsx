@@ -1,6 +1,7 @@
 import React from "react";
-import { Pencil, Trash2 } from "lucide-react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
 
 type Program = {
   id: string;
@@ -17,7 +18,7 @@ type ProgramCardProps = {
 };
 
 const ProgramCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
-  const { deleteProgram, getAllProgram, isLoading } = useAdminStore();
+  const { deleteProgram, getAllProgram, isProgramDeleting } = useAdminStore();
 
   const handleDelete = async () => {
     try {
@@ -51,21 +52,10 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
           </span>
         </div>
         <div className="flex justify-end items-center gap-2 pt-4">
-          <button
-            onClick={onEdit}
-            className="flex items-center gap-1 px-3 py-1 text-sm text-blue-600 hover:text-white border border-blue-600 rounded-lg hover:bg-blue-600 transition  cursor-pointer"
-          >
-            <Pencil size={16} />
-            Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-1 px-3 py-1 text-sm text-red-600 hover:text-white border border-red-600 rounded-lg hover:bg-red-600 transition  cursor-pointer"
-          >
-            <Trash2 size={16} />
-
-            {isLoading ? "Deleting..." : "Delete"}
-          </button>
+          <EditButton onClick={onEdit}>Edit</EditButton>
+          <DeleteButton onClick={handleDelete}>
+            {isProgramDeleting ? "Deleting..." : "Delete"}
+          </DeleteButton>
         </div>
       </div>
     </div>

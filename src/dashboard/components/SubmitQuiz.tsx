@@ -23,7 +23,7 @@ type QuizFormValues = {
 };
 
 const SubmitQuiz: React.FC<SubmitQuizProps> = ({ quizzes, contentId }) => {
-  const { submitQuiz, isLoading } = useAdminStore();
+  const { submitQuiz, isQuizSubmitting } = useAdminStore();
   const {
     register,
     handleSubmit,
@@ -81,7 +81,7 @@ const SubmitQuiz: React.FC<SubmitQuizProps> = ({ quizzes, contentId }) => {
         type="submit"
         className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
       >
-        {isLoading ? "Processing..." : " Submit Quiz"}
+        {isQuizSubmitting ? "Processing..." : " Submit Quiz"}
       </button>
     </form>
   );

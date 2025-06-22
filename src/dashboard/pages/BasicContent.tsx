@@ -15,6 +15,7 @@ import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { RiCloseLargeLine } from "react-icons/ri";
 import AllCourse from "../components/AllCourse";
 import BasicContentCard from "../Common/BasicContentCard";
+
 // Zod Schema
 export const basicContentSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -24,9 +25,8 @@ export const basicContentSchema = z.object({
       .refine((file) => file && file.type.startsWith("video/"), {
         message: "Must be a valid video file",
       }),
-    z.undefined(),
+    z.string().min(1, "Video is required"),
   ]),
-
   courseId: z
     .string()
     .uuid("Course ID must be a valid UUID")
@@ -38,7 +38,8 @@ export type BasicContentFormData = z.infer<typeof basicContentSchema>;
 const BasicContent: React.FC = () => {
   const {
     createBasicContent,
-    isLoading,
+    isBasicContentCreating,
+    isBasicContentUpdating,
     getAllCourse,
     allCourse,
     getAllModule,
@@ -51,7 +52,6 @@ const BasicContent: React.FC = () => {
     useState<BasicContentFormData | null>(null);
   const [selectedCourseId, setSelectedCourseId] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
-
   const [BasicContentId, setBasicContentId] = useState<string | null>(null);
 
   const {
@@ -65,6 +65,7 @@ const BasicContent: React.FC = () => {
     resolver: zodResolver(basicContentSchema),
     defaultValues: {
       title: "",
+      video: "",
       courseId: "",
     },
   });
@@ -75,27 +76,36 @@ const BasicContent: React.FC = () => {
       getAllModule(value);
     }
   };
+
   useEffect(() => {
     getAllCourse();
   }, [getAllCourse]);
 
   useEffect(() => {
     if (selectedBasicContent) {
-      reset(selectedBasicContent);
+      const { title, video, courseId } = selectedBasicContent;
+      reset({ title, video, courseId });
+      if (typeof video === "string") {
+        setPreview(video);
+      }
+    } else {
+      reset();
+      setPreview(null);
     }
   }, [selectedBasicContent, reset]);
+
   const onSubmit = async (data: BasicContentFormData) => {
     const formData = new FormData();
-
     const { video, ...restData } = data;
     formData.append("text", JSON.stringify(restData));
-
     if (video instanceof File) {
       formData.append("file", video);
     }
+
     BasicContentId && selectedBasicContent
       ? await updateModule(BasicContentId, formData)
       : await createBasicContent(formData);
+
     if (selectedCourseId) {
       getAllModule(selectedCourseId);
     }
@@ -103,21 +113,22 @@ const BasicContent: React.FC = () => {
     setIsBasicContentOpen(false);
     setSelectedBasicContent(null);
     setBasicContentId(null);
+    setPreview(null);
     reset();
   };
 
   return (
     <div>
-      {/* allCourse  */}
+      {/* Course selection */}
       <div className="flex items-center gap-6">
-        <AdminCommonHeader className=" !pb-0">Choose course</AdminCommonHeader>
-
+        <AdminCommonHeader className="!pb-0">Choose course</AdminCommonHeader>
         <AllCourse
           handleCourseChange={handleCourseChange}
           selectedCourseId={selectedCourseId}
         />
       </div>
 
+      {/* Header and Content Grid */}
       <div className="">
         <div className="">
           <AdminCommonHeader className="pt-6">
@@ -128,7 +139,11 @@ const BasicContent: React.FC = () => {
           </AdminCommonHeader>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6  ${
+            (allModule?.basicContents?.length ?? 0) > 0 ? "pb-8" : ""
+          }`}
+        >
           {allModule?.basicContents?.map((basicContent) => (
             <BasicContentCard
               key={basicContent.id}
@@ -143,14 +158,19 @@ const BasicContent: React.FC = () => {
           ))}
         </div>
 
-        <div className="pb-10">
-          <button
-            onClick={() => setIsBasicContentOpen(true)}
-            className="w-fit bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer "
-          >
-            Create Basic Content
-          </button>
-        </div>
+        <AdminCommonButton
+          onClick={() => {
+            setIsBasicContentOpen(true);
+            setSelectedBasicContent(null);
+            setBasicContentId(null);
+            setPreview(null);
+            reset();
+          }}
+          className="!w-fit"
+        >
+          Create Basic Content
+        </AdminCommonButton>
+
         {isBasicContentOpen && (
           <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity  min-h-screen  flex items-center  justify-center">
             <div className="w-full h-full flex flex-col justify-center items-center gap-10">
@@ -169,12 +189,16 @@ const BasicContent: React.FC = () => {
                     onClick={() => {
                       setIsBasicContentOpen(false);
                       setSelectedBasicContent(null);
+                      setPreview(null);
+                      setBasicContentId(null);
+                      reset();
                     }}
                     className=" text-xl cursor-pointer hover:text-red-500 "
                   >
                     <RiCloseLargeLine />
                   </div>
                 </div>
+
                 <div>
                   <label className="text-primary-gray block mb-1">Title</label>
                   <input
@@ -190,6 +214,7 @@ const BasicContent: React.FC = () => {
                   )}
                 </div>
 
+                {/* Video Upload */}
                 <div>
                   <label className="text-primary-gray block mb-1">Video</label>
                   <input
@@ -226,9 +251,7 @@ const BasicContent: React.FC = () => {
                         type="button"
                         onClick={() => {
                           setPreview(null);
-                          setValue("video", undefined, {
-                            shouldValidate: true,
-                          });
+                          setValue("video", "", { shouldValidate: true });
                         }}
                         className="bg-red-500 text-white px-2 py-1 rounded-md cursor-pointer mt-1"
                       >
@@ -237,18 +260,16 @@ const BasicContent: React.FC = () => {
                     </div>
                   )}
 
-                  {"video" in errors && errors.video && (
+                  {errors.video && (
                     <p className="text-red-500 text-xs sm:text-sm mt-1">
                       {errors.video.message as string}
                     </p>
                   )}
                 </div>
 
+                {/* Course ID */}
                 <div>
-                  <label
-                    htmlFor="publishedFor"
-                    className="text-primary-gray block mb-1"
-                  >
+                  <label className="text-primary-gray block mb-1">
                     Choose your course
                   </label>
                   <Controller
@@ -264,7 +285,7 @@ const BasicContent: React.FC = () => {
                         </SelectTrigger>
                         <SelectContent className="bg-light-green">
                           {allCourse?.map((course) => (
-                            <SelectItem value={course.id}>
+                            <SelectItem key={course.id} value={course.id}>
                               {course.title}
                             </SelectItem>
                           ))}
@@ -280,7 +301,7 @@ const BasicContent: React.FC = () => {
                 </div>
 
                 <AdminCommonButton>
-                  {isLoading
+                  {isBasicContentCreating || isBasicContentUpdating
                     ? "Processing..."
                     : selectedBasicContent
                     ? "Update Basic Content"

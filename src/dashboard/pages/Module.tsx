@@ -15,6 +15,7 @@ import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { RiCloseLargeLine } from "react-icons/ri";
 import ModuleCard from "../Common/ModuleCard";
 import AllCourse from "../components/AllCourse";
+
 // Zod Schema
 export const moduleSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -33,7 +34,8 @@ export type ModuleFormData = z.infer<typeof moduleSchema>;
 const Module: React.FC = () => {
   const {
     createModule,
-    isLoading,
+    isModuleCreating,
+    isModuleUpdating,
     getAllCourse,
     allCourse,
     getAllModule,
@@ -47,7 +49,6 @@ const Module: React.FC = () => {
   );
   const [selectedCourseId, setSelectedCourseId] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
-
   const [moduleId, setModuleId] = useState<string | null>(null);
 
   const {
@@ -72,27 +73,35 @@ const Module: React.FC = () => {
       getAllModule(value);
     }
   };
+
   useEffect(() => {
     getAllCourse();
   }, [getAllCourse]);
 
   useEffect(() => {
     if (selectedModule) {
-      reset(selectedModule);
+      const { title, thumbnail, courseId } = selectedModule;
+      setPreview(typeof thumbnail === "string" ? thumbnail : null);
+      reset({ title, thumbnail, courseId });
+    } else {
+      setPreview(null);
+      reset();
     }
   }, [selectedModule, reset]);
+
   const onSubmit = async (data: ModuleFormData) => {
     const formData = new FormData();
-
     const { thumbnail, ...restData } = data;
     formData.append("text", JSON.stringify(restData));
 
     if (thumbnail instanceof File) {
       formData.append("file", thumbnail);
     }
+
     moduleId && selectedModule
       ? await updateModule(moduleId, formData)
       : await createModule(formData);
+
     if (selectedCourseId) {
       getAllModule(selectedCourseId);
     }
@@ -100,31 +109,32 @@ const Module: React.FC = () => {
     setIsModuleOpen(false);
     setSelectedModule(null);
     setModuleId(null);
-    reset(); // clear form
+    setPreview(null);
+    reset();
   };
 
   return (
     <div>
-      {/* allCourse  */}
       <div className="flex items-center gap-6">
-        <AdminCommonHeader className=" !pb-0">Choose course</AdminCommonHeader>
-
+        <AdminCommonHeader className="!pb-0">Choose course</AdminCommonHeader>
         <AllCourse
           handleCourseChange={handleCourseChange}
           selectedCourseId={selectedCourseId}
         />
       </div>
 
-      <div className="">
-        <div className="">
-          <AdminCommonHeader className="pt-6">
-            {Array.isArray(allModule?.modules) && allModule.modules.length > 0
-              ? `Modules (${allModule.modules.length})`
-              : "This course does not contain any modules"}
-          </AdminCommonHeader>
-        </div>
+      <div>
+        <AdminCommonHeader className="pt-6">
+          {Array.isArray(allModule?.modules) && allModule.modules.length > 0
+            ? `Modules (${allModule.modules.length})`
+            : "This course does not contain any modules"}
+        </AdminCommonHeader>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ${
+            allModule?.modules?.length ?? 0 > 0 ? "pb-8" : ""
+          }`}
+        >
           {allModule?.modules?.map((module) => (
             <ModuleCard
               key={module.id}
@@ -139,36 +149,46 @@ const Module: React.FC = () => {
           ))}
         </div>
 
-        <div className="pb-10">
-          <button
-            onClick={() => setIsModuleOpen(true)}
-            className="w-fit bg-primary text-white py-2 px-4 rounded-md hover:bg-green-700 transition cursor-pointer "
-          >
-            Create Module
-          </button>
-        </div>
+        <AdminCommonButton
+          onClick={() => {
+            setIsModuleOpen(true);
+            setSelectedModule(null);
+            setModuleId(null);
+            setPreview(null);
+            reset();
+          }}
+          className={`!w-fit ${
+            allModule?.modules?.length ?? 0 > 0 ? "" : "mt-6"
+          }`}
+        >
+          Create Module
+        </AdminCommonButton>
+
         {isModuleOpen && (
-          <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity  min-h-screen  flex items-center  justify-center">
+          <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm transition-opacity min-h-screen flex items-center justify-center">
             <div className="w-full h-full flex flex-col justify-center items-center gap-10">
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-6 bg-white w-[90%] md:w-[60%] lg:w-[50%] xl:w-[40%]  shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)]  rounded-xl p-8"
+                className="flex flex-col gap-6 bg-white w-[90%] md:w-[60%] lg:w-[50%] xl:w-[40%] shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-xl p-8"
               >
-                <div className="w-full flex justify-between items-center ">
+                <div className="w-full flex justify-between items-center">
                   <AdminCommonHeader className="!pb-0">
                     {selectedModule ? "Update Module" : "Create Module"}
                   </AdminCommonHeader>
-
                   <div
                     onClick={() => {
                       setIsModuleOpen(false);
                       setSelectedModule(null);
+                      setModuleId(null);
+                      setPreview(null);
+                      reset();
                     }}
-                    className=" text-xl cursor-pointer hover:text-red-500 "
+                    className="text-xl cursor-pointer hover:text-red-500"
                   >
                     <RiCloseLargeLine />
                   </div>
                 </div>
+
                 <div>
                   <label className="text-primary-gray block mb-1">Title</label>
                   <input
@@ -184,7 +204,6 @@ const Module: React.FC = () => {
                   )}
                 </div>
 
-                {/* Thumbnail URL */}
                 <div>
                   <label className="text-primary-gray block mb-1">
                     Thumbnail
@@ -239,13 +258,8 @@ const Module: React.FC = () => {
                   )}
                 </div>
 
-                {/* Program ID */}
-
                 <div>
-                  <label
-                    htmlFor="publishedFor"
-                    className="text-primary-gray block mb-1"
-                  >
+                  <label className="text-primary-gray block mb-1">
                     Choose your course
                   </label>
                   <Controller
@@ -256,12 +270,12 @@ const Module: React.FC = () => {
                         onValueChange={field.onChange}
                         value={field.value}
                       >
-                        <SelectTrigger className="w-full outline-none text-primary-gray  rounded-none">
+                        <SelectTrigger className="w-full outline-none text-primary-gray rounded-none">
                           <SelectValue placeholder="Choose Course" />
                         </SelectTrigger>
                         <SelectContent className="bg-light-green">
                           {allCourse?.map((course) => (
-                            <SelectItem value={course.id}>
+                            <SelectItem key={course.id} value={course.id}>
                               {course.title}
                             </SelectItem>
                           ))}
@@ -277,7 +291,7 @@ const Module: React.FC = () => {
                 </div>
 
                 <AdminCommonButton>
-                  {isLoading
+                  {isModuleCreating || isModuleUpdating
                     ? "Processing..."
                     : selectedModule
                     ? "Update Module"

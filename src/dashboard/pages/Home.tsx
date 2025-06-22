@@ -1,11 +1,7 @@
 import ProgramChart from "../components/chart/ProgramChart";
 
 const Home = () => {
-  return (
-    <div className="">
-      <ProgramChart />
-    </div>
-  );
+  return <ProgramChart />;
 };
 
 export default Home;

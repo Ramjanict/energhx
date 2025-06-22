@@ -14,6 +14,7 @@ import AdminCommonHeader from "../Common/AdminCommonHeader";
 import { useEffect, useState } from "react";
 import { RiCloseLargeLine } from "react-icons/ri";
 import QuizCard, { SingleQuiz } from "../Common/QuizCard";
+import AdminCommonButton from "../Common/AdminCommonButton";
 
 const quizSchema = z.object({
   contentId: z.string().uuid({ message: "Please select a content ID" }),
@@ -49,7 +50,8 @@ const Quiz = () => {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
 
   const {
-    isLoading,
+    isQuizCreating,
+    isQuizUpdating,
     allModule,
     getAllModule,
     allContent,
@@ -157,8 +159,8 @@ const Quiz = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <AdminCommonHeader>Create Quiz</AdminCommonHeader>
+    <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col gap-6">
+      <AdminCommonHeader className="!pb-0">Create Quiz</AdminCommonHeader>
       <div className="flex gap-4 items-center">
         <AllCourse
           handleCourseChange={handleCourseChange}
@@ -213,16 +215,16 @@ const Quiz = () => {
         <QuizCard allQuiz={allQuiz} handleQuiz={handleQuiz} />
       )}
       {!isQuizOpen && (
-        <button
+        <AdminCommonButton
           type="button"
           onClick={() => setIsQuizOpen(true)}
-          className="bg-primary text-white py-2 px-4 rounded cursor-pointer"
+          className=" !w-fit"
         >
           Add Quiz
-        </button>
+        </AdminCommonButton>
       )}
       {isQuizOpen && (
-        <div className="p-4 border rounded space-y-6">
+        <div className="bg-white shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-xl p-8">
           <div
             onClick={() => {
               setIsQuizOpen(false);
@@ -234,8 +236,9 @@ const Quiz = () => {
           >
             <RiCloseLargeLine />
           </div>
+
           {fields.map((field, index) => (
-            <div key={field.id} className="space-y-3">
+            <div key={field.id} className=" pt-6">
               <label className="font-semibold">Question {index + 1}</label>
               <input
                 type="text"
@@ -275,7 +278,7 @@ const Quiz = () => {
                     onValueChange={(val) => field.onChange(Number(val))}
                     value={String(field.value)}
                   >
-                    <SelectTrigger className="w-full border p-2 rounded bg-white">
+                    <SelectTrigger className="w-full border p-2 rounded bg-white outline-none">
                       <SelectValue placeholder="Select correct option" />
                     </SelectTrigger>
                     <SelectContent className="bg-white">
@@ -294,7 +297,7 @@ const Quiz = () => {
               )}
             </div>
           ))}
-          <div className="flex gap-4">
+          <div className="flex gap-4 pt-6">
             <button
               type="button"
               onClick={() => append(defaultQuestion)}
@@ -312,10 +315,10 @@ const Quiz = () => {
             </button>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isQuizCreating || isQuizUpdating}
               className="bg-green-600 text-white px-6 py-2 rounded cursor-pointer"
             >
-              {isLoading
+              {isQuizCreating || isQuizUpdating
                 ? "Processing..."
                 : selectedQuiz
                 ? "Update Quiz"
