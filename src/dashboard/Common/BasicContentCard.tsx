@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
@@ -23,18 +23,23 @@ const BasicContentCard: React.FC<BasicContentProps> = ({
   onEdit,
   selectedCourseId,
 }) => {
-  const { isBasicContentDeleting, getAllModule, deleteBasicContent } =
-    useAdminStore();
+  const { getAllModule, deleteBasicContent } = useAdminStore();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // If no data, don't render anything
   if (!basicContent) return null;
 
   const handleDelete = async () => {
+    if (!basicContent?.id) return;
+
     try {
+      setIsDeleting(true);
       await deleteBasicContent(basicContent.id);
       await getAllModule(selectedCourseId);
     } catch (error) {
-      console.error("Failed to delete program:", error);
+      console.error("Failed to delete basic content:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -59,7 +64,7 @@ const BasicContentCard: React.FC<BasicContentProps> = ({
         <div className="flex justify-end items-center gap-2 pt-4">
           <EditButton onClick={onEdit}>Edit</EditButton>
           <DeleteButton onClick={handleDelete}>
-            {isBasicContentDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </DeleteButton>
         </div>
       </div>

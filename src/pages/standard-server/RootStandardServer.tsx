@@ -1,14 +1,15 @@
 import CommonBanner from "@/common/CommonBanner";
 import userImg from "../../assets/user.png";
 import Sidebar from "@/common/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { MdSettings, MdLogout } from "react-icons/md";
 import { FaPhotoVideo } from "react-icons/fa";
 import CommonWrapper from "@/common/CommonWrapper";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
-import { useState } from "react";
+import { use, useState } from "react";
 import { IoMdTime } from "react-icons/io";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const menuItems = [
   { path: "/standard-server/dashboard", label: "Dashboard", icon: FaHome },
@@ -18,25 +19,28 @@ const menuItems = [
     label: "All Courses",
     icon: FaPhotoVideo,
   },
-  { path: "/standard-server/history", label: "History", icon: IoMdTime },
-
   { path: "/standard-server/settings", label: "Settings", icon: MdSettings },
   { path: "/login", label: "Logout", icon: MdLogout },
 ];
 const RootStandardServer = () => {
+  const { DevUser } = useAdminStore();
+
   const [user] = useState({
-    name: "Emmnauel Nonye",
+    name: `${DevUser?.user?.firstName ?? ""} ${
+      DevUser?.user?.lastName ?? ""
+    }`.trim(),
     role: "Server (Intern)",
-    profileImg: userImg,
+    profileImg: DevUser?.user?.profile_photo ?? userImg,
   });
+
   return (
     <div>
       <NavbarAdmin user={user} />
 
       <CommonBanner
-        name="Emmnauel Nonye"
-        role="Server (Intern)"
-        imageUrl={userImg}
+        name={user.name}
+        role={user.role}
+        imageUrl={user.profileImg}
       />
 
       <CommonWrapper>

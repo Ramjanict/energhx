@@ -44,7 +44,7 @@ const BasicContent: React.FC = () => {
     allCourse,
     getAllModule,
     allModule,
-    updateModule,
+    updateBasicContent,
   } = useAdminStore();
 
   const [isBasicContentOpen, setIsBasicContentOpen] = useState(false);
@@ -103,7 +103,7 @@ const BasicContent: React.FC = () => {
     }
 
     BasicContentId && selectedBasicContent
-      ? await updateModule(BasicContentId, formData)
+      ? await updateBasicContent(BasicContentId, formData)
       : await createBasicContent(formData);
 
     if (selectedCourseId) {
@@ -131,7 +131,7 @@ const BasicContent: React.FC = () => {
       {/* Header and Content Grid */}
       <div className="">
         <div className="">
-          <AdminCommonHeader className="pt-6">
+          <AdminCommonHeader className="pt-6 !text-sm">
             {Array.isArray(allModule?.basicContents) &&
             allModule.basicContents.length > 0
               ? `Basic Content (${allModule.basicContents.length})`

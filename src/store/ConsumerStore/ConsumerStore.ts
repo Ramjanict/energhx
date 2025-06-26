@@ -248,7 +248,6 @@ export const useConsumerStore = create<ConsumerStoreType>()(
           }
         } catch (error: any) {
           console.error("Problem during energy audit", error);
-          toast.error("Unable to fetch energy audit data.");
         } finally {
           set({ isLoading: false }); // End loading
         }
@@ -459,7 +458,7 @@ export const useConsumerStore = create<ConsumerStoreType>()(
     }),
 
     {
-      name: "user",
+      name: "consumer",
       partialize: (state) => ({ token: state.token, user: state.user }),
     }
   )

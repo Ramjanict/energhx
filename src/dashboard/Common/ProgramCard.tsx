@@ -1,7 +1,7 @@
-import React from "react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
+import { useState } from "react";
 
 type Program = {
   id: string;
@@ -18,14 +18,19 @@ type ProgramCardProps = {
 };
 
 const ProgramCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
-  const { deleteProgram, getAllProgram, isProgramDeleting } = useAdminStore();
+  const { deleteProgram, getAllProgram } = useAdminStore();
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     try {
+      setIsDeleting(true);
       await deleteProgram(program.id);
       await getAllProgram();
     } catch (error) {
       console.error("Failed to delete program:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -54,7 +59,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onEdit }) => {
         <div className="flex justify-end items-center gap-2 pt-4">
           <EditButton onClick={onEdit}>Edit</EditButton>
           <DeleteButton onClick={handleDelete}>
-            {isProgramDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </DeleteButton>
         </div>
       </div>

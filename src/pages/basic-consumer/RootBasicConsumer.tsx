@@ -10,6 +10,7 @@ import NavbarAdmin from "@/Layout/NavbarAdmin";
 import NavbarStandard from "@/Layout/NavbarStandard";
 import { TbReportSearch } from "react-icons/tb";
 import { RiBuilding2Line } from "react-icons/ri";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
 const consumerMenu = [
   { path: "/basic-consumer/dashboard", label: "Dashboard", icon: FaHome },
@@ -25,10 +26,11 @@ const consumerMenu = [
 ];
 
 const RootBasicConsumer = () => {
-  const [user] = useState({
-    name: "Emmnauel Nonye",
+  const { user } = useConsumerStore();
+  const [Consumer] = useState({
+    name: `${user?.firstname ?? ""} ${user?.lastname ?? ""}`.trim(),
     role: "Consumer",
-    profileImg: userImg,
+    profileImg: user?.profile_photo ?? userImg,
   });
   const { pathname } = useLocation();
 
@@ -37,15 +39,14 @@ const RootBasicConsumer = () => {
       {pathname === "/basic-consumer/form" ? (
         <NavbarStandard />
       ) : (
-        <NavbarAdmin user={user} />
+        user && <NavbarAdmin user={Consumer} />
       )}
 
       <div className={`${pathname === "/basic-consumer/form" && "hidden"}`}>
         <CommonBanner
-          name="Emmnauel Nonye"
-          role="Consumer (Basic)"
-          imageUrl={userImg}
-          // Pass the function, not a string
+          name={Consumer.name}
+          role={Consumer.role}
+          imageUrl={Consumer.profileImg}
         />
       </div>
 

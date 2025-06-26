@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
@@ -20,14 +20,20 @@ type courseCardProps = {
 };
 
 const CourseCard: React.FC<courseCardProps> = ({ course, onEdit }) => {
-  const { deleteCourse, getAllCourse, isCourseDeleting } = useAdminStore();
+  const { deleteCourse, getAllCourse } = useAdminStore();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
+    if (!course?.id) return;
+    setIsDeleting(true); // if you add local state
+
     try {
       await deleteCourse(course.id);
       await getAllCourse();
     } catch (error) {
       console.error("Failed to delete course:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -64,7 +70,7 @@ const CourseCard: React.FC<courseCardProps> = ({ course, onEdit }) => {
         <div className="flex justify-end items-center gap-2 pt-4">
           <EditButton onClick={onEdit}>Edit</EditButton>
           <DeleteButton onClick={handleDelete}>
-            {isCourseDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </DeleteButton>
         </div>
       </div>

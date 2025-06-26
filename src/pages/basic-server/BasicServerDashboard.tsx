@@ -23,9 +23,8 @@ const object = {
 const BasicServerDashboard = () => {
   const navigate = useNavigate();
 
-  const { DevToken, DevUser } = useAdminStore();
+  const { DevToken } = useAdminStore();
 
-  console.log("DevUser", DevUser);
   useEffect(() => {
     if (!DevToken) {
       navigate("/basic-server/form");

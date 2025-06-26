@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StarRating from "@/components/ui/StarRating";
 import StatusBadge from "@/components/ui/StatusBadge";
 import ProgressBar from "@/components/ui/ProgressBar";
@@ -8,14 +8,30 @@ import {
   courseFilterArray,
   courseList,
 } from "@/common/LMS/standardDeveloperData";
+import { useNavigate } from "react-router-dom";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
+import CourseCard from "@/common/LMS/CourseCard";
 
-const StandardDeveloperDashboard = () => {
+const StandardServerDashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState<string>("enrolled");
-  const { DevUser } = useAdminStore();
+  const {} = useAdminStore();
 
-  console.log("DevUser", DevUser);
+  const { singleProgram, getSingleProgram, DevToken, courseProgress } =
+    useAdminStore();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/basic-server/form");
+    }
+  }, [DevToken]);
+
+  useEffect(() => {
+    const programId = localStorage.getItem("selectedProgram");
+    if (programId) {
+      getSingleProgram(programId);
+    }
+  }, []);
   return (
     <div className="">
       <CommonHeader>Overview</CommonHeader>
@@ -25,7 +41,7 @@ const StandardDeveloperDashboard = () => {
           const IconElement = item.icon;
           return (
             <div
-              className={`max-w-[282px] w-full p-6 rounded-3xl border-[#9ED98A] cursor-pointer transition-all duration-300 
+              className={` w-full p-6 rounded-3xl border-[#9ED98A] cursor-pointer transition-all duration-300 
                 ${
                   item.value === selectedFilter
                     ? "bg-primary"
@@ -78,57 +94,26 @@ const StandardDeveloperDashboard = () => {
         })}
       </div>
 
-      {/* Course list section */}
-      <div className="flex flex-col gap-10 pt-10">
-        {courseList.map((course) => {
-          const progressPercent = calculatePercentage(
-            course.completedLesson,
-            course.totalLesson
-          );
-          return (
-            <div
-              key={course.id}
-              className="max-w-[894px] w-full flex flex-col md:flex-row gap-6 shadow-md border border-[#E7E9E8] rounded-lg p-4 sm:p-6"
-            >
-              {/* Image section */}
-              <div className="flex justify-center">
-                <img src={course.image} alt="" className="rounded-lg w-full" />
-              </div>
-
-              {/* Course details */}
-              <div className="w-full flex flex-col gap-2 md:pr-6">
-                <div className="flex justify-between items-center mt-2">
-                  <StarRating rating={course.rating} />
-                  <StatusBadge status={course.status} />
-                </div>
-                <p className="text-[18px] text-[#394A3F]">{course.title}</p>
-                <p>
-                  <span className="text-[#758179] text-[14px]">
-                    Completed lesson:
-                  </span>
-                  <span className="text-[#394A3F] text-[14px] ml-1">
-                    {course.completedLesson} of {course.totalLesson} lessons
-                  </span>
-                </p>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5">
-                  <ProgressBar percent={progressPercent} />
-                  {progressPercent < 100 ? (
-                    <p className="text-[#758179] text-[12px]">
-                      {progressPercent}% completed
-                    </p>
-                  ) : (
-                    <button className="text-[#394A3F] text-[12px] border-b border-primary cursor-pointer max-sm:pt-2 max-sm:w-fit">
-                      Get Certificate
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="py-10">
+        {singleProgram?.courses?.length > 0 ? (
+          <div className=" flex flex-col gap-6">
+            {singleProgram.courses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                courseProgress={courseProgress}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className=" text-gray-500">
+            No courses are currently available for this program. Please check
+            back later or select a different program.
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
-export default StandardDeveloperDashboard;
+export default StandardServerDashboard;

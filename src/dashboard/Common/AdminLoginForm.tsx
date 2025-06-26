@@ -20,8 +20,6 @@ const AdminLoginForm = () => {
     }
   }, [DevUser, navigate]);
 
-  console.log("DevUser", DevUser?.user?.userType);
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

@@ -130,7 +130,7 @@ const Course: React.FC = () => {
           setSelectedCourse(null);
           setCourseId(null);
         }}
-        className={`!w-fit ${allCourse.length > 0 ? "" : "mt-6"}`}
+        className={`!w-fit ${allCourse.length > 0 ? "mb-6" : "mt-6"}`}
       >
         Create Course
       </AdminCommonButton>

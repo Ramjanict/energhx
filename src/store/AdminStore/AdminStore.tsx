@@ -54,6 +54,11 @@ export const useAdminStore = create<AdminStoreType>()(
       },
       mark: null,
       allPayment: [],
+      myReview: [],
+      allReview: [],
+      singleReview: [],
+      result: [],
+      calculatedMark: null,
 
       // ✅ Separate Loading States
       isUserRegistering: false,
@@ -69,7 +74,6 @@ export const useAdminStore = create<AdminStoreType>()(
       isProgramCreating: false,
       isProgramFetching: false,
       isProgramUpdating: false,
-      isProgramDeleting: false,
       isMyProgramFetching: false,
       isSingleProgramFetching: false,
 
@@ -78,52 +82,48 @@ export const useAdminStore = create<AdminStoreType>()(
       isCourseCreating: false,
       isCourseFetching: false,
       isCourseUpdating: false,
-      isCourseDeleting: false,
 
       // ✅ Separate Loading States
 
       isModuleCreating: false,
       isModuleFetching: false,
       isModuleUpdating: false,
-      isModuleDeleting: false,
-
       // ✅ Separate Loading States
-
       isBasicContentCreating: false,
       isBasicContentFetching: false,
       isBasicContentUpdating: false,
-      isBasicContentDeleting: false,
 
       // ✅ Separate Loading States
-
       isContentCreating: false,
       isContentFetching: false,
       isSingleContentFetching: false,
       isContentUpdating: false,
-      isContentDeleting: false,
-
       // ✅ Separate Loading States
       isQuizCreating: false,
       isQuizFetching: false,
       isQuizUpdating: false,
       isQuizSubmitting: false,
-      isQuizDeleting: false,
 
       // ✅ Separate Loading States
-
       isPaymentProcessing: false,
       isPaymentFetching: false,
-
       // ✅ Separate Loading States
       isAdminAdding: false,
       isAdminFetchingAll: false,
       isAdminUpdating: false,
-      isAdminDeleting: false,
-
       // ✅ Separate Loading States
       isProgressSetting: false,
       isProgressFetching: false,
       isUserLoggingIn: false,
+      isCertificateSubmitting: false,
+      // ✅ Separate Loading States
+      isReviewSubmitting: false,
+      isMyReviewFetching: false,
+      isMyReviewUpdate: false,
+      isAllReviewFetching: false,
+      isSingleReviewFetching: false,
+      isResultFetching: false,
+      isCalculatedMarkFetching: false,
 
       //------------------------
       // user async function
@@ -142,7 +142,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during Signup", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isUserRegistering: false });
         }
@@ -162,7 +161,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during Signup", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isPasswordCreating: false });
         }
@@ -185,7 +183,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during Signup", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isPasswordUpdating: false });
         }
@@ -247,7 +244,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during get all country", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isCountryFetching: false });
         }
@@ -264,7 +260,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during get all states", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isStateFetching: false });
         }
@@ -286,7 +281,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during uploading document", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isExperienceSubmitting: false });
         }
@@ -308,7 +302,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during uploading document", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isExperienceSubmitting: false });
         }
@@ -335,7 +328,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating Program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isProgramCreating: false });
         }
@@ -355,7 +347,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting all program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isProgramFetching: false });
         }
@@ -383,14 +374,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating Program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isProgramUpdating: false });
         }
       },
 
       deleteProgram: async (programId) => {
-        set({ isProgramDeleting: true });
         const token = get().DevToken;
         try {
           if (!token) {
@@ -407,9 +396,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during deleting Program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isProgramDeleting: false });
         }
       },
 
@@ -427,7 +414,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting my programs", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isMyProgramFetching: false });
         }
@@ -447,7 +433,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting single program", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isSingleProgramFetching: false });
         }
@@ -477,7 +462,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating course", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isCourseCreating: false });
         }
@@ -504,7 +488,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching courses", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isCourseFetching: false });
         }
@@ -535,14 +518,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating course", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isCourseUpdating: false });
         }
       },
 
       deleteCourse: async (courseId) => {
-        set({ isCourseDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -562,9 +543,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during deleting course", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isCourseDeleting: false });
         }
       },
 
@@ -593,12 +572,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating module", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isModuleCreating: false });
         }
       },
 
+      // single course
       getAllModule: async (singleCourseId) => {
         set({ isModuleFetching: true });
         const token = get().DevToken;
@@ -620,7 +599,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching modules", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isModuleFetching: false });
         }
@@ -652,14 +630,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating module", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isModuleUpdating: false });
         }
       },
 
       deleteModule: async (moduleId) => {
-        set({ isModuleDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -680,9 +656,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during deleting module", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isModuleDeleting: false });
         }
       },
 
@@ -716,7 +690,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating basic content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isBasicContentCreating: false });
         }
@@ -743,7 +716,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching basic content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isBasicContentFetching: false });
         }
@@ -775,14 +747,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating basic content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isBasicContentUpdating: false });
         }
       },
 
       deleteBasicContent: async (moduleId) => {
-        set({ isBasicContentDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -799,7 +769,6 @@ export const useAdminStore = create<AdminStoreType>()(
           );
 
           if (data?.message) {
-            set({ allModule: data.data }); // ← again, maybe this should be `allBasicContent`
             toast.success(data.message);
           } else if (data?.error) {
             toast.error(data.message || "An error occurred.");
@@ -808,7 +777,6 @@ export const useAdminStore = create<AdminStoreType>()(
           console.error("Problem during deleting basic content", error);
           toast.error("Problem during delete.");
         } finally {
-          set({ isBasicContentDeleting: false });
         }
       },
 
@@ -837,7 +805,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isContentCreating: false });
         }
@@ -864,7 +831,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting all content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isContentFetching: false });
         }
@@ -891,7 +857,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during getting single content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isSingleContentFetching: false });
         }
@@ -922,14 +887,12 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isContentUpdating: false });
         }
       },
 
       deleteContent: async (contentId) => {
-        set({ isContentDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -949,9 +912,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during deleting content", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isContentDeleting: false });
         }
       },
 
@@ -980,7 +941,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during creating quiz", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isQuizCreating: false });
         }
@@ -1010,7 +970,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching quizzes", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isQuizFetching: false });
         }
@@ -1041,7 +1000,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during updating quiz", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isQuizUpdating: false });
         }
@@ -1083,7 +1041,6 @@ export const useAdminStore = create<AdminStoreType>()(
       },
 
       deleteQuiz: async (contentId) => {
-        set({ isQuizDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -1106,9 +1063,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during deleting quiz", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isQuizDeleting: false });
         }
       },
 
@@ -1141,7 +1096,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during making Payment", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isPaymentProcessing: false });
         }
@@ -1168,7 +1122,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching payments", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isPaymentFetching: false });
         }
@@ -1203,7 +1156,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during adding admin", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isAdminAdding: false });
         }
@@ -1230,7 +1182,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching all admins", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isAdminFetchingAll: false });
         }
@@ -1256,13 +1207,11 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching update admin", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isAdminUpdating: false });
         }
       },
       deleteAdmin: async (adminId) => {
-        set({ isAdminDeleting: true });
         const token = get().DevToken;
 
         try {
@@ -1282,9 +1231,7 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching delete admin", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
-          set({ isAdminDeleting: false });
         }
       },
 
@@ -1310,7 +1257,6 @@ export const useAdminStore = create<AdminStoreType>()(
           );
 
           if (data?.success) {
-            toast.success(data.message || "Progress saved successfully.");
           } else {
             toast.error(data.message || "An unexpected error occurred.");
           }
@@ -1346,9 +1292,278 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error) {
           console.error("Problem during fetching progress", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isProgressFetching: false });
+        }
+      },
+
+      //-----------------------------------
+      // certificate async function
+      //-----------------------------------
+      submitCertificate: async (courseId, userId) => {
+        set({ isCertificateSubmitting: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(
+            `grading/${courseId}/${userId}/certificate`,
+            {},
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.success) {
+            toast.success(data.message || "Progress saved successfully.");
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isCertificateSubmitting: false });
+        }
+      },
+      getResult: async (courseId, userId) => {
+        set({ isCertificateSubmitting: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(
+            `grading/${courseId}/${userId}/results`,
+
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.success) {
+            set({ result: data.data });
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isCertificateSubmitting: false });
+        }
+      },
+      getCalculatedMark: async (courseId, userId) => {
+        set({ isCertificateSubmitting: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(
+            `grading/${courseId}/${userId}`,
+
+            {
+              headers: { Authorization: token },
+            }
+          );
+          if (data?.success) {
+            set({ calculatedMark: data });
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isCertificateSubmitting: false });
+        }
+      },
+      //-----------------------------------
+      // Review async function
+      //-----------------------------------
+      AddReview: async (review) => {
+        set({ isReviewSubmitting: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.post(`/review`, review, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.success) {
+            toast.success(data.message || "Progress saved successfully.");
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isReviewSubmitting: false });
+        }
+      },
+      getMyReview: async () => {
+        set({ isMyReviewFetching: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(`/review/my-reviews`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ myReview: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during fetching review", error);
+        } finally {
+          set({ isMyReviewFetching: false });
+        }
+      },
+      updateMyReview: async (reviewId, review) => {
+        set({ isReviewSubmitting: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.patch(
+            `/review/${reviewId}`,
+            review,
+            {
+              headers: { Authorization: token },
+            }
+          );
+
+          if (data?.success) {
+            set({ myReview: data.data });
+            toast.success(data.message || "Progress saved successfully.");
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+          set({ isReviewSubmitting: false });
+        }
+      },
+      deleteMyReview: async (reviewId) => {
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.delete(`/review/${reviewId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.success) {
+            toast.success(data.message || "Progress saved successfully.");
+          } else {
+            toast.error(data.message || "An unexpected error occurred.");
+          }
+        } catch (error: any) {
+          const message =
+            error.response?.data?.message ||
+            "This content is locked. Please complete previous contents first";
+          toast.error(message);
+          console.error("Set progress error:", error);
+        } finally {
+        }
+      },
+      getAllReview: async () => {
+        set({ isMyReviewFetching: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(`/review`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ allReview: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during fetching review", error);
+        } finally {
+          set({ isMyReviewFetching: false });
+        }
+      },
+      getSingleReview: async (courseId) => {
+        set({ isMyReviewFetching: true });
+        const token = get().DevToken;
+
+        try {
+          if (!token) {
+            toast.error("Authentication token is missing.");
+            return;
+          }
+
+          const { data } = await axiosSecure.get(`/review/course/${courseId}`, {
+            headers: { Authorization: token },
+          });
+
+          if (data?.message) {
+            set({ singleReview: data.data });
+          } else if (data?.error) {
+            toast.error(data.message || "An error occurred.");
+          }
+        } catch (error) {
+          console.error("Problem during fetching review", error);
+        } finally {
+          set({ isMyReviewFetching: false });
         }
       },
 
@@ -1370,7 +1585,6 @@ export const useAdminStore = create<AdminStoreType>()(
           }
         } catch (error: any) {
           console.error("Problem during login", error);
-          toast.error("Something went wrong. Please try again.");
         } finally {
           set({ isUserLoggingIn: false });
         }

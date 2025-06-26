@@ -12,6 +12,7 @@ import NavbarAdmin from "@/Layout/NavbarAdmin";
 import { useState } from "react";
 import { FaUsers } from "react-icons/fa6";
 import { IoMdTime } from "react-icons/io";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const serverInternMenu = [
   {
@@ -19,31 +20,11 @@ const serverInternMenu = [
     label: "Dashboard",
     icon: FaHome,
   },
-  {
-    path: "/standard-server-certified/appointment-request",
-    label: "Appointment Request",
-    icon: FaUsers,
-  },
-  {
-    path: "/standard-server-certified/my-courses",
-    label: "My Courses/LMS",
-    icon: FaGraduationCap,
-  },
 
   {
     path: "/standard-server-certified/all-courses",
     label: "All Courses",
     icon: FaPhotoVideo,
-  },
-  {
-    path: "/standard-server-certified/history",
-    label: "History",
-    icon: IoMdTime,
-  },
-  {
-    path: "/standard-server-certified/subscription",
-    label: "Subscription Packages",
-    icon: BsCartDash,
   },
 
   {
@@ -55,18 +36,21 @@ const serverInternMenu = [
 ];
 
 const RootStandardServerCertified = () => {
+  const { DevUser } = useAdminStore();
   const [user] = useState({
-    name: "Emmnauel Nonye",
+    name: `${DevUser?.user?.firstName ?? ""} ${
+      DevUser?.user?.lastName ?? ""
+    }`.trim(),
     role: "Server (Certified)",
-    profileImg: userImg,
+    profileImg: DevUser?.user?.profile_photo ?? userImg,
   });
   return (
     <div>
       <NavbarAdmin user={user} />
       <CommonBanner
-        name="Emmnauel Nonye"
-        role="Server (Certified)"
-        imageUrl={userImg}
+        name={user.name}
+        role={user.role}
+        imageUrl={user.profileImg}
       />
       <CommonWrapper>
         <div className="flex w-full">

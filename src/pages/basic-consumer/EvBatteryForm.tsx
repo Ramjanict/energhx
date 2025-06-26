@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CommonWrapper from "@/common/CommonWrapper";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loading from "@/components/basic-consumer/Loading";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 
@@ -240,10 +240,16 @@ const EvBatteryForm: React.FC = () => {
             ))}
           </div>
 
-          <div className="py-10">
+          <div className="py-10 flex gap-4 items-center">
+            <Link
+              to="/basic-consumer/buildingInformation"
+              className="w-fit bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition  block cursor-pointer"
+            >
+              Back
+            </Link>
             <button
               type="submit"
-              className="w-fit bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition ml-auto block cursor-pointer"
+              className="w-fit bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition  block cursor-pointer"
             >
               Add Battery
             </button>

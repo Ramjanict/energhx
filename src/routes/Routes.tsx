@@ -8,14 +8,9 @@ import CertifiedAssociates from "@/pages/standard-consumer/StandardConsumerAssoc
 import Service from "@/common/Service";
 import CertifiedAssociateLayout from "@/Layout/CertifiedAssociateLayout";
 import ServerSettings from "@/pages/basic-server/ServerSettings";
-import MyCourses from "@/common/LMS/MyCourses";
 import StandardCertificateDashboard from "@/pages/standard-developer-certified/StandardDeveloperCertificateDashboard";
 import RootStandardDeveloper from "@/pages/standard-developer/RootStandardDeveloper";
 import StandardDeveloperSetting from "@/pages/standard-developer/StandardDeveloperSetting";
-import StandardDeveloperHistory from "@/pages/standard-developer/StandardDeveloperHistory";
-import OverviewDetails from "@/common/LMS/OverviewDetails";
-import MyCourseDetails from "@/components/MyCourse/MyCourseDetails";
-import CourseDetails from "@/common/LMS/CourseDetails";
 import AssociateProfile from "@/pages/standard-consumer/StandardConsumerAssociateProfile";
 import RootBasicDeveloper from "@/pages/basic-developer/RootBasicDeveloper";
 import BasicDeveloperDashboard from "@/pages/basic-developer/BasicDeveloperDashboard";
@@ -35,33 +30,21 @@ import StandardConsumerBuildingInfo from "@/pages/standard-consumer/StandardCons
 import StandardConsumerAssociates from "@/pages/standard-consumer/StandardConsumerAssociates";
 import StandardConsumerAssociateProfile from "@/pages/standard-consumer/StandardConsumerAssociateProfile";
 import StandardConsumerSettings from "@/pages/standard-consumer/StandardConsumerSettings";
-import StandardDeveloperDashboard from "@/pages/standard-developer/StandardDeveloperDashboard";
 import RootStandardDeveloperCertified from "@/pages/standard-developer-certified/RootStandardDeveloperCertified";
-import DeveloperCertifiedAppointmentRequest from "@/pages/standard-developer-certified/DeveloperCertifiedAppointmentRequest";
 import StandardDeveloperCertifiedAllCourse from "@/pages/standard-developer-certified/StandardDeveloperCertifiedAllCourse";
-import StandardDeveloperCertifiedMyCourse from "@/pages/standard-developer-certified/StandardDeveloperCertifiedMyCourse";
-import StandardDeveloperCertifiedHistory from "@/pages/standard-developer-certified/StandardDeveloperCertifiedHistory";
 import StandardDeveloperCertifiedSetting from "@/pages/standard-developer-certified/StandardDeveloperCertifiedSetting";
-import StandardDeveloperCertifiedSubscription from "@/pages/standard-developer-certified/StandardServerCertifiedSubscription";
 import StandardDeveloperCertificateDashboard from "@/pages/standard-developer-certified/StandardDeveloperCertificateDashboard";
 import StandardDeveloperAllCourse from "@/pages/standard-developer/StandardDeveloperAllCourse";
-import StandardDeveloperMyCourse from "@/pages/standard-developer/StandardDeveloperMyCourse";
-import StandardServerDashboard from "@/pages/standard-developer/StandardDeveloperDashboard";
 import RootStandardServer from "@/pages/standard-server/RootStandardServer";
-import RootMyCourse from "@/common/LMS/RootMyCourse";
 import StandardServerAllCourse from "@/pages/standard-server/StandardServerAllCourse";
 import ServerCertifiedAppointmentRequest from "@/pages/standard-server-certified/ServerCertifiedAppointmentRequest";
 import RootStandardServerCertified from "@/pages/standard-server-certified/RootStandardServerCertified";
 import StandardServerCertificateDashboard from "@/pages/standard-server-certified/StandardServerCertificateDashboard";
 import StandardServerCertifiedAllCourse from "@/pages/standard-server-certified/StandardServerCertifiedAllCourse";
-import StandardServerCertifiedMyCourse from "@/pages/standard-server-certified/StandardServerCertifiedMyCourse";
-import StandardServerCertifiedSubscription from "@/pages/standard-developer-certified/StandardServerCertifiedSubscription";
 import StandardServerCertifiedSetting from "@/pages/standard-developer-certified/StandardDeveloperCertifiedSetting";
-import StandardServerHistory from "@/pages/standard-server/StandardServerHistory";
 import StandardServerSetting from "@/pages/standard-server/StandardServerSetting";
 import BasicConsumerForm from "@/pages/basic-consumer/BasicConsumerForm";
 import StandardConsumerHistory from "@/pages/standard-consumer/StandardConsumerHistory";
-import DevAndServerHistory from "@/common/LMS/DevAndServerHistory";
 import BasicServerForm from "@/pages/basic-server/BasicServerForm";
 import StandardConsumerEnergyAudit from "@/pages/standard-consumer/StandardConsumerEnergyAudit";
 import SolarMicroserviceForm from "@/components/basic-consumer/Microservice/form/SolarMicroserviceForm";
@@ -88,6 +71,8 @@ import Cancel from "@/common/LMS/Cancel";
 import BasicServerAllCourse from "@/pages/basic-developer/BasicDeveloperAllCourse";
 import BasicDeveloperAllCourse from "@/pages/basic-developer/BasicDeveloperAllCourse";
 import Admin from "@/dashboard/pages/Admin";
+import StandardServerDashboard from "@/pages/standard-server/StandardServerDashboard";
+import StandardDeveloperDashboard from "@/pages/standard-developer/StandardDeveloperDashboard";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -140,12 +125,12 @@ const routes = createBrowserRouter([
         element: <ContactUs />,
       },
       {
-        path: "/ev-battery/:buildingId",
+        path: "ev-battery/:buildingId",
         element: <EvBatteryForm />,
       },
 
       {
-        path: "/add-room/:buildingId",
+        path: "add-room/:buildingId",
         element: <AddRoomWithBuilding />,
       },
 
@@ -284,17 +269,7 @@ const routes = createBrowserRouter([
     children: [
       { path: "", element: <StandardServerDashboard /> },
       { path: "dashboard", element: <StandardServerDashboard /> },
-      // {
-      //   path: "my-courses",
-      //   element: <RootMyCourse />,
-      //   children: [
-      //     { path: "", element: <StandardServerMyCourse /> },
-      //     { path: ":id", element: <MyCourseDetails /> },
-      //   ],
-      // },
       { path: "all-courses", element: <StandardServerAllCourse /> },
-      { path: "all-courses/:id", element: <CourseDetails /> },
-      { path: "history", element: <StandardServerHistory /> },
       { path: "settings", element: <StandardServerSetting /> },
     ],
   },
@@ -303,32 +278,14 @@ const routes = createBrowserRouter([
     path: "standard-server-certified",
     element: <RootStandardServerCertified />,
     children: [
-      { path: "", element: <StandardServerCertificateDashboard /> },
-      { path: "dashboard", element: <StandardServerCertificateDashboard /> },
+      { path: "", element: <StandardServerDashboard /> },
+      { path: "dashboard", element: <StandardServerDashboard /> },
       {
         path: "appointment-request",
         element: <ServerCertifiedAppointmentRequest />,
       },
-      { path: "my-courses", element: <StandardServerCertifiedMyCourse /> },
       { path: "all-courses", element: <StandardServerCertifiedAllCourse /> },
-      { path: "history", element: <DevAndServerHistory /> },
-      {
-        path: "subscription",
-        element: <StandardServerCertifiedSubscription />,
-      },
       { path: "settings", element: <StandardServerCertifiedSetting /> },
-      {
-        path: "/standard-server-certified/overview/:id",
-        element: <OverviewDetails />,
-      },
-      {
-        path: "my-courses",
-        element: <RootMyCourse />,
-        children: [
-          { path: "", element: <MyCourses /> },
-          { path: ":id", element: <MyCourseDetails /> },
-        ],
-      },
     ],
   },
 
@@ -353,17 +310,9 @@ const routes = createBrowserRouter([
     children: [
       { path: "", element: <StandardDeveloperDashboard /> },
       { path: "dashboard", element: <StandardDeveloperDashboard /> },
-      {
-        path: "my-courses",
-        element: <RootMyCourse />,
-        children: [
-          { path: "", element: <StandardDeveloperMyCourse /> },
-          { path: ":id", element: <MyCourseDetails /> },
-        ],
-      },
+
       { path: "all-courses", element: <StandardDeveloperAllCourse /> },
-      { path: "all-courses/:id", element: <CourseDetails /> },
-      { path: "history", element: <StandardDeveloperHistory /> },
+
       { path: "settings", element: <StandardDeveloperSetting /> },
     ],
   },
@@ -371,32 +320,12 @@ const routes = createBrowserRouter([
     path: "standard-developer-certified",
     element: <RootStandardDeveloperCertified />,
     children: [
-      { path: "", element: <StandardDeveloperCertificateDashboard /> },
-      { path: "dashboard", element: <StandardCertificateDashboard /> },
-      {
-        path: "appointment-request",
-        element: <DeveloperCertifiedAppointmentRequest />,
-      },
-      { path: "my-courses", element: <StandardDeveloperCertifiedMyCourse /> },
+      { path: "", element: <StandardDeveloperDashboard /> },
+      { path: "dashboard", element: <StandardDeveloperDashboard /> },
+
       { path: "all-courses", element: <StandardDeveloperCertifiedAllCourse /> },
-      { path: "history", element: <StandardDeveloperCertifiedHistory /> },
-      {
-        path: "subscription",
-        element: <StandardDeveloperCertifiedSubscription />,
-      },
+
       { path: "settings", element: <StandardDeveloperCertifiedSetting /> },
-      {
-        path: "/standard-developer-certified/overview/:id",
-        element: <OverviewDetails />,
-      },
-      {
-        path: "my-courses",
-        element: <RootMyCourse />,
-        children: [
-          { path: "", element: <MyCourses /> },
-          { path: ":id", element: <MyCourseDetails /> },
-        ],
-      },
     ],
   },
 

@@ -11,6 +11,7 @@ const ChooseProgram = () => {
     myProgram,
     isMyProgramFetching,
     DevUser,
+    DevToken,
     getSingleProgram,
   } = useAdminStore();
 
@@ -33,6 +34,11 @@ const ChooseProgram = () => {
   }, []);
 
   useEffect(() => {
+    localStorage.removeItem("selectedProgram");
+    getMyProgram();
+  }, []);
+
+  useEffect(() => {
     if (selectProgramId) {
       localStorage.setItem("selectedProgram", selectProgramId);
     }
@@ -49,6 +55,11 @@ const ChooseProgram = () => {
     }
   };
 
+  useEffect(() => {
+    if (!DevToken) {
+      navigate("/login");
+    }
+  }, [DevToken, navigate]);
   return (
     <section className="w-full min-h-[calc(100vh-96px)] flex flex-col items-center justify-center px-4 py-12 bg-slate-50">
       <DashBoardHeader className="pb-8 text-center text-sm sm:text-base">

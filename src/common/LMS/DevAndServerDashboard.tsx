@@ -58,7 +58,6 @@ const DevAndServerDashboard: React.FC = () => {
     },
   ];
 
-  console.log("pathname=====", pathname);
   const server =
     pathname === "/standard-developer-certified" ||
     pathname === "/standard-server-developer/dashboard"
@@ -122,7 +121,7 @@ const DevAndServerDashboard: React.FC = () => {
           <span className="hidden sm:block text-xs sm:text-base ">
             {appointment.location}
           </span>
-          <div className={`flex justify-end    `}>
+          <div className={`flex justify-end `}>
             <Link
               to={`${server}/overview/${appointment.id}`}
               className={`w-fit text-sm font-semibold ${

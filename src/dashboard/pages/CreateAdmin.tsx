@@ -161,7 +161,7 @@ const CreateAdmin = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-6 bg-white w-[90%] md:w-[60%] lg:w-[50%] xl:w-[40%] shadow-[0px_0px_1px_2px_rgba(0,0,0,.04)] rounded-xl p-8 my-10   overflow-y-scroll"
             >
-              <div className="w-full flex justify-between items-center sm:col-span-2 md:col-span-3">
+              <div className="w-full flex justify-between items-center ">
                 <AdminCommonHeader className="!pb-0">
                   {selectedAdmin ? "Update Admin" : "Create Admin"}
                 </AdminCommonHeader>

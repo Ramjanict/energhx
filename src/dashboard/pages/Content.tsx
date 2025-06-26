@@ -215,7 +215,7 @@ const Content: React.FC = () => {
         />
         <AllModules control={control} errors={errors} />
       </div>
-      <AdminCommonHeader>
+      <AdminCommonHeader className="!text-sm">
         {Array.isArray(allModule?.modules) && allModule.modules.length > 0
           ? `Content (${allContent?.contents?.length || 0})`
           : "This module does not contain any Content"}

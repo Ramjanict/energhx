@@ -1,7 +1,9 @@
 import OverView from "@/common/OverView";
 import PaymentModal from "@/components/Appointment/PaymentModal";
 import HandShake from "@/components/basic-consumer/HandShake";
+import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import { usePaymentStore } from "@/store/PaymentStore/PaymentStore";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const object = {
@@ -30,6 +32,13 @@ const BasicConsumerDashboard = () => {
     showPayment,
     closePayment,
   } = usePaymentStore();
+
+  const { token } = useConsumerStore();
+  useEffect(() => {
+    if (!token) {
+      navigate("/basic-consumer/form");
+    }
+  }, [token]);
 
   return (
     <>

@@ -5,17 +5,19 @@ import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import ModuleInterface from "./ModuleInterface";
 import { Link } from "react-router-dom";
 import ModuleDisplay from "./ModuleDisplay";
-
+import { BasicContent } from "@/store/AdminStore/type/allModule";
 const AllCourses = () => {
-  const [singleContentId, setSingleContentId] = useState<string | null>(null);
+  const [selectBasicContent, setSelectBasicContent] =
+    useState<BasicContent | null>(null);
+  const [selectModulesId, setSelectModulesId] = useState<string | null>(null);
+
   const {
     singleProgram,
-    allModule,
     getSingleProgram,
-
     setProgress,
     getProgress,
     courseProgress,
+    allModule,
   } = useAdminStore();
 
   useEffect(() => {
@@ -25,14 +27,20 @@ const AllCourses = () => {
     }
   }, []);
 
-  const handleSetProgress = async (
-    courseId: string,
-    singleContentId: string
-  ) => {
-    await setProgress(courseId, singleContentId);
-  };
-  const handleGetProgress = async (courseId: string) => {
-    await getProgress(courseId);
+  const [isHandleProgress, setIsHandleProgress] = useState(false);
+
+  const handleProgress = async (courseId: string, singleContentId: string) => {
+    try {
+      setIsHandleProgress(true);
+      setSelectModulesId(singleContentId);
+      await setProgress(courseId, singleContentId);
+      await getProgress(courseId);
+    } catch (error) {
+      console.error("Error handling progress:", error);
+      // Optional: show toast or UI feedback here
+    } finally {
+      setIsHandleProgress(false);
+    }
   };
 
   return (
@@ -50,20 +58,19 @@ const AllCourses = () => {
       {(!!allModule?.basicContents?.length || !!allModule?.modules?.length) && (
         <div className="flex justify-between gap-6 mb-10 w-full">
           <ModuleDisplay
-            modules={allModule}
-            singleContentId={singleContentId}
+            selectBasicContent={selectBasicContent}
+            selectModulesId={selectModulesId}
+            isHandleProgress={isHandleProgress}
           />
           <ModuleInterface
-            modules={allModule}
-            setSingleContentId={setSingleContentId}
-            handleSetProgress={handleSetProgress}
-            handleGetProgress={handleGetProgress}
+            handleProgress={handleProgress}
+            setSelectBasicContent={setSelectBasicContent}
           />
         </div>
       )}
 
       <div>
-        {singleProgram.courses.length > 0 ? (
+        {singleProgram?.courses?.length > 0 ? (
           <div className=" flex flex-col gap-6">
             {singleProgram.courses.map((course) => (
               <CourseCard

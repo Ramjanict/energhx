@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { RiCloseLargeLine } from "react-icons/ri";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -137,7 +137,7 @@ const Program: React.FC = () => {
           setSelectedProgram(null);
           setProgramId(null);
         }}
-        className={` !w-fit ${allProgram.length > 0 ? "" : "mt-6"}`}
+        className={` !w-fit ${allProgram.length > 0 ? "mb-10" : "mt-6"}`}
       >
         Create Program
       </AdminCommonButton>

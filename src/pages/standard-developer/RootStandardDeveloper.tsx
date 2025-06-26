@@ -10,38 +10,38 @@ import CommonWrapper from "@/common/CommonWrapper";
 import NavbarAdmin from "@/Layout/NavbarAdmin";
 import { useState } from "react";
 import { IoMdTime } from "react-icons/io";
+import { useAdminStore } from "@/store/AdminStore/AdminStore";
 
 const standardDeveloperSiderBarMenu = [
   { path: "/standard-developer/dashboard", label: "Dashboard", icon: FaHome },
-  {
-    path: "/standard-developer/my-courses",
-    label: "My Courses/LMS",
-    icon: FaGraduationCap,
-  },
+
   {
     path: "/standard-developer/all-courses",
     label: "All Courses",
     icon: FaPhotoVideo,
   },
-  { path: "/standard-developer/history", label: "History", icon: IoMdTime },
 
   { path: "/standard-developer/settings", label: "Settings", icon: MdSettings },
   { path: "/login", label: "Logout", icon: MdLogout },
 ];
 const RootStandardDeveloper = () => {
+  const { DevUser } = useAdminStore();
+
   const [user] = useState({
-    name: "Emmnauel Nonye",
+    name: `${DevUser?.user?.firstName ?? ""} ${
+      DevUser?.user?.lastName ?? ""
+    }`.trim(),
     role: "Developer (Intern)",
-    profileImg: userImg,
+    profileImg: DevUser?.user?.profile_photo ?? userImg,
   });
   return (
     <div>
       <NavbarAdmin user={user} />
 
       <CommonBanner
-        name="Emmnauel Nonye"
-        role="Developer (Intern)"
-        imageUrl={userImg}
+        name={user.name}
+        role={user.role}
+        imageUrl={user.profileImg}
       />
 
       <CommonWrapper>

@@ -124,7 +124,7 @@ const Module: React.FC = () => {
       </div>
 
       <div>
-        <AdminCommonHeader className="pt-6">
+        <AdminCommonHeader className="pt-6 !text-sm">
           {Array.isArray(allModule?.modules) && allModule.modules.length > 0
             ? `Modules (${allModule.modules.length})`
             : "This course does not contain any modules"}

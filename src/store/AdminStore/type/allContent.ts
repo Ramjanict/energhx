@@ -5,7 +5,9 @@ export type ContentItem = {
   title: string;
   contentType: "DESCRIPTION" | "VIDEO" | "QUIZ";
   video: string | null;
-  description: string;
+  videoPublicId: string | null;
+  description: string | null;
+  videoDuration: number | null;
   createdAt: string;
   updatedAt: string;
   moduleId: string;

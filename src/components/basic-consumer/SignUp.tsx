@@ -22,7 +22,8 @@ const SignUp = () => {
   } = useForm<TbasicConsumer>({
     resolver: zodResolver(basicConsumer),
   });
-  const { createConsumer, getAllCountries, userType } = useConsumerStore();
+  const { createConsumer, getAllCountries, userType, token } =
+    useConsumerStore();
 
   useEffect(() => {
     getAllCountries();
@@ -40,6 +41,12 @@ const SignUp = () => {
       console.error("Error creating consumer:", error);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/basic-consumer");
+    }
+  }, [token, navigate]);
 
   return (
     <CommonWrapper>

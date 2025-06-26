@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
@@ -23,14 +23,19 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   onEdit,
   selectedCourseId,
 }) => {
-  const { isModuleDeleting, getAllModule, deleteModule } = useAdminStore();
+  const { getAllModule, deleteModule } = useAdminStore();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
+    if (!module?.id) return;
     try {
+      setIsDeleting(true);
       await deleteModule(module.id);
       await getAllModule(selectedCourseId);
     } catch (error) {
-      console.error("Failed to delete program:", error);
+      console.error("Failed to delete module:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -49,7 +54,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
         <div className="flex justify-end items-center gap-2 pt-4">
           <EditButton onClick={onEdit}>Edit</EditButton>
           <DeleteButton onClick={handleDelete}>
-            {isModuleDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </DeleteButton>
         </div>
       </div>

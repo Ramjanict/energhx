@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AllAdmin } from "@/store/AdminStore/type/allAdmin";
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
@@ -10,13 +10,20 @@ type AdminCardProps = {
 };
 
 const AdminCard: React.FC<AdminCardProps> = ({ admin, onEdit }) => {
-  const { deleteAdmin, getAllAdmin, isAdminDeleting } = useAdminStore();
+  const { deleteAdmin, getAllAdmin } = useAdminStore();
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDelete = async () => {
+    if (!admin?.id) return;
+
     try {
+      setIsDeleting(true);
       await deleteAdmin(admin.id);
       await getAllAdmin();
     } catch (error) {
-      console.error("Failed to delete program:", error);
+      console.error("Failed to delete admin:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
   return (
@@ -45,7 +52,7 @@ const AdminCard: React.FC<AdminCardProps> = ({ admin, onEdit }) => {
         <div className="flex justify-end items-center gap-2 pt-4">
           <EditButton onClick={onEdit}>Edit</EditButton>
           <DeleteButton onClick={handleDelete}>
-            {isAdminDeleting ? "Processing..." : "Delete"}
+            {isDeleting ? "Deleting..." : "Delete"}
           </DeleteButton>
         </div>
       </div>

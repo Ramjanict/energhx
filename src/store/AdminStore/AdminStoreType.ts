@@ -6,11 +6,17 @@ import { PaymentDataItem } from "./type/allPayment";
 import { AllProgram } from "./type/allProgram";
 import { WatchedContentProgress } from "./type/allProgress";
 import { AllQuiz } from "./type/allquiz";
+import {
+  AveragePercentageResponse,
+  CertificateContent,
+} from "./type/certificated";
 import { Country } from "./type/country";
 import { Login } from "./type/login";
 import { QuizSubmissionResponse } from "./type/mark";
 import { Myprogram } from "./type/myProgram";
+import { AllReview, MyReview, SingleReview } from "./type/myReview";
 import { Quiz, QuizData } from "./type/quiz";
+import { Review } from "./type/review";
 import { SingleContent } from "./type/singleContent";
 import { SingleProgramData } from "./type/singleProgram";
 import { State } from "./type/state";
@@ -37,6 +43,11 @@ export type AdminStoreType = {
   courseProgress: WatchedContentProgress;
   mark: QuizSubmissionResponse;
   allPayment: PaymentDataItem[];
+  myReview: MyReview[];
+  allReview: AllReview[];
+  singleReview: SingleReview[];
+  result: CertificateContent[];
+  calculatedMark: AveragePercentageResponse | null;
 
   // ✅ Separate Loading States
   isUserRegistering: boolean;
@@ -50,40 +61,42 @@ export type AdminStoreType = {
   isProgramCreating: boolean;
   isProgramFetching: boolean;
   isProgramUpdating: boolean;
-  isProgramDeleting: boolean;
   isMyProgramFetching: boolean;
   isSingleProgramFetching: boolean;
   isCourseCreating: boolean;
   isCourseFetching: boolean;
   isCourseUpdating: boolean;
-  isCourseDeleting: boolean;
   isModuleCreating: boolean;
   isModuleFetching: boolean;
   isModuleUpdating: boolean;
-  isModuleDeleting: boolean;
   isBasicContentCreating: boolean;
   isBasicContentFetching: boolean;
   isBasicContentUpdating: boolean;
-  isBasicContentDeleting: boolean;
   isContentCreating: boolean;
   isContentFetching: boolean;
   isSingleContentFetching: boolean;
   isContentUpdating: boolean;
-  isContentDeleting: boolean;
   isQuizCreating: boolean;
   isQuizFetching: boolean;
   isQuizUpdating: boolean;
   isQuizSubmitting: boolean;
-  isQuizDeleting: boolean;
   isPaymentProcessing: boolean;
   isPaymentFetching: boolean;
   isAdminAdding: boolean;
   isAdminFetchingAll: boolean;
   isAdminUpdating: boolean;
-  isAdminDeleting: boolean;
   isProgressSetting: boolean;
   isProgressFetching: boolean;
   isUserLoggingIn: boolean;
+  isCertificateSubmitting: boolean;
+  isReviewSubmitting: boolean;
+  isMyReviewFetching: boolean;
+  isMyReviewUpdate: boolean;
+  isAllReviewFetching: boolean;
+  isSingleReviewFetching: boolean;
+  isResultFetching: boolean;
+  isCalculatedMarkFetching: boolean;
+
   // -------------------
   // User;
   // -------------------
@@ -180,6 +193,25 @@ export type AdminStoreType = {
   // -------------------
   setProgress: (courseId: string, singleContentId: string) => Promise<void>;
   getProgress: (courseId: string) => Promise<void>;
+
+  // -------------------
+  //  certificate
+  // -------------------
+
+  submitCertificate: (courseId: string, userId: string) => Promise<void>;
+  getResult: (courseId: string, userId: string) => Promise<void>;
+  getCalculatedMark: (courseId: string, userId: string) => Promise<void>;
+
+  // -------------------
+  //  Review
+  // -------------------
+
+  AddReview: (review: Review) => Promise<void>;
+  getMyReview: () => Promise<void>;
+  getAllReview: () => Promise<void>;
+  getSingleReview: (courseId: string) => Promise<void>;
+  updateMyReview: (reviewId: string, review: Review) => Promise<void>;
+  deleteMyReview: (reviewId: string) => Promise<void>;
 
   // -------------------
   //  login and logout

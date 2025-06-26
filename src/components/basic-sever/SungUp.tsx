@@ -57,6 +57,7 @@ const SignUp = () => {
       stateId: "",
     },
   });
+  console.log("sdjfklds", devUserType);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -21,9 +21,9 @@ const Home = () => {
         </DashBoardHeader>
         <div className="w-full flex gap-6 flex-wrap justify-center ">
           <motion.div
-            onClick={() => {
+            onClick={async () => {
+              await getUserType("Normal Energy Users");
               navigate("/basic-consumer/form");
-              getUserType("Normal Energy Users");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
@@ -37,9 +37,9 @@ const Home = () => {
           </motion.div>
 
           <motion.div
-            onClick={() => {
+            onClick={async () => {
+              await getDevUserType("SERVER");
               navigate("/basic-server/form");
-              getDevUserType("SERVER");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl  w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}
@@ -53,9 +53,9 @@ const Home = () => {
           </motion.div>
 
           <motion.div
-            onClick={() => {
+            onClick={async () => {
+              await getDevUserType("DEVELOPER");
               navigate("/basic-developer/form");
-              getDevUserType("DEVELOPER");
             }}
             className="p-6 border border-primary bg-light-green rounded-2xl w-[200px] h-[180px] flex flex-col justify-between items-center cursor-pointer"
             whileHover={{ scale: 1.1, backgroundColor: "#C3E6C0" }}

@@ -2,6 +2,7 @@ import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import { AnswerSubmission } from "@/store/AdminStore/type/SubmitQuiz";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import AdminCommonButton from "../Common/AdminCommonButton";
 
 export type QuizQuestion = {
   id: string;
@@ -33,7 +34,7 @@ const SubmitQuiz: React.FC<SubmitQuizProps> = ({ quizzes, contentId }) => {
   const onSubmit: SubmitHandler<QuizFormValues> = async (data) => {
     const answerSheet = Object.entries(data).map(([quizId, answer]) => ({
       quizId,
-      answer: Number(answer),
+      answer: Number(answer) + 1,
     }));
 
     const result: AnswerSubmission = {
@@ -77,12 +78,9 @@ const SubmitQuiz: React.FC<SubmitQuizProps> = ({ quizzes, contentId }) => {
         </div>
       ))}
 
-      <button
-        type="submit"
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
-      >
+      <AdminCommonButton type="submit">
         {isQuizSubmitting ? "Processing..." : " Submit Quiz"}
-      </button>
+      </AdminCommonButton>
     </form>
   );
 };

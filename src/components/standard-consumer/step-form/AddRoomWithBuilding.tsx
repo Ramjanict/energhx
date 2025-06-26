@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CommonWrapper from "@/common/CommonWrapper";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useConsumerStore } from "@/store/ConsumerStore/ConsumerStore";
 import Loading from "@/components/basic-consumer/Loading";
 
@@ -254,12 +254,18 @@ const RoomForm = () => {
           </div>
         ))}
 
-        <div className="sm:col-span-3 flex justify-end py-10">
+        <div className="py-10 flex gap-4 items-center">
+          <Link
+            to="/basic-consumer/buildingInformation"
+            className="w-fit bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition  block cursor-pointer"
+          >
+            Back
+          </Link>
           <button
             type="submit"
-            className="bg-primary hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-md"
+            className="w-fit bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-green-600 transition  block cursor-pointer"
           >
-            Add room
+            Add Battery
           </button>
         </div>
       </form>

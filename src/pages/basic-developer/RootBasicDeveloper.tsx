@@ -45,8 +45,8 @@ const RootBasicDeveloper = () => {
     pathname === "/basic-developer/experience";
 
   const handleUpgrade = () => {
-    if (DevUser?.user?.userType === "SERVER") {
-      navigate("/basic-server/all-courses");
+    if (DevUser?.user?.userType === "DEVELOPER") {
+      navigate("/basic-developer/all-courses");
     } else {
       navigate("/basic-developer/all-courses");
     }

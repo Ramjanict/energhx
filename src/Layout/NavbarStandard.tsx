@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Logo from "@/assets/logo.svg";
 import userImg from "../assets/user.png";
+
 import { FiMenu } from "react-icons/fi";
 import MobileMenu from "./MobileMenu";
 import DropDown from "@/common/DropDown";

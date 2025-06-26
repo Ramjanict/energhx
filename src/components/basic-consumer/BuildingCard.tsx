@@ -14,6 +14,8 @@ const BuildingCard: React.FC<BuildingsTypesProps> = ({ item }) => {
   useEffect(() => {
     getAllBattery();
   }, [token]);
+
+  console.log("item ----build", item);
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 flex flex-col justify-between h-full border border-gray-100">
       <div className="flex flex-col gap-2">

@@ -1,6 +1,7 @@
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
+import { useState } from "react";
 
 export type SingleQuiz = {
   id: string;
@@ -28,14 +29,19 @@ type QuizCardProps = {
 };
 
 const QuizCard: React.FC<QuizCardProps> = ({ allQuiz, handleQuiz }) => {
-  const { deleteQuiz, getAllQuiz, isQuizDeleting } = useAdminStore();
+  const { deleteQuiz, getAllQuiz } = useAdminStore();
+
+  const [deletingQuizId, setDeletingQuizId] = useState<string | null>(null);
 
   const handleDelete = async (quizId: string) => {
     try {
+      setDeletingQuizId(quizId);
       await deleteQuiz(quizId);
       await getAllQuiz(allQuiz.contentId);
     } catch (error) {
       console.error("Failed to delete quiz:", error);
+    } finally {
+      setDeletingQuizId(null);
     }
   };
 
@@ -75,7 +81,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ allQuiz, handleQuiz }) => {
               Edit
             </EditButton>
             <DeleteButton type="button" onClick={() => handleDelete(quiz.id)}>
-              {isQuizDeleting ? "Deleting..." : "Delete"}
+              {deletingQuizId ? "Deleting..." : "Delete"}
             </DeleteButton>
           </div>
         </div>

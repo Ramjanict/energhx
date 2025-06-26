@@ -1,37 +1,59 @@
 import { useAdminStore } from "@/store/AdminStore/AdminStore";
-import { AllModule } from "@/store/AdminStore/type/allModule";
-import { useEffect } from "react";
+import {
+  AllModule,
+  BasicContent,
+  Module,
+} from "@/store/AdminStore/type/allModule";
+import { useEffect, useState } from "react";
 import CommonHeader from "../CommonHeader";
 import SubmitQuiz from "@/dashboard/components/SubmitQuiz";
+import QuizAssessmentCard from "@/dashboard/components/QuizAssessmentCard";
+import { ContentItem } from "@/store/AdminStore/type/allContent";
 
 interface ModuleDisplayProps {
-  modules: AllModule;
-  singleContentId: string | null;
+  selectBasicContent: BasicContent | null;
+  selectModulesId: string | null;
+  isHandleProgress: boolean;
 }
 
+const VideoSkeleton = () => {
+  return (
+    <div className="aspect-video w-full overflow-hidden mb-4 animate-pulse bg-gray-200 relative p-6 rounded-2xl shadow-md border border-gray-200">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+      </div>
+    </div>
+  );
+};
+
 const ModuleDisplay: React.FC<ModuleDisplayProps> = ({
-  modules,
-  singleContentId,
+  selectBasicContent,
+  selectModulesId,
+  isHandleProgress,
 }) => {
-  const { singleContent, getSingleContent, courseProgress, mark } =
+  const { singleContent, getSingleContent, courseProgress, mark, allModule } =
     useAdminStore();
 
   useEffect(() => {
-    if (singleContentId) {
-      getSingleContent(singleContentId);
+    if (selectModulesId) {
+      getSingleContent(selectModulesId);
     }
-  }, []);
+  }, [selectModulesId]);
 
-  console.log("mark=============", mark);
   return (
     <div className="w-[70%] space-y-6">
-      {courseProgress?.watchedContents?.includes(singleContent?.id ?? "") &&
-      singleContent?.contentType ? (
-        <div className="p-6 rounded-2xl shadow-md bg-white border border-gray-200">
-          {singleContent?.contentType === "VIDEO" && singleContent.video && (
+      {isHandleProgress ? (
+        <VideoSkeleton />
+      ) : (
+        <>
+          {selectBasicContent && (
             <div className="aspect-video w-full rounded-xl overflow-hidden border mb-4 shadow-sm">
               <video
-                src={singleContent.video ?? undefined}
+                src={
+                  typeof selectBasicContent.video === "string"
+                    ? selectBasicContent.video
+                    : URL.createObjectURL(selectBasicContent.video)
+                }
                 controls
                 autoPlay
                 playsInline
@@ -40,36 +62,77 @@ const ModuleDisplay: React.FC<ModuleDisplayProps> = ({
             </div>
           )}
 
-          {singleContent?.contentType === "DESCRIPTION" &&
-            singleContent.description && (
-              <div className="text-gray-700 text-base leading-relaxed space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Description
-                </h3>
-                <p>{singleContent.description}</p>
+          {selectModulesId &&
+            courseProgress?.watchedContents?.includes(
+              singleContent?.id ?? ""
+            ) &&
+            singleContent?.contentType && (
+              <div className="p-6 rounded-2xl shadow-md bg-white border border-gray-200">
+                {/* VIDEO BLOCK */}
+                {singleContent.contentType === "VIDEO" &&
+                  singleContent.video && (
+                    <>
+                      <div className="aspect-video w-full rounded-xl overflow-hidden border mb-4 shadow-sm">
+                        <video
+                          src={singleContent.video}
+                          controls
+                          autoPlay
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </>
+                  )}
+
+                {/* DESCRIPTION BLOCK */}
+                {singleContent.contentType === "DESCRIPTION" &&
+                  singleContent.description && (
+                    <div className="text-gray-700 text-base leading-relaxed space-y-2">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        Description
+                      </h3>
+                      <p>{singleContent.description}</p>
+                    </div>
+                  )}
+
+                {/* QUIZ BLOCK */}
+                {singleContent.contentType === "QUIZ" && singleContent.quiz && (
+                  <div className="text-gray-700 text-base">
+                    <div className="mb-4 flex justify-between items-center">
+                      <h3 className="text-xl font-bold text-gray-900 mb-1">
+                        Quiz Assessment
+                      </h3>
+                      <p className="text-gray-700 text-base">
+                        <span className="font-medium">Total Marks:</span>{" "}
+                        {singleContent.quiz.totalMark}
+                      </p>
+                    </div>
+
+                    {mark ? (
+                      <QuizAssessmentCard
+                        submission={mark?.data?.quizSubmission}
+                        score={mark?.data?.score}
+                        total={mark?.data?.total}
+                      />
+                    ) : (
+                      <SubmitQuiz
+                        quizzes={singleContent.quiz.quizzes}
+                        contentId={singleContent.quiz.contentId}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             )}
+        </>
+      )}
 
-          {singleContent?.contentType === "QUIZ" && singleContent.quiz && (
-            <div className="text-gray-700 text-base">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Quiz Summary
-              </h3>
-              <p>Total Marks: {singleContent.quiz.totalMark}</p>
-
-              <SubmitQuiz
-                quizzes={singleContent?.quiz.quizzes}
-                contentId={singleContent.quiz.contentId}
-              />
-            </div>
-          )}
-        </div>
-      ) : (
+      {!selectModulesId && !selectBasicContent && (
         <div className="p-6 rounded-2xl shadow-md bg-white border border-gray-200">
-          <CommonHeader className="!pb-4">{modules.title}</CommonHeader>
+          <CommonHeader className="!pb-4">{allModule?.title}</CommonHeader>
           <div className="rounded-xl overflow-hidden shadow">
             <img
-              src={modules.thumbnail}
+              src={allModule?.thumbnail}
               alt="Program Thumbnail"
               className="w-full h-64 object-cover"
             />

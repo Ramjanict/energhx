@@ -30,7 +30,7 @@ const CreateBuilding = () => {
   const hasBuildings = buildings.length > 0;
   const count = buildings.length ? buildings.length : 0;
 
-  console.log("allBattery", allBattery);
+  console.log("allBuildings", allBuildings);
 
   return (
     <div>
